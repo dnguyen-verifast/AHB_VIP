@@ -81,7 +81,7 @@ compile:
 	+cover \
 	+fcover \
 	-l ahb_compile.log \
-	-f ../ahb_compile.f
+	-f ahb_compile.f
 
 	# -s means silent mode
 	#  The command executed along with the output will be displayed on the terminal

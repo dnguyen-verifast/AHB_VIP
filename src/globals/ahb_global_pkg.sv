@@ -1,7 +1,7 @@
 `ifndef AHB_GLOBAL_PKG_INCLUDED_
 `define AHB_GLOBAL_PKG_INCLUDED_
 
-package ahb_global_pkg
+package ahb_global_pkg;
 
     parameter int ADDRESS_WIDTH = 32;
     parameter int DATA_WIDTH = 32;
@@ -14,7 +14,7 @@ package ahb_global_pkg
         WRAP8   = 3'b100,
         INCR8   = 3'b101,
         WRAP16   = 3'b110,
-        INCR16   = 3'b110
+        INCR16   = 3'b111
     } burst_e;
 
 typedef enum bit [2:0] {
