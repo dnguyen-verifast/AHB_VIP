@@ -4,11 +4,11 @@
 class ahb_master_manager_signal_stability_seq extends ahb_master_base_seq;
     `uvm_object_utils(ahb_master_manager_signal_stability_seq)
 
-    extern function new(string name = "ahb_master_manager_signal_stability_seq",uvm_component parent=null);
+    extern function new(string name = "ahb_master_manager_signal_stability_seq");
     extern task body();
 endclass : ahb_master_manager_signal_stability_seq
-function ahb_master_manager_signal_stability_seq::new(string name = "ahb_master_manager_signal_stability_seq",uvm_component parent=null);
-    super.new(name,parent);
+function ahb_master_manager_signal_stability_seq::new(string name = "ahb_master_manager_signal_stability_seq");
+    super.new(name);
 endfunction : new
 
 task ahb_master_manager_signal_stability_seq::body();
