@@ -3,8 +3,10 @@
 
 package ahb_global_pkg;
 
-    parameter int ADDRESS_WIDTH = 32;
+    parameter int ADDR_WIDTH = 32;
     parameter int DATA_WIDTH = 32;
+    parameter int HWSTRB = 4;
+
 
     typedef enum bit [2:0]{
         SINGLE  = 3'b000,

@@ -8,18 +8,18 @@ class ahb_base_tx extends uvm_sequence_item;
     rand bit                          hmastlock;
     rand hprot_e                    hprot;
     rand hsize_e                    hsize;
-    rand bit                        hnonsec;
-    rand bit                          hexcl;
+    rand hnonsec_e                  hnonsec;
+    rand hexcl_e                    hexcl;
     rand hmaster_e                  hmaster;
     rand htrans_e                   htrans;
     rand bit [DATA_WIDTH-1:0]      hwdata;
     rand bit [HWSTRB-1:0]          hwstrb;
-    rand bit                       hwrite;
+    rand hwrite_e                  hwrite;
     
     rand bit [DATA_WIDTH-1:0]      hrdata;
     rand bit                        hreadyout;
-    rand bit                        hresp;
-    rand bit                        hexokey;
+    rand hresp_e                    hresp;
+    rand hexokay_e                  hexokey;
     
     rand bit                        hsel;
 
