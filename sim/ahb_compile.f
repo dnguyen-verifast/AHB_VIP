@@ -23,4 +23,3 @@
 ../src/test/sequence/slave_sequence/ahb_slave_sequence_pkg.sv
 ../src/test/virtual_sequence/ahb_virtual_sequence_pkg.sv
 ../src/test/testcase/ahb_testcase_pkg.sv
-../src/test/ahb_test_pkg.sv
