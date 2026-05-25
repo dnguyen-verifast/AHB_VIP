@@ -9,6 +9,8 @@ package ahb_base_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_base_tx.sv"
+    `include "ahb_slave_seq_item_converter.sv"
+    `include "ahb_master_seq_item_converter.sv"
 
 endpackage : ahb_base_pkg
 

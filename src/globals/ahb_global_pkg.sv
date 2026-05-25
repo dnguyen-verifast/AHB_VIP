@@ -81,5 +81,27 @@ typedef enum bit [2:0] {
         HEXOKAY_PASS = 1'b1
     } hexokay_e;
 
+    typedef struct {
+        bit [ADDR_WIDTH-1 : 0]    haddr;
+        bit [2:0]                 hburst;
+        bit                       hmastlock;
+        bit [3:0]                 hprot;
+        bit [2:0]                 hsize;
+        bit                       hnonsec;
+        bit                       hexcl;
+        bit [3:0]                 hmaster;
+        bit [1:0]                 htrans;
+        bit [DATA_WIDTH-1:0]      hwdata;
+        bit [HWSTRB-1:0]          hwstrb;
+        bit                       hwrite;
+
+        // singal generate by subordinate
+        bit [DATA_WIDTH-1:0]      hrdata;
+        bit                       hreadyout;
+        bit                       hresp;
+        bit                       hexokey;
+        bit                       hready;
+    } ahb_transfer_struct ;
+
 endpackage
 `endif

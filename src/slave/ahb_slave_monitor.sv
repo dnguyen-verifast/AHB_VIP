@@ -55,7 +55,8 @@ endtask : run_phase
 
 task ahb_slave_monitor::ahb_slave_data_phase();
     forever begin
-        ahb_slave_tx slv_tx_data;
+        ahb_slave_tx mon_tx_data;
+        ahb_transfer_struct slv_tx_data;
         @(posedge ahb_if_h.clk);
         if(ahb_if_h.hready_out == 1) begin
              slv_tx_data.hwdata  = ahb_if_h.hwdata;
@@ -64,13 +65,15 @@ task ahb_slave_monitor::ahb_slave_data_phase();
              slv_tx_data.hrdata   = ahb_if_h.hrdata;
              slv_tx_data.hexokey   = ahb_if_h.hexokey;
         end
-        ahb_slave_data_analysis_port.write(slv_tx_data);
+        ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
+        ahb_slave_data_analysis_port.write(mon_tx_data);
     end
 endtask : ahb_slave_data_phase
 
 task ahb_slave_monitor::ahb_slave_addr_phase();
     forever begin
-        ahb_slave_tx slv_tx_add;
+        ahb_slave_tx mon_tx_add;
+        ahb_transfer_struct slv_tx_add;
         @(posedge ahb_if_h.clk);
         if(ahb_if_h.hready_out == 1) begin
             slv_tx_add.haddr     = ahb_if_h.haddr;
@@ -83,7 +86,8 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             slv_tx_add.htrans    = ahb_if_h.htrans;
             slv_tx_add.hwrite    = ahb_if_h.hwrite;
         end
-        ahb_slave_addr_analysis_port.write(slv_tx_add);
+        ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
+        ahb_slave_addr_analysis_port.write(mon_tx_add);
     end
 endtask : ahb_slave_addr_phase
 `endif

@@ -54,7 +54,8 @@ endtask : run_phase
 
 task ahb_master_monitor::ahb_master_data_phase();
     forever begin
-        ahb_master_tx m_tx_data;
+        ahb_master_tx mon_tx_data;
+        ahb_transfer_struct m_tx_data;
         @(posedge ahb_if_h.clk);
         if(ahb_if_h.hready_out == 1) begin
              m_tx_data.hwdata  = ahb_if_h.hwdata;
@@ -63,14 +64,16 @@ task ahb_master_monitor::ahb_master_data_phase();
              m_tx_data.hrdata   = ahb_if_h.hrdata;
              m_tx_data.hexokey   = ahb_if_h.hexokey;  
         end
-        ahb_master_data_analysis_port.write(m_tx_data);
+        ahb_master_seq_item_converter::to_class(m_tx_data,mon_tx_data);
+        ahb_master_data_analysis_port.write(mon_tx_data);
     end
 endtask : ahb_master_data_phase
 
 
 task ahb_master_monitor::ahb_master_addr_phase();
     forever begin
-        ahb_master_tx m_tx_add;
+        ahb_master_tx mon_tx_add;
+        ahb_transfer_struct m_tx_add;
         @(posedge ahb_if_h.clk);
         if(ahb_if_h.hready_out == 1) begin
             m_tx_add.haddr     = ahb_if_h.haddr;
@@ -84,7 +87,8 @@ task ahb_master_monitor::ahb_master_addr_phase();
             m_tx_add.htrans    = ahb_if_h.htrans;
             m_tx_add.hwrite    = ahb_if_h.hwrite;
         end
-        ahb_master_addr_analysis_port.write(m_tx_add);
+        ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
+        ahb_master_addr_analysis_port.write(mon_tx_add);
     end
 endtask : ahb_master_addr_phase
 `endif
