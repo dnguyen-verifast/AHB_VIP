@@ -20,12 +20,9 @@ extern virtual function void build_phase(uvm_phase phase);
 extern virtual function void end_of_elaboration_phase(uvm_phase phase);
 extern virtual task run_phase(uvm_phase phase);
 
-extern virtual task ahb_slave_write();
-
 extern virtual task wr_addr_phase();
-extern virtual task wr_data_phase();
+//extern virtual task wr_data_phase();
 
-extern virtual task ahb_slave_read();
 extern virtual task wait_ahb_for_resetn();
 
 endclass : ahb_slave_driver
@@ -51,10 +48,10 @@ task ahb_slave_driver::run_phase(uvm_phase phase);
 
     wait_ahb_for_resetn();
 
-    forever begin
+    fork
         wr_addr_phase();
-        wr_data_phase();
-    end
+       // wr_data_phase();
+    join
 
 endtask : run_phase
 
@@ -70,9 +67,9 @@ task wait_ahb_for_resetn();
 endtask : wait_ahb_for_resetn
 
 task ahb_slave_driver::wr_addr_phase();
-    ahb_slave_tx slv_tx_add;
-    ahb_slave_tx slv_tx_data;
     forever begin
+        ahb_slave_tx slv_tx_add;
+        ahb_slave_tx slv_tx_data;
         ahb_slave_seq_item_port.get_next_item(slv_tx_add);
         @(posedge ahb_if_h.clk)
         slv_tx_add.haddr     = ahb_if_h.haddr;
@@ -162,7 +159,7 @@ task ahb_slave_driver::wr_addr_phase();
             end
         end
     end
-endtask : ahb_slave_write
+endtask : wr_addr_phase
 `endif
 
 

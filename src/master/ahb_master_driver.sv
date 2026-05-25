@@ -56,7 +56,7 @@ task ahb_master_driver::run_phase(uvm_phase phase);
     join
 endtask : run_phase
 
-task wait_ahb_for_resetn();
+task ahb_master_driver::wait_ahb_for_resetn();
     @(negedge ahb_if_h.resetn);
     `uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
     ahb_if_h.haddr     <= '0;
@@ -76,9 +76,8 @@ task wait_ahb_for_resetn();
 endtask : wait_ahb_for_resetn
 
 task ahb_master_driver::wr_addr_phase();
-    ahb_master_tx m_tx_addr;
-    ahb_master_tx m_tx_data;
     forever begin
+        ahb_master_tx m_tx_addr;
         ahb_master_seq_item_port.get_next_item(m_tx_addr);
         if(m_tx_addr == null) begin
             ahb_if_h.htrans    <= '0;
@@ -106,6 +105,7 @@ endtask : wr_addr_phase
 
 task ahb_master_driver::wr_data_phase();
     forever begin
+        ahb_master_tx m_tx_data;
         ahb_master_fifo.get(m_tx_data);
         if(m_tx_addr.hwrite == HWRITE_WRITE) begin
             ahb_if_h.hwdata    <= m_tx_data.hwdata;
