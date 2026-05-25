@@ -7,7 +7,7 @@ class ahb_slave_random_wait_state_seq extends ahb_slave_base_seq;
     extern function new(string name = "ahb_slave_random_wait_state_seq");
     extern task body();
 endclass : ahb_slave_random_wait_state_seq
-function ahb_slave_random_wait_state_seq::new(string name = "ahb_slave_random_wait_state_seq";
+function ahb_slave_random_wait_state_seq::new(string name = "ahb_slave_random_wait_state_seq")
     super.new(name);
 endfunction : new
 
