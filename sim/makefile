@@ -123,6 +123,7 @@ simulate:
 	# Use -novopt for no optimization - Makes the simulation slower
 	# vsim -pli finesim.so -coverage top
 	vsim -vopt \
+	-sv_lib /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/linux_x86_64/uvm_dpi \
 	work.ahb_top \
 	-voptargs=+acc=npr \
 	-assertdebug \
