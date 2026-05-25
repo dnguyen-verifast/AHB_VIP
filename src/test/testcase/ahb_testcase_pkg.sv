@@ -6,7 +6,6 @@ package ahb_testcase_pkg;
     import uvm_pkg::*;
     import ahb_global_pkg::*;
     import ahb_base_pkg::*;
-    import ahb_interface_pkg::*;
     import ahb_master_pkg::*;
     import ahb_slave_pkg::*;
     import ahb_env_pkg::*;
