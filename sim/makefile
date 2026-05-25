@@ -77,6 +77,8 @@ compile:
 	#make clean_simulate;
 	vlib work; 
 	vlog -sv \
+	+incdir+/cadtools/mentor/Questa_10.6b/questasim/uvm-1.2/src \
+	-L mtiUvm \
 	+acc \
 	+cover \
 	+fcover \
