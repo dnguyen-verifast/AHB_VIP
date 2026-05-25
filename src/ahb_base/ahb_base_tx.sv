@@ -55,7 +55,7 @@ function void ahb_base_tx::do_copy(uvm_object rhs);
 
     hsel = ahb_base_tx_copy.hsel;
 endfunction : do_copy
-function void do_print(uvm_printer printer);
+function void ahb_base_tx::do_print(uvm_printer printer);
    printer.print_feild("haddr",haddr,$bits(haddr),UVM_HEX);
    printer.print_string("hburst",hburst.name());
    printer.print_string("hmastlock",hmastlock.name());
@@ -74,7 +74,7 @@ function void do_print(uvm_printer printer);
    printer.print_feild("hreadyout",hreadyout,$bits(hreadyout),UVM_BIN);
    printer.print_string("hexokey",hexokey.name());
 endfunction
-function void do_compare(uvm_object rhs,uvm_comparer comparer);
+function void ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
     ahb_base_tx ahb_base_tx_comparer;
     bit result;
     if(rhs == null) begin
@@ -86,7 +86,7 @@ function void do_compare(uvm_object rhs,uvm_comparer comparer);
     end
     result = 1;
     // result = super.do_compare(axi4_base_tx_compare_obj, comparer);
-    result &= (haddr     == ahb_base_tx_comparer.haddr)     &&
+    result &= (haddr  == ahb_base_tx_comparer.haddr)     &&
            (hburst    == ahb_base_tx_comparer.hburst)    &&
            (hmastlock == ahb_base_tx_comparer.hmastlock) &&
            (hprot     == ahb_base_tx_comparer.hprot)     &&
