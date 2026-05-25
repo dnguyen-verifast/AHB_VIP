@@ -16,7 +16,7 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
             bins b_INCR8  = {INCR8};
             bins b_WRAP16 = {WRAP16};
             bins b_INCR16 = {INCR16};
-        };
+        }
 
         HSIZE_CP : coverpoint packet.hsize {
             bins b_HSIZE_BYTE   = {HSIZE_BYTE};
