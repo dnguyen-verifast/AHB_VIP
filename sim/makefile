@@ -67,6 +67,9 @@ usage:
 	echo "-----------------------------------------------------------------";
 	echo "";
 
+UVM_HOME  = /cadtools/mentor/Questa_10.6b/questasim/verilog_src/uvm-1.1c
+UVM_FLAGS     = +incdir+$(UVM_HOME)/src $(UVM_HOME)/src/uvm_pkg.sv
+
 all:
 	make clean; make compile; make simulate;
 
@@ -77,11 +80,11 @@ compile:
 	#make clean_simulate;
 	vlib work; 
 	vlog -sv \
-	+incdir+/cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src \
 	-L mtiUvm \
 	+acc \
 	+cover \
 	+fcover \
+	$(UVM_FLAGS) \
 	-l ahb_compile.log \
 	-f ahb_compile.f
 
