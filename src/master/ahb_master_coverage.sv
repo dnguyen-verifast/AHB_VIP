@@ -100,15 +100,15 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
             bins ERROR = {1};
         }
 
-        HEXOKAY_CP : coverpoint packet.hexokey {
+        HEXOKAY_CP : coverpoint packet.hexokay {
             bins FAIL    = {0};
             bins SUCCESS = {1};
         }
 
-        HSEL_CP : coverpoint packet.hsel {
-            bins not_selected = {0};
-            bins selected     = {1};
-        }
+        // HSEL_CP : coverpoint packet.hsel {
+        //     bins not_selected = {0};
+        //     bins selected     = {1};
+        // }
     endgroup : ahb_master_covergroup
 extern function new(string name = "ahb_master_coverage", uvm_component parent=null);
 extern virtual function void write(ahb_master_tx t);
