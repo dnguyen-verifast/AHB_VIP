@@ -56,7 +56,7 @@ function void ahb_base_tx::do_copy(uvm_object rhs);
     hrdata = ahb_base_tx_copy.hrdata;
     hreadyout = ahb_base_tx_copy.hreadyout;
     hresp = ahb_base_tx_copy.hresp;
-    hexokey = ahb_base_tx_copy.hexokey;
+    hexokay = ahb_base_tx_copy.hexokay;
 
     hsel = ahb_base_tx_copy.hsel;
 endfunction : do_copy
@@ -77,7 +77,7 @@ function void ahb_base_tx::do_print(uvm_printer printer);
    printer.print_string("hresp",hresp.name());
    printer.print_field("hrdata",hrdata,$bits(hrdata),UVM_HEX);
    printer.print_field("hreadyout",hreadyout,$bits(hreadyout),UVM_BIN);
-   printer.print_string("hexokey",hexokey.name());
+   printer.print_string("hexokay",hexokay.name());
 endfunction
 function bit ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
     ahb_base_tx ahb_base_tx_comparer;
@@ -106,7 +106,7 @@ function bit ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
            (hrdata    == ahb_base_tx_comparer.hrdata)    &&
            (hreadyout == ahb_base_tx_comparer.hreadyout) &&
            (hresp     == ahb_base_tx_comparer.hresp)     &&
-           (hexokey   == ahb_base_tx_comparer.hexokey)   &&
+           (hexokay   == ahb_base_tx_comparer.hexokay)   &&
            (hsel      == ahb_base_tx_comparer.hsel);
 endfunction : do_compare
 `endif 
