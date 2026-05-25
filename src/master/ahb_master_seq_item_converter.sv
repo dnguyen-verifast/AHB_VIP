@@ -73,7 +73,7 @@ function void ahb_master_seq_item_converter::to_class(input ahb_transfer_struct 
   output_conv_h.hwstrb    = input_conv_h.hwstrb;
   output_conv_h.hrdata    = input_conv_h.hrdata;
   output_conv_h.hreadyout = input_conv_h.hreadyout;
-  output_conv_h.hsel      = input_conv_h.hsel;
+  //output_conv_h.hsel      = input_conv_h.hsel;
 
   // Logic to Enum casting
   $cast(output_conv_h.hburst,  input_conv_h.hburst);
@@ -111,7 +111,7 @@ function void ahb_master_seq_item_converter::do_print(uvm_printer printer);
   printer.print_field("hreadyout", ahb_st.hreadyout, $bits(ahb_st.hreadyout), UVM_BIN);
   printer.print_field("hresp",     ahb_st.hresp,     $bits(ahb_st.hresp),     UVM_BIN);
   printer.print_field("hexokay",   ahb_st.hexokay,   $bits(ahb_st.hexokay),   UVM_BIN);
-  printer.print_field("hsel",      ahb_st.hsel,      $bits(ahb_st.hsel),      UVM_BIN);
+//  printer.print_field("hsel",      ahb_st.hsel,      $bits(ahb_st.hsel),      UVM_BIN);
 
 endfunction : do_print
 
