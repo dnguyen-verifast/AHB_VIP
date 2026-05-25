@@ -14,8 +14,8 @@ endclass : ahb_slave_sequencer
 function ahb_slave_sequencer::new(string name = "ahb_slave_sequencer", uvm_component parent =null);
     super.new(name,parent);
 endfunction : new
-function void ahb_slave_sequencer::buid_phase(uvm_phase phase);
-    super.buid_phase(phase);
+function void ahb_slave_sequencer::build_phase(uvm_phase phase);
+    super.build_phase(phase);
 endfunction : build_phase
 function void ahb_slave_sequencer::connect_phase(uvm_phase phase);
     super.connect_phase(phase);

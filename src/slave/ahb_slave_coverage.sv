@@ -16,7 +16,7 @@ class ahb_slave_coverage extends uvm_subscriber #(ahb_slave_tx);
             bins b_INCR8  = {INCR8};
             bins b_WRAP16 = {WRAP16};
             bins b_INCR16 = {INCR16};
-        };
+        }
 
         HSIZE_CP : coverpoint packet.hsize {
             bins b_HSIZE_BYTE   = {HSIZE_BYTE};
@@ -111,8 +111,8 @@ class ahb_slave_coverage extends uvm_subscriber #(ahb_slave_tx);
         }
     endgroup : ahb_slave_covergroup
 extern function new(string name = "ahb_slave_coverage", uvm_component parent=null);
-extern virtual void write(ahb_slave_tx tx);
-extern virtual void report_phase(uvm_phase phase);
+extern virtual function void write(ahb_slave_tx tx);
+extern virtual function void report_phase(uvm_phase phase);
 endclass : ahb_slave_coverage 
 
 function ahb_slave_coverage::new(string name = "ahb_slave_coverage", uvm_component parent=null);

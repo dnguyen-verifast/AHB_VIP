@@ -111,8 +111,8 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
         }
     endgroup : ahb_master_covergroup
 extern function new(string name = "ahb_master_coverage", uvm_component parent=null);
-extern virtual void write(ahb_master_tx tx);
-extern virtual void report_phase(uvm_phase phase);
+extern virtual function void write(ahb_master_tx tx);
+extern virtual function void report_phase(uvm_phase phase);
 endclass : ahb_master_coverage 
 
 function ahb_master_coverage::new(string name = "ahb_master_coverage", uvm_component parent=null);
