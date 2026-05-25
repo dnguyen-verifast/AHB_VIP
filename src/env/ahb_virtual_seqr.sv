@@ -7,7 +7,7 @@ class ahb_virtual_seqr extends uvm_sequencer;
     ahb_slave_sequencer ahb_slave_sequencer_h;
 
 
-    extern function new(stirng name ="ahb_virtual_seqr", uvm_component parent = null);
+    extern function new(string name ="ahb_virtual_seqr", uvm_component parent = null);
     extern virtual function void build_phase(uvm_phase phase);
     extern virtual function void connect_phase(uvm_phase phase);
     extern virtual function void end_of_elaboration_phase(uvm_phase phase);
