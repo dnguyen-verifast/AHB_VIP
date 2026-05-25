@@ -42,7 +42,7 @@ function void ahb_master_seq_item_converter::from_class(input ahb_master_tx inpu
   output_conv_h.hwstrb    = input_conv_h.hwstrb;
   output_conv_h.hrdata    = input_conv_h.hrdata;
   output_conv_h.hreadyout = input_conv_h.hreadyout;
-  output_conv_h.hsel      = input_conv_h.hsel;
+  //output_conv_h.hsel      = input_conv_h.hsel;
 
   // Enum to Logic casting
   $cast(output_conv_h.hburst,  input_conv_h.hburst);

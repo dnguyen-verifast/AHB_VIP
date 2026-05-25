@@ -99,7 +99,7 @@ typedef enum bit [2:0] {
         bit [DATA_WIDTH-1:0]      hrdata;
         bit                       hreadyout;
         bit                       hresp;
-        bit                       hexokey;
+        bit                       hexokay;
         bit                       hready;
     } ahb_transfer_struct ;
 

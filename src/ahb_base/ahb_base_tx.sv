@@ -19,7 +19,7 @@ class ahb_base_tx extends uvm_sequence_item;
     rand bit [DATA_WIDTH-1:0]      hrdata;
     rand bit                        hreadyout;
     rand hresp_e                    hresp;
-    rand hexokay_e                  hexokey;
+    rand hexokay_e                  hexokay;
     
     rand bit                        hsel;
 
