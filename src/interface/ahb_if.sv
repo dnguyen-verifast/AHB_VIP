@@ -48,13 +48,13 @@ interface ahb_if(input clk, input resetn);
     property valid_in_write_data_phase;
         @(posedge clk) disable iff(!resetn)
         // 3. SỬA LỖI TYPO: hrep -> hresp
-        ((hready == 1) && (hresp == 0) && (hwrite == 1)) |->  (!$isunknown(hexokey));
+        ((hready == 1) && (hresp == 0) && (hwrite == 1)) |->  (!$isunknown(hexokay));
     endproperty : valid_in_write_data_phase
     SIGNAL_VALID_WRITE_DATA_PHASE : assert property (valid_in_write_data_phase);
 
     property valid_in_read_data_phase;
         @(posedge clk) disable iff(!resetn)
-        ((hready == 1) && (hresp == 0) && (hwrite == 0)) |->  (!$isunknown(hrdata)) && (!$isunknown(hexokey));
+        ((hready == 1) && (hresp == 0) && (hwrite == 0)) |->  (!$isunknown(hrdata)) && (!$isunknown(hexokay));
     endproperty : valid_in_read_data_phase
     SIGNAL_VALID_READ_DATA_PHASE : assert property (valid_in_read_data_phase);
 
