@@ -10,7 +10,9 @@ class ahb_virtual_basic_single_rw_seq extends ahb_virtual_base_seq;
     extern function new(string name = "ahb_virtual_basic_single_rw_seq");
     extern task body();
 endclass : ahb_virtual_basic_single_rw_seq
-
+function ahb_virtual_basic_single_rw_seq::new(string name = "ahb_virtual_basic_single_rw_seq");
+super.new(name);
+endfunction : new
 task ahb_virtual_basic_single_rw_seq::body();
     ahb_master_basic_single_rw_seq_h = ahb_master_basic_single_rw_seq::type_id::create("ahb_master_basic_single_rw_seq_h");
 
