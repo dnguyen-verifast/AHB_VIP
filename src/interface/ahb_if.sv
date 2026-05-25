@@ -4,13 +4,13 @@
 interface ahb_if(input clk, input resetn);
     // signal generate from mananger
     logic [ADDR_WIDTH-1 : 0]    haddr;
-    logic [HBURST_WIDTH-1:0]    hburst;
+    logic [2:0]    hburst;
     logic                       hmastlock;
-    logic [HPROT_WIDTH-1:0]     hprot;
+    logic [3:0]     hprot;
     logic [2:0]                 hsize;
     logic                       hnonsec;
     logic                       hexcl;
-    logic [HMASTER_WIDTH-1:0]   hmaster;
+    logic [3:0]   hmaster;
     logic [1:0]                 htrans;
     logic [DATA_WIDTH-1:0]      hwdata;
     logic [HWSTRB-1:0]          hwstrb;
