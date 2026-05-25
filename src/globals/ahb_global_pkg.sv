@@ -17,7 +17,7 @@ package ahb_global_pkg;
         INCR8   = 3'b101,
         WRAP16   = 3'b110,
         INCR16   = 3'b111
-    } burst_e;
+    } hburst_e;
 
 typedef enum bit [2:0] {
         HSIZE_BYTE   = 3'b000,
