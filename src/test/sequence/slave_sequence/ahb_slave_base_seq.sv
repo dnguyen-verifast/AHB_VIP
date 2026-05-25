@@ -29,6 +29,7 @@ function ahb_slave_base_seq::new(string name = "ahb_slave_base_seq");
 endfunction : new
 
 task ahb_master_base_seq::body();
-  req_slv = ahb_slave_tx::type_id::create(req_slv);
+  ahb_slave_tx req_slv;
+  req_slv = ahb_slave_tx::type_id::create("req_slv");
 endtask : body
 `endif
