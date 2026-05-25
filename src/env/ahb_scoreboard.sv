@@ -71,7 +71,6 @@ task ahb_scoreboard::run_phase(uvm_phase phase);
 endtask : run_phase
 
 task ahb_scoreboard::ahb_data_phase_compare();
-
   forever begin
     data_phase_key.get(1);
     ahb_slave_tx m_data_phase_tx;
