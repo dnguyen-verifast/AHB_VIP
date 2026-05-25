@@ -31,12 +31,12 @@ property singal_alway_valid;
 endproperty : singal_alway_valid
 SIGNAL_AWAY_VALID : assert property (singal_alway_valid);
 
-property signal_valid_when_htrans_not_IDLE;
+property signal_valid_when_htrans_not_2'b00;
 @(posedge clk) disable iff(!resetn)
-(htrans !=IDLE) |-> (!$isunknown(hburst)) && (!$isunknown(hprot)) && (!$isunknown(hsize)) && (!$isunknown(hnonsec)) && (!$isunknown(hexcl)) && (!$isunknown(hmaster))
+(htrans != 2'b00) |-> (!$isunknown(hburst)) && (!$isunknown(hprot)) && (!$isunknown(hsize)) && (!$isunknown(hnonsec)) && (!$isunknown(hexcl)) && (!$isunknown(hmaster))
                         && (!$isunknown(hwrite));
-endproperty : signal_valid_when_htrans_not_IDLE
-SIGNAL_VALID_HTRANS_NOT_IDLE : assert property (signal_valid_when_htrans_not_IDLE);
+endproperty : signal_valid_when_htrans_not_2'b00
+SIGNAL_VALID_HTRANS_NOT_2'b00 : assert property (signal_valid_when_htrans_not_2'b00);
 
 property valid_in_write_data_phase;
     @(posedge clk) disable iff(!resetn)
@@ -54,11 +54,11 @@ property p_htrans_stable_during_wait;
     @(posedge clk) disable iff (!resetn)
     (!$past(heady == 1)) |-> 
         (
-            ($past(htrans) == IDLE && (htrans == IDLE || htrans == NONSEQ)) ||
-            ($past(htrans) == BUSY && $past(hburst) == INCR) ||
-            ($past(htrans) == BUSY && $past(hburst) != INCR && (htrans == BUSY || htrans == SEQ)) ||
-            ($past(htrans) == NONSEQ && htrans == NONSEQ) ||
-            ($past(htrans) == SEQ && htrans == SEQ)
+            ($past(htrans) == 2'b00 && (htrans == 2'b00 || htrans == 2'b10)) ||
+            ($past(htrans) == 2'b01 && $past(hburst) == 3'b001) ||
+            ($past(htrans) == 2'b01 && $past(hburst) != 3'b001 && (htrans == 2'b01 || htrans == 2'b11)) ||
+            ($past(htrans) == 2'b10 && htrans == 2'b10) ||
+            ($past(htrans) == 2'b11 && htrans == 2'b11)
         );
 endproperty
 a_htrans_stable_during_wait: assert property(p_htrans_stable_during_wait);
@@ -69,11 +69,11 @@ property p_hwdata_stable_during_wait;
 endproperty
 a_hwdata_stable: assert property(p_hwdata_stable_during_wait);
 
-property p_error_response_sequence;
+property p_error_response_2'b11uence;
     @(posedge clk) disable iff (!resetn)
     (hresp == 1'b1 && hreadyout == 1'b0) |=> (hresp == 1'b1 && hreadyout == 1'b1);
 endproperty
-a_error_response_seq: assert property(p_error_response_sequence);
+a_error_response_2'b11: assert property(p_error_response_2'b11uence);
 
 
 property p_error_response_start_valid;
@@ -82,11 +82,11 @@ property p_error_response_start_valid;
 endproperty
 a_error_response_start: assert property(p_error_response_start_valid);
 
- property p_last_burst_single_not_be_busy;
+ property p_last_burst_single_not_be_2'b01;
      @(posedge clk) disable iff(!resetn)
-    (hburst == SINGLE && hready) |=> (htrans != BUSY);
+    (hburst == 3'b000 && hready) |=> (htrans != 2'b01);
 endproperty
-a_last_burst_single_not_be_busy : assert property(p_last_burst_single_not_be_busy);
+a_last_burst_single_not_be_2'b01 : assert property(p_last_burst_single_not_be_2'b01);
 
 endinterface : ahb_if
 `endif
