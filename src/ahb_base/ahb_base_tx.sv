@@ -29,12 +29,17 @@ class ahb_base_tx extends uvm_sequence_item;
     extern function void do_print(uvm_printer printer);
     extern function bit do_compare(uvm_object rhs,uvm_comparer comparer);
 endclass : ahb_base_tx
+
+function ahb_base_tx::new(string name = "ahb_base_tx");
+    super.new(name);
+endfunction : new
+
 function void ahb_base_tx::do_copy(uvm_object rhs);
     ahb_base_tx ahb_base_tx_copy;
     if(!$cast(ahb_base_tx_copy,rhs)) begin
        `uvm_fatal("do_copy", "cast failed") 
     end
-    super.do_copy(rsh);
+    super.do_copy(rhs);
     haddr = ahb_base_tx_copy.haddr;
     hburst = ahb_base_tx_copy.hburst;
     hmastlock = ahb_base_tx_copy.hmastlock;
@@ -56,7 +61,7 @@ function void ahb_base_tx::do_copy(uvm_object rhs);
     hsel = ahb_base_tx_copy.hsel;
 endfunction : do_copy
 function void ahb_base_tx::do_print(uvm_printer printer);
-   printer.print_feild("haddr",haddr,$bits(haddr),UVM_HEX);
+   printer.print_field("haddr",haddr,$bits(haddr),UVM_HEX);
    printer.print_string("hburst",hburst.name());
    printer.print_string("hmastlock",hmastlock.name());
    printer.print_string("hprot",hprot.name());
@@ -65,13 +70,13 @@ function void ahb_base_tx::do_print(uvm_printer printer);
    printer.print_string("hexcl",hexcl.name());
    printer.print_string("hmaster",hmaster.name());
    printer.print_string("htrans",htrans.name());
-   printer.print_feild("hwdata",hwdata,$bits(hwdata),UVM_HEX);
-   printer.print_feild("hwstrb",hwstrb,$bits(hwstrb),UVM_BIN);
+   printer.print_field("hwdata",hwdata,$bits(hwdata),UVM_HEX);
+   printer.print_field("hwstrb",hwstrb,$bits(hwstrb),UVM_BIN);
    printer.print_string("hwrite",hwrite.name());
    printer.print_string("hsel",hsel.name());
    printer.print_string("hresp",hresp.name());
-   printer.print_feild("hrdata",hrdata,$bits(hrdata),UVM_HEX);
-   printer.print_feild("hreadyout",hreadyout,$bits(hreadyout),UVM_BIN);
+   printer.print_field("hrdata",hrdata,$bits(hrdata),UVM_HEX);
+   printer.print_field("hreadyout",hreadyout,$bits(hreadyout),UVM_BIN);
    printer.print_string("hexokey",hexokey.name());
 endfunction
 function void ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
