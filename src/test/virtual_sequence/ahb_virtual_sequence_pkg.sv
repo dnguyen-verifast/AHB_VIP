@@ -8,6 +8,7 @@ package ahb_virtual_sequence_pkg;
     import ahb_base_pkg::*;
     import ahb_master_sequence_pkg::*;
     import ahb_slave_sequence_pkg::*;
+    import ahb_env_pkg::*;
 
     `include "uvm_macros.svh"
 
