@@ -62,7 +62,7 @@ task ahb_master_monitor::ahb_master_data_phase();
              m_tx_data.hwstrb  = ahb_if_h.hwstrb ;
              m_tx_data.hresp   = ahb_if_h.hresp;
              m_tx_data.hrdata   = ahb_if_h.hrdata;
-             m_tx_data.hexokey   = ahb_if_h.hexokey;  
+             m_tx_data.hexokay   = ahb_if_h.hexokay;  
         end
         ahb_master_seq_item_converter::to_class(m_tx_data,mon_tx_data);
         ahb_master_data_analysis_port.write(mon_tx_data);

@@ -63,7 +63,7 @@ task ahb_slave_monitor::ahb_slave_data_phase();
              slv_tx_data.hwstrb  = ahb_if_h.hwstrb ;
              slv_tx_data.hresp   = ahb_if_h.hresp;
              slv_tx_data.hrdata   = ahb_if_h.hrdata;
-             slv_tx_data.hexokey   = ahb_if_h.hexokey;
+             slv_tx_data.hexokay   = ahb_if_h.hexokay;
         end
         ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
         ahb_slave_data_analysis_port.write(mon_tx_data);
