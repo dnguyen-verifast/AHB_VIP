@@ -36,7 +36,7 @@ class ahb_scoreboard extends uvm_scoreboard;
     extern virtual function void report_phase(uvm_phase phase);
 endclass : ahb_scoreboard
 
-function new(string name="ahb_scoreboard", uvm_component parent=null);
+function ahb_scoreboard::new(string name="ahb_scoreboard", uvm_component parent=null);
     super.new(name,parent);
     ahb_slave_data_phase_analysis_fifo = new("ahb_slave_data_phase_analysis_fifo",this);
     ahb_master_data_phase_analysis_fifo = new("ahb_master_data_phase_analysis_fifo",this);
