@@ -72,8 +72,8 @@ endtask : run_phase
 
 task ahb_scoreboard::ahb_data_phase_compare();
   forever begin
-    ahb_slave_tx m_data_phase_tx;
-    ahb_master_tx l_data_phase_tx;
+    ahb_slave_tx l_data_phase_tx;
+    ahb_master_tx m_data_phase_tx;
     data_phase_key.get(1);
     ahb_master_data_phase_analysis_fifo.get(m_data_phase_tx);
     ahb_slave_data_phase_analysis_fifo.get(l_data_phase_tx);
@@ -92,8 +92,8 @@ endtask : ahb_data_phase_compare
 
 task ahb_scoreboard::ahb_addr_phase_compare();
   forever begin
-    ahb_slave_tx m_addr_phase_tx;
-    ahb_master_tx l_addr_phase_tx;
+    ahb_slave_tx l_addr_phase_tx;
+    ahb_master_tx m_addr_phase_tx;
     addr_phase_key.get(1);
     ahb_master_data_phase_analysis_fifo.get(m_addr_phase_tx);
     ahb_slave_data_phase_analysis_fifo.get(l_addr_phase_tx);
