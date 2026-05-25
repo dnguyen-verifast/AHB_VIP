@@ -120,9 +120,9 @@ function ahb_master_coverage::new(string name = "ahb_master_coverage", uvm_compo
     ahb_master_covergroup =new();
 endfunction : new
 
-function void ahb_master_coverage::write(ahb_master_tx tx);
+function void ahb_master_coverage::write(ahb_master_tx t);
  `uvm_info(get_type_name(),$sformatf("Before calling SAMPLE METHOD"),UVM_HIGH);
-  ahb_master_covergroup.sample(tx);
+  ahb_master_covergroup.sample(t);
   `uvm_info(get_type_name(),"After calling SAMPLE METHOD",UVM_HIGH);
 endfunction: write
 

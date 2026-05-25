@@ -7,7 +7,6 @@ class ahb_slave_driver extends uvm_driver#(ahb_slave_tx);
     uvm_seq_item_pull_port #(REQ,RSP) ahb_slave_seq_item_port;
 
     uvm_analysis_port #(RSP) ahb_write_rsp_port;
-    uvm_analysis_port #(RSP) ahb_write_rsp_port;
 
     REQ req_write, req_read;
     RSP rsp_write, rsp_read;
