@@ -2,11 +2,7 @@
 `define AHB_IF_INCLUDED_
 
 // 1. THÊM PARAMETER VÀO ĐÂY ĐỂ KHẮC PHỤC LỖI "UNEXPECTED IDENTIFIER"
-interface ahb_if #(
-    parameter ADDR_WIDTH = 32,
-    parameter DATA_WIDTH = 32,
-    parameter HWSTRB = 4
-) (input clk, input resetn);
+interface ahb_if(input clk, input resetn);
 
     // signal generate from mananger
     logic [ADDR_WIDTH-1 : 0]    haddr;
