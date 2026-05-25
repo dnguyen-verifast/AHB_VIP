@@ -111,7 +111,7 @@ class ahb_slave_coverage extends uvm_subscriber #(ahb_slave_tx);
         }
     endgroup : ahb_slave_covergroup
 extern function new(string name = "ahb_slave_coverage", uvm_component parent=null);
-extern virtual function void write(ahb_slave_tx tx);
+extern virtual function void write(ahb_slave_tx t);
 extern virtual function void report_phase(uvm_phase phase);
 endclass : ahb_slave_coverage 
 
@@ -120,9 +120,9 @@ function ahb_slave_coverage::new(string name = "ahb_slave_coverage", uvm_compone
     ahb_slave_covergroup =new();
 endfunction : new
 
-function void ahb_slave_coverage::write(ahb_slave_tx tx);
+function void ahb_slave_coverage::write(ahb_slave_tx t);
  `uvm_info(get_type_name(),$sformatf("Before calling SAMPLE METHOD"),UVM_HIGH);
-  ahb_slave_covergroup.sample(tx);
+  ahb_slave_covergroup.sample(t);
   `uvm_info(get_type_name(),"After calling SAMPLE METHOD",UVM_HIGH);
 endfunction: write
 

@@ -32,7 +32,7 @@ function ahb_slave_driver::new(string name="ahb_slave_driver",uvm_component pare
 endfunction : new
 
 function void ahb_slave_driver::build_phase(uvm_phase phase);
-    super.buid_phase(phase);
+    super.build_phase(phase);
     if(!uvm_config_db #(virtual ahb_if)::get(this,"","ahb_if",ahb_if_h)) begin
         `uvm_fatal("DRIVER_MASTER","Fatal to get interface ahb_if");
     end
@@ -43,7 +43,7 @@ function void ahb_slave_driver::end_of_elaboration_phase(uvm_phase phase);
 endfunction : end_of_elaboration_phase
 
 task ahb_slave_driver::run_phase(uvm_phase phase);
-    `uvm_info("DRIVER_MASTER", "Inside run_phase of AHB Driver master", UVM_LOW)
+    `uvm_info("DRIVER_SLAVE", "Inside run_phase of AHB Driver master", UVM_LOW)
 
     wait_ahb_for_resetn();
 
@@ -56,13 +56,13 @@ endtask : run_phase
 
 task ahb_slave_driver::wait_ahb_for_resetn();
     @(negedge ahb_if_h.resetn);
-    `uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
+    `uvm_info("DRIVER_SLAVE",$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
     ahb_if_h.hrdata    <= '0;
     ahb_if_h.hreadyout <= '1;
     ahb_if_h.hresp     <= '0;
     ahb_if_h.hexokey   <= '0;
     @(posedge ahb_if_h.resetn);
-    `uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
+    `uvm_info("DRIVER_SLAVE",$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
 endtask : wait_ahb_for_resetn
 
 task ahb_slave_driver::wr_addr_phase();
