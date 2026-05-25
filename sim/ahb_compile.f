@@ -15,7 +15,7 @@
 // SystemVerilog Files
 ../src/globals/ahb_global_pkg.sv
 ../src/ahb_base/ahb_base_pkg.sv
-../src/interface/ahb_interface_pkg.sv
+../src/interface/ahb_if.sv
 ../src/master/ahb_master_pkg.sv
 ../src/slave/ahb_slave_pkg.sv
 ../src/env/ahb_env_pkg.sv

@@ -1,6 +1,8 @@
 `ifndef AHB_IF_INCLUDED_
 `define AHB_IF_INCLUDED_
-
+import uvm_pkg::*;
+import ahb_global_pkg::*;
+`include "uvm_macros.svh"
 // 1. THÊM PARAMETER VÀO ĐÂY ĐỂ KHẮC PHỤC LỖI "UNEXPECTED IDENTIFIER"
 interface ahb_if(input clk, input resetn);
 
