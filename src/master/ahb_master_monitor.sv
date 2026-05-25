@@ -57,7 +57,7 @@ task ahb_master_monitor::ahb_master_data_phase();
         ahb_master_tx mon_tx_data;
         ahb_transfer_struct m_tx_data;
         @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hready_out == 1) begin
+        if(ahb_if_h.hreadyout == 1) begin
              m_tx_data.hwdata  = ahb_if_h.hwdata;
              m_tx_data.hwstrb  = ahb_if_h.hwstrb ;
              m_tx_data.hresp   = ahb_if_h.hresp;
@@ -75,7 +75,7 @@ task ahb_master_monitor::ahb_master_addr_phase();
         ahb_master_tx mon_tx_add;
         ahb_transfer_struct m_tx_add;
         @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hready_out == 1) begin
+        if(ahb_if_h.hreadyout == 1) begin
             m_tx_add.haddr     = ahb_if_h.haddr;
             m_tx_add.hburst    = ahb_if_h.hburst;
             m_tx_add.hmastlock = ahb_if_h.hmastlock;

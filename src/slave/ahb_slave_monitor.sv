@@ -75,7 +75,7 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
         ahb_slave_tx mon_tx_add;
         ahb_transfer_struct slv_tx_add;
         @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hready_out == 1) begin
+        if(ahb_if_h.hreadyout == 1) begin
             slv_tx_add.haddr     = ahb_if_h.haddr;
             slv_tx_add.hburst    = ahb_if_h.hburst;
             slv_tx_add.hmastlock = ahb_if_h.hmastlock;
