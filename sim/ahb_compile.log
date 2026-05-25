@@ -1,12 +1,12 @@
 QuestaSim vlog 10.6b Compiler 2017.05 May 25 2017
-Start time: 20:51:56 on May 24,2026
-vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f 
+Start time: 07:38:20 on May 25,2026
+vlog -sv "+incdir+/cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src" -L mtiUvm "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f 
 -- Compiling package ahb_global_pkg
 -- Compiling package ahb_base_pkg
 -- Importing package uvm_pkg (uvm-1.1c Built-in)
 -- Importing package ahb_global_pkg
 ** Error: ../src/ahb_base/ahb_base_pkg.sv(9): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** at ../src/ahb_base//ahb_base_tx.sv(5): (vlog-2163) Macro `uvm_object_utils is undefined.
 ** Error: (vlog-13069) ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
@@ -14,7 +14,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 -- Compiling package ahb_interface_pkg
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** at ../src/interface/ahb_interface_pkg.sv(9): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: (vlog-13069) ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** at ../src/interface//ahb_if.sv(4): near "ahb_if": syntax error, unexpected IDENTIFIER, expecting class.
@@ -25,7 +25,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** at ../src/slave/ahb_slave_pkg.sv(10): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: (vlog-13069) ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -47,7 +47,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
 ** at ../src/slave//ahb_slave_tx.sv(14): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -69,7 +69,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
 ** while parsing file included at ../src/slave//ahb_slave_tx.sv(16)
 ** at ../src/test/sequence/master_sequence/ahb_master_sequence_pkg.sv(11): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -101,7 +101,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/slave//ahb_slave_tx.sv(16)
 ** while parsing file included at ../src/test/sequence/master_sequence/ahb_master_sequence_pkg.sv(13)
 ** at ../src/test/sequence/slave_sequence/ahb_slave_sequence_pkg.sv(11): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -138,7 +138,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/test/sequence/master_sequence/ahb_master_sequence_pkg.sv(13)
 ** while parsing file included at ../src/test/sequence/slave_sequence/ahb_slave_sequence_pkg.sv(13)
 ** at ../src/test/virtual_sequence/ahb_virtual_sequence_pkg.sv(12): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -220,7 +220,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/test/sequence/slave_sequence/ahb_slave_sequence_pkg.sv(13)
 ** while parsing file included at ../src/test/virtual_sequence/ahb_virtual_sequence_pkg.sv(14)
 ** at ../src/test/testcase/ahb_testcase_pkg.sv(17): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -321,7 +321,7 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/test/virtual_sequence/ahb_virtual_sequence_pkg.sv(14)
 ** while parsing file included at ../src/test/testcase/ahb_testcase_pkg.sv(19)
 ** at ../src/test/ahb_test_pkg.sv(18): Cannot find `include file "uvm_macros.svh" in directories:
-    ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
+    /cadtools/mentor/Questa_10.6b/questasim/uvm-1.1c/src, ../src/globals/, ../src/ahb_base/, ../src/interface/, ../src/master/, ../src/slave/, ../src/env/, ../src/test/, ../src/test/sequence/master_sequence/, ../src/test/sequence/slave_sequence/, ../src/test/virtual_sequence/, ../src/test/testcase/, /cadtools/mentor/Questa_10.6b/questasim/ovm-2.1.2/../verilog_src/ovm-2.1.2/src
 ** Error: (vlog-13069) ** while parsing file included at ../src/ahb_base/ahb_base_pkg.sv(11)
 ** while parsing file included at ../src/interface/ahb_interface_pkg.sv(11)
 ** while parsing file included at ../src/slave/ahb_slave_pkg.sv(12)
@@ -340,5 +340,5 @@ vlog -sv "+acc" "+cover" "+fcover" -l ahb_compile.log -f ahb_compile.f
 ** while parsing file included at ../src/test/virtual_sequence/ahb_virtual_sequence_pkg.sv(14)
 ** while parsing file included at ../src/test/testcase/ahb_testcase_pkg.sv(20)
 ** at ../src/test/testcase//ahb_test_base.sv(5): (vlog-13205) Syntax error found in the scope following 'a'. Is there a missing '::'?
-End time: 20:51:56 on May 24,2026, Elapsed time: 0:00:00
+End time: 07:38:20 on May 25,2026, Elapsed time: 0:00:00
 Errors: 49, Warnings: 0
