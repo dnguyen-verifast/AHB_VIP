@@ -19,7 +19,7 @@ class ahb_master_monitor extends uvm_monitor;
     extern virtual task ahb_master_addr_phase(); 
 endclass : ahb_master_monitor
 
-function ahb_master_monitor::new(string name = "ahb_master_monitor", uvm_comonent parent =null);
+function ahb_master_monitor::new(string name ="ahb_master_monitor", uvm_component parent =null);
     super.new(name, parent);
     ahb_master_data_analysis_port = new("ahb_master_data_analysis_port",this);
     ahb_master_addr_analysis_port = new("ahb_master_addr_analysis_port",this);

@@ -20,7 +20,7 @@ class ahb_slave_monitor extends uvm_monitor;
     extern virtual task ahb_slave_addr_phase(); 
 endclass : ahb_slave_monitor
 
-function ahb_slave_monitor::new(string name = "ahb_slave_monitor", uvm_comonent parent =null);
+function ahb_slave_monitor::new(string name = "ahb_slave_monitor", uvm_component parent =null);
     super.new(name, parent);
     ahb_slave_data_analysis_port = new("ahb_slave_data_analysis_port",this);
     ahb_slave_addr_analysis_port = new("ahb_slave_addr_analysis_port",this);
