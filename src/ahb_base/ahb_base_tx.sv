@@ -63,8 +63,8 @@ endfunction : do_copy
 function void ahb_base_tx::do_print(uvm_printer printer);
    printer.print_field("haddr",haddr,$bits(haddr),UVM_HEX);
    printer.print_string("hburst",hburst.name());
-   printer.print_string("hmastlock",hmastlock.name());
-   printer.print_string("hprot",hprot.name());
+   printer.print_field("hmastlock",hmastlock,$bits(hmastlock),UVM_BIN);
+   printer.print_field("hprot",hprot,$bits(hprot),UVM_BIN);
    printer.print_string("hsize",hsize.name());
    printer.print_string("hnonsec",hnonsec.name());
    printer.print_string("hexcl",hexcl.name());
@@ -73,13 +73,13 @@ function void ahb_base_tx::do_print(uvm_printer printer);
    printer.print_field("hwdata",hwdata,$bits(hwdata),UVM_HEX);
    printer.print_field("hwstrb",hwstrb,$bits(hwstrb),UVM_BIN);
    printer.print_string("hwrite",hwrite.name());
-   printer.print_string("hsel",hsel.name());
+   printer.print_field("hsel",hsel,$bits(hsel),UVM_BIN);
    printer.print_string("hresp",hresp.name());
    printer.print_field("hrdata",hrdata,$bits(hrdata),UVM_HEX);
    printer.print_field("hreadyout",hreadyout,$bits(hreadyout),UVM_BIN);
    printer.print_string("hexokey",hexokey.name());
 endfunction
-function void ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
+function bit ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
     ahb_base_tx ahb_base_tx_comparer;
     bit result;
     if(rhs == null) begin
