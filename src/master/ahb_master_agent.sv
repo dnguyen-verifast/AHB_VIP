@@ -14,11 +14,11 @@ class ahb_master_agent extends uvm_agent;
     extern virtual function void connect_phase(uvm_phase phase);
 endclass : ahb_master_agent
 
-function new(string name = "ahb_master_agent", uvm_component parent =null);
+function ahb_master_agent::new(string name = "ahb_master_agent", uvm_component parent =null);
     super.new(name,parent);
 endfunction : new
 
-function void build_phase(uvm_phase phase);
+function void ahb_master_agent::build_phase(uvm_phase phase);
     super.build_phase(phase);
 
     ahb_master_driver_h = ahb_master_driver::type_id::create("ahb_master_driver_h",this);
@@ -27,7 +27,7 @@ function void build_phase(uvm_phase phase);
     ahb_master_coverage_h = ahb_master_coverage::type_id::create("ahb_master_coverage_h",this);
 endfunction : build_phase
 
-function void connect_phase(uvm_phase phase);
+function void ahb_master_agent::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     ahb_master_driver_h.ahb_master_seq_item_port.connect(ahb_master_sequencer_h.seq_item_port);
     ahb_master_monitor_h.ahb_master_data_analysis_port.connect(ahb_master_coverage_h.analysis_export);

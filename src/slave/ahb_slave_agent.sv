@@ -14,11 +14,11 @@ class ahb_slave_agent extends uvm_agent;
     extern virtual function void connect_phase(uvm_phase phase);
 endclass : ahb_slave_agent
 
-function new(string name = "ahb_slave_agent", uvm_component parent =null);
+function ahb_slave_agent::new(string name = "ahb_slave_agent", uvm_component parent =null);
     super.new(name,parent);
 endfunction : new
 
-function void build_phase(uvm_phase phase);
+function void ahb_slave_agent::build_phase(uvm_phase phase);
     super.build_phase(phase);
 
     ahb_slave_driver_h = ahb_slave_driver::type_id::create("ahb_slave_driver_h",this);
@@ -27,7 +27,7 @@ function void build_phase(uvm_phase phase);
     ahb_slave_coverage_h = ahb_slave_coverage::type_id::create("ahb_slave_coverage_h",this);
 endfunction : build_phase
 
-function void connect_phase(uvm_phase phase);
+function void ahb_slave_agent::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     ahb_slave_driver_h.ahb_slave_seq_item_port.connect(ahb_slave_sequencer_h.seq_item_port);
     ahb_slave_monitor_h.ahb_slave_analysis_port.connect(ahb_slave_coverage_h.analysis_export);
