@@ -42,9 +42,8 @@ function ahb_scoreboard::new(string name="ahb_scoreboard", uvm_component parent=
     ahb_master_data_phase_analysis_fifo = new("ahb_master_data_phase_analysis_fifo",this);
     ahb_slave_addr_phase_analysis_fifo = new("ahb_slave_addr_phase_analysis_fifo",this);
     ahb_master_addr_phase_analysis_fifo = new("ahb_master_addr_phase_analysis_fifo",this);
-    data_phase_ket = new(1);
+    data_phase_key = new(1);
     addr_phase_key = new(1);
-
 endfunction : new
 
 function void ahb_scoreboard::build_phase(uvm_phase phase);

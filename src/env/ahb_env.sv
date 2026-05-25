@@ -15,10 +15,10 @@ class ahb_env extends uvm_env;
     extern virtual function void connect_phase(uvm_phase phase);
 endclass : ahb_env
 
-function new(string name = "ahb_env", uvm_component parent = null);
+function ahb_env::new(string name = "ahb_env", uvm_component parent = null);
       super.new(name, parent);
 endfunction : new
-function void build_phase(uvm_phase phase);
+function void ahb_env::build_phase(uvm_phase phase);
     super.build_phase(phase);
     ahb_master_agent_h = ahb_master_agent::type_id::create("ahb_master_agent_h",this);
     ahb_slave_agent_h = ahb_slave_agent::type_id::create("ahb_slave_agent_h",this);
@@ -26,7 +26,7 @@ function void build_phase(uvm_phase phase);
     ahb_virtual_seqr_h = ahb_virtual_seqr::type_id::create("ahb_virtual_seqr_h",this);
 endfunction : build_phase
 
-function void connect_phase(uvm_phase phase);
+function void ahb_env::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
 
     ahb_slave_agent_h.ahb_slave_sequencer_h = ahb_virtual_seqr_h.ahb_slave_sequencer;
