@@ -58,7 +58,7 @@ task ahb_slave_monitor::ahb_slave_data_phase();
         ahb_slave_tx mon_tx_data;
         ahb_transfer_struct slv_tx_data;
         @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hready_out == 1) begin
+        if(ahb_if_h.hreadyout == 1) begin
              slv_tx_data.hwdata  = ahb_if_h.hwdata;
              slv_tx_data.hwstrb  = ahb_if_h.hwstrb ;
              slv_tx_data.hresp   = ahb_if_h.hresp;
