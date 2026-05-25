@@ -14,6 +14,6 @@ function ahb_master_base_seq::new(string name = "ahb_master_base_seq");
   super.new(name);
 endfunction : new
 task ahb_master_base_seq::body();
-  req_m = ahb_master_tx::type_id::create("req_m",this);
+  req_m = ahb_master_tx::type_id::create(req_m);
 endtask : body
 `endif

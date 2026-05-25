@@ -13,10 +13,10 @@ endfunction : new
 
 task ahb_slave_parity_error_injection_seq::body();
     super.body();
-    start_item(req_m);
-    if(!req_m.randomize()) begin
+    start_item(req_slv);
+    if(!req_slv.randomize()) begin
         `uvm_fatal("ahb_slave","Rand failed");
     end
-    finish_item(req_m);
+    finish_item(req_slv);
 endtask : body
 `endif
