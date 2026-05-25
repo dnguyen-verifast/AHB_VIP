@@ -29,7 +29,7 @@ endfunction : build_phase
 function void ahb_env::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
 
-    ahb_slave_agent_h.ahb_slave_sequencer_h = ahb_virtual_seqr_h.ahb_slave_sequencer;
+    ahb_slave_agent_h.ahb_slave_sequencer_h = ahb_virtual_seqr_h.ahb_slave_sequencer_h;
     ahb_master_agent_h.ahb_master_sequencer_h = ahb_virtual_seqr_h.ahb_master_sequencer_h;
 
     ahb_slave_agent_h.ahb_slave_monitor_h.ahb_slave_data_analysis_port.connect(ahb_scoreboard_h.ahb_slave_data_phase_analysis_fifo.analysis_export);
