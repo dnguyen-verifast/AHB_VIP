@@ -10,6 +10,7 @@ package ahb_slave_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_slave_tx.sv"
+    `include "ahb_slave_seq_item_converter.sv"
     `include "ahb_slave_sequencer.sv"
     `include "ahb_slave_driver.sv"
     `include "ahb_slave_monitor.sv"

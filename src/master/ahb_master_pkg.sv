@@ -10,6 +10,7 @@ package ahb_master_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_master_tx.sv"
+    `include "ahb_master_seq_item_converter.sv"
     `include "ahb_master_sequencer.sv"
     `include "ahb_master_driver.sv"
     `include "ahb_master_monitor.sv"
