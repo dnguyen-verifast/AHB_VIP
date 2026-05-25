@@ -54,7 +54,7 @@ task ahb_slave_driver::run_phase(uvm_phase phase);
 
 endtask : run_phase
 
-task wait_ahb_for_resetn();
+task ahb_slave_driver::wait_ahb_for_resetn();
     @(negedge ahb_if_h.resetn);
     `uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
     ahb_if_h.hrdata    <= '0;

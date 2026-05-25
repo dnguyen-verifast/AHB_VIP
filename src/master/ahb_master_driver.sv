@@ -72,7 +72,7 @@ task ahb_master_driver::wait_ahb_for_resetn();
     ahb_if_h.hwstrb    <= '0;
     ahb_if_h.hwrite    <= '0;
     @(posedge ahb_if_h.resetn);
-    `uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
+    `uvm_info("MASTER_DRIVER",$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
 endtask : wait_ahb_for_resetn
 
 task ahb_master_driver::wr_addr_phase();

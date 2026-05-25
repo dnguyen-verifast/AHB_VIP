@@ -30,7 +30,6 @@ endfunction : build_phase
 function void ahb_slave_agent::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     ahb_slave_driver_h.ahb_slave_seq_item_port.connect(ahb_slave_sequencer_h.seq_item_port);
-    ahb_slave_monitor_h.ahb_slave_analysis_port.connect(ahb_slave_coverage_h.analysis_export);
     ahb_slave_monitor_h.ahb_slave_data_analysis_port.connect(ahb_slave_coverage_h.analysis_export);
     ahb_slave_monitor_h.ahb_slave_addr_analysis_port.connect(ahb_slave_coverage_h.analysis_export);
 endfunction : connect_phase
