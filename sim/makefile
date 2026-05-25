@@ -123,7 +123,7 @@ simulate:
 	# Use -novopt for no optimization - Makes the simulation slower
 	# vsim -pli finesim.so -coverage top
 	vsim -vopt \
-	work.hdl_top \
+	work.ahb_top \
 	-voptargs=+acc=npr \
 	-assertdebug \
 	+UVM_PHASE_TRACE \

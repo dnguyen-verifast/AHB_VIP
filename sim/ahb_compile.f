@@ -11,6 +11,7 @@
 +incdir+../src/test/sequence/slave_sequence/
 +incdir+../src/test/virtual_sequence/
 +incdir+../src/test/testcase/
++incdir+../src/
 
 // SystemVerilog Files
 ../src/globals/ahb_global_pkg.sv
@@ -23,3 +24,4 @@
 ../src/test/sequence/slave_sequence/ahb_slave_sequence_pkg.sv
 ../src/test/virtual_sequence/ahb_virtual_sequence_pkg.sv
 ../src/test/testcase/ahb_testcase_pkg.sv
+../src/ahb_top.sv
