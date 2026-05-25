@@ -80,7 +80,6 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             slv_tx_add.hsize     = ahb_if_h.hsize;
             slv_tx_add.hnonsec   = ahb_if_h.hnonsec;
             slv_tx_add.hexcl     = ahb_if_h.hexcl;
-            slv_tx_add.hslave   = ahb_if_h.hslave;
             slv_tx_add.htrans    = ahb_if_h.htrans;
             slv_tx_add.hwrite    = ahb_if_h.hwrite;
         end
