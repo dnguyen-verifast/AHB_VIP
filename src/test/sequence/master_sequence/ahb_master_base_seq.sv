@@ -8,8 +8,8 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
   extern task body();
   
   // --- define API functions ---
-  extern function int get_burst_len(bit [2:0] burst_type);
-  extern function bit [31:0] calculate_wrap_address(bit [31:0] current_addr, bit [2:0] hsize, bit [2:0] hburst);
+  extern function int get_burst_len(hburst_e burst_type);
+  extern function bit [31:0] calculate_wrap_address(bit [31:0] current_addr, hsize_e hsize, hburst_e hburst);
   
   extern task do_burst_transfer(
     input bit [31:0] start_addr, 
