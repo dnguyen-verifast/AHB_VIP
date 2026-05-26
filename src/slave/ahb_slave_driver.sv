@@ -160,6 +160,7 @@ task ahb_slave_driver::wr_addr_phase();
                end
             end
         end
+        ahb_slave_seq_item_port.item_done();
     end
 endtask : wr_addr_phase
 `endif
