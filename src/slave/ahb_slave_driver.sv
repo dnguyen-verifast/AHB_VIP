@@ -82,10 +82,10 @@ task ahb_slave_driver::wr_addr_phase();
             slv_struct_add.hmaster   = ahb_if_h.hmaster;
             slv_struct_add.htrans    = ahb_if_h.htrans;
             slv_struct_add.hwrite    = ahb_if_h.hwrite;
+            ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
+            `uvm_info(get_type_name(),$sformatf("Recieved transaction address information slv_tx_add = %s \n",slv_tx_add.sprint()),UVM_NONE);
+            pipeline_q.put(slv_tx_add);
         end
-        ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
-        `uvm_info(get_type_name(),$sformatf("Recieved transaction address information slv_tx_add = %s \n",slv_tx_add.sprint()),UVM_NONE);
-         pipeline_q.put(slv_tx_add);
     end
 endtask : wr_addr_phase
 
@@ -100,6 +100,7 @@ task ahb_slave_driver::wr_data_phase();
             ahb_if_h.hreadyout <= 1'b1;
             ahb_if_h.hresp     <= 1'b0;
             ahb_if_h.hexokay   <= 1'b0;
+            @(posedge ahb_if_h.clk);
         end else begin
 
             ahb_slave_seq_item_port.get_next_item(slv_data_tx);
@@ -107,9 +108,9 @@ task ahb_slave_driver::wr_data_phase();
             ahb_slave_seq_item_converter::from_class(slv_data_tx,slv_data_struct);
             if(slv_addr_phase.hwrite == HWRITE_WRITE) begin
                 repeat(slv_data_tx.wait_state) begin
+                    ahb_if_h.hreadyout <= 0;
                     `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
                     @(posedge ahb_if_h.clk);
-                    ahb_if_h.hreadyout <= 0;
                 end
                 if(slv_addr_phase.hexcl == HEXCL_NORMAL) begin
                     if(slv_data_tx.hresp == HRESP_ERROR) begin
