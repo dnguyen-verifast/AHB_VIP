@@ -13,7 +13,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_slave_tx);
 
     virtual ahb_if ahb_if_h;
 
-    ahb_slave_tx pipeline_q [$];
+    uvm_tlm_analysis_fifo #(ahb_slave_tx) pipeline_q;
 
     
 extern function new(string name = "ahb_slave_driver", uvm_component parent=null);
@@ -28,6 +28,7 @@ endclass : ahb_slave_driver
 function ahb_slave_driver::new(string name="ahb_slave_driver",uvm_component parent=null);
     super.new(name,parent);
     ahb_slave_seq_item_port = new("ahb_slave_seq_item_port",this);
+    pipeline_q = new("pipeline_q",this);
 endfunction : new
 
 function void ahb_slave_driver::build_phase(uvm_phase phase);
@@ -83,8 +84,8 @@ task ahb_slave_driver::wr_addr_phase();
             slv_struct_add.hwrite    = ahb_if_h.hwrite;
         end
         ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
-        `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::wait_state = %d \n",slv_tx_add.wait_state),UVM_NONE);
-         pipeline_q.push_back(slv_tx_add);
+        `uvm_info(get_type_name(),$sformatf("Recieved transaction address information slv_tx_add = %s \n",slv_tx_add.sprint()),UVM_NONE);
+         pipeline_q.put(slv_tx_add);
     end
 endtask : wr_addr_phase
 
@@ -93,17 +94,17 @@ task ahb_slave_driver::wr_data_phase();
     ahb_slave_tx slv_data_tx;
     ahb_transfer_struct slv_data_struct;
     forever begin
-        wait(pipeline_q.size() > 0);
-        slv_addr_phase = pipeline_q.pop_front();
+        `uvm_info(get_type_name(),$sformatf("Waiting for queue address phase valid"),UVM_NONE);
+        pipeline_q.get(slv_addr_phase);
         if(slv_addr_phase.htrans == HTRANS_IDLE || slv_addr_phase.htrans == HTRANS_BUSY) begin
             ahb_if_h.hreadyout <= 1'b1;
             ahb_if_h.hresp     <= 1'b0;
             ahb_if_h.hexokay   <= 1'b0;
         end else begin
-            ahb_slave_seq_item_port.get_next_item(slv_data_tx);
-            ahb_slave_seq_item_converter::from_class(slv_data_tx,slv_data_struct);
-            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_data_tx.sprint()),UVM_NONE);
 
+            ahb_slave_seq_item_port.get_next_item(slv_data_tx);
+            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_data_tx.sprint()),UVM_NONE);
+            ahb_slave_seq_item_converter::from_class(slv_data_tx,slv_data_struct);
             if(slv_addr_phase.hwrite == HWRITE_WRITE) begin
                 repeat(slv_data_tx.wait_state) begin
                     `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
