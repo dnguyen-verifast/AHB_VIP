@@ -71,6 +71,7 @@ task ahb_master_driver::wait_ahb_for_resetn();
     ahb_if_h.hwdata    <= '0;
     ahb_if_h.hwstrb    <= '0;
     ahb_if_h.hwrite    <= '0;
+    ahb_if_h.hsel      <= '0;
     @(posedge ahb_if_h.resetn);
     `uvm_info("MASTER_DRIVER",$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
 endtask : wait_ahb_for_resetn
@@ -95,6 +96,7 @@ task ahb_master_driver::wr_addr_phase();
             ahb_if_h.hmaster   <= m_tx_addr.hmaster;
             ahb_if_h.htrans    <= m_tx_addr.htrans;
             ahb_if_h.hwrite    <= m_tx_addr.hwrite;
+            ahb_if_h.hsel       <= m_tx_addr.hsel;
             @(posedge ahb_if_h.clk);
         end
         ahb_master_fifo.put(m_tx);

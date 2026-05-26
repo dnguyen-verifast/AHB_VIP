@@ -12,6 +12,7 @@ class ahb_master_tx extends ahb_base_tx;
     constraint hexcl_c0 {soft hexcl == 0;}
     constraint hmaster_c0 {soft hmaster == 0;}
     constraint htrans_c0 {soft htrans == HTRANS_IDLE;}
+    constraint hsel_c0 {soft hsel == 1;}
     
 endclass : ahb_master_tx
 `endif

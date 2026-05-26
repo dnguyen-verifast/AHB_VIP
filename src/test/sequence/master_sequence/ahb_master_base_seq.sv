@@ -1,20 +1,110 @@
 `ifndef AHB_MASTER_SEQ_BASE_INCLUDED_
 `define AHB_MASTER_SEQ_BASE_INCLUDED_
 
-
 class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
   `uvm_object_utils(ahb_master_base_seq)
-    ahb_master_tx req_m;
 
   extern function new(string name = "ahb_master_base_seq");
   extern task body();
+  
+  // --- define API functions ---
+  extern function int get_burst_len(bit [2:0] burst_type);
+  extern function bit [31:0] calculate_wrap_address(bit [31:0] current_addr, bit [2:0] hsize, bit [2:0] hburst);
+  
+  extern task do_burst_transfer(
+    input bit [31:0] start_addr, 
+    input bit        is_write, 
+    input bit [2:0]  burst_type, 
+    input bit [2:0]  size,
+    input int        busy_chance_pct = 0 // Tỉ lệ % chèn BUSY vào giữa Burst (0-100)
+  );
+
 endclass : ahb_master_base_seq
+
+// =======================================================================
+// CHI TIẾT IMPLEMENTATION
+// =======================================================================
 
 function ahb_master_base_seq::new(string name = "ahb_master_base_seq");
   super.new(name);
 endfunction : new
+
 task ahb_master_base_seq::body();
 
-  req_m = ahb_master_tx::type_id::create("req_m");
 endtask : body
+
+function int ahb_master_base_seq::get_burst_len(bit [2:0] burst_type);
+  case (burst_type)
+    3'b000, 3'b001: return 1;  // SINGLE / INCR(undefine length)
+    3'b010, 3'b011: return 4;  // WRAP4, INCR4
+    3'b100, 3'b101: return 8;  // WRAP8, INCR8
+    3'b110, 3'b111: return 16; // WRAP16, INCR16
+    default: return 1;
+  endcase
+endfunction
+
+function bit [31:0] ahb_master_base_seq::calculate_wrap_address(bit [31:0] current_addr, bit [2:0] hsize, bit [2:0] hburst);
+  int bytes_per_beat = 1 << hsize; 
+  int burst_length = get_burst_len(hburst);
+  int total_wrap_bytes = bytes_per_beat * burst_length; 
+  bit [31:0] wrap_boundary = current_addr & ~(total_wrap_bytes - 1);
+  bit [31:0] next_addr = current_addr + bytes_per_beat;
+
+  if (next_addr == (wrap_boundary + total_wrap_bytes)) begin
+    next_addr = wrap_boundary;
+  end
+  return next_addr;
+endfunction
+
+task ahb_master_base_seq::do_burst_transfer(
+    input bit [31:0] start_addr, 
+    input hwrite_e  is_write, 
+    input hburst_e  burst_type, 
+    input hsize_e  size,
+    input int        busy_chance_pct = 0
+);
+  ahb_master_tx req_m;
+  bit [31:0] current_addr = start_addr;
+  int burst_len = get_burst_len(bit'(burst_type));
+  
+  for (int i = 0; i < burst_len; i++) begin
+    
+    if (i > 0 && busy_chance_pct > 0) begin
+      // randomize insert BUSY
+      while ($urandom_range(0, 100) < busy_chance_pct) begin
+        req_m = ahb_master_tx::type_id::create("req_m_busy");
+        start_item(req_m);
+        assert(req_m.randomize() with {
+          htrans == 2'b01; // BUSY
+          hsize  == local::size; // Chữ local:: sinh ra để chỉ định tường minh: "Ê trình biên dịch, biến này chắc chắn là của cái scope bên ngoài, đừng có tìm bên trong object nhé!".
+          hburst == local::burst_type;
+          hwrite == local::is_write;
+        });
+        req_m.haddr = current_addr; 
+        finish_item(req_m);
+      end
+    end
+
+    req_m = ahb_master_tx::type_id::create("req_m");
+    start_item(req_m);
+    assert(req_m.randomize() with {
+      hsize  == local::size;
+      hburst == local::burst_type;
+      hwrite == local::is_write;
+      htrans == (i == 0) ? 2'b10 : 2'b11; 
+    });
+    req_m.haddr = current_addr;
+    finish_item(req_m);
+    
+
+    if (burst_type == 3'b011 || burst_type == 3'b101 || burst_type == 3'b111) begin // INCR
+       current_addr = current_addr + (1 << size);
+    end
+    else if (burst_type == 3'b010 || burst_type == 3'b100 || burst_type == 3'b110) begin // WRAP
+       current_addr = calculate_wrap_address(bit'(current_addr), bit'(size), bit'(burst_type));
+    end
+    
+  end
+endtask : do_burst_transfer
+
 `endif

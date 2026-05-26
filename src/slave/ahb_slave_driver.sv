@@ -13,17 +13,16 @@ class ahb_slave_driver extends uvm_driver#(ahb_slave_tx);
 
     virtual ahb_if ahb_if_h;
 
+    ahb_slave_tx pipeline_q [$];
+
     
 extern function new(string name = "ahb_slave_driver", uvm_component parent=null);
 extern virtual function void build_phase(uvm_phase phase);
 extern virtual function void end_of_elaboration_phase(uvm_phase phase);
 extern virtual task run_phase(uvm_phase phase);
-
-extern virtual task wr_addr_phase();
-//extern virtual task wr_data_phase();
-
 extern virtual task wait_ahb_for_resetn();
-
+extern virtual task wr_addr_phase();
+extern virtual task wr_data_phase();
 endclass : ahb_slave_driver
 
 function ahb_slave_driver::new(string name="ahb_slave_driver",uvm_component parent=null);
@@ -49,7 +48,7 @@ task ahb_slave_driver::run_phase(uvm_phase phase);
 
     fork
         wr_addr_phase();
-       // wr_data_phase();
+        wr_data_phase();
     join
 
 endtask : run_phase
@@ -65,104 +64,126 @@ task ahb_slave_driver::wait_ahb_for_resetn();
     `uvm_info("DRIVER_SLAVE",$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
 endtask : wait_ahb_for_resetn
 
+
 task ahb_slave_driver::wr_addr_phase();
+    ahb_transfer_struct slv_struct_add;
+    ahb_slave_tx slv_tx_add;
     forever begin
-        ahb_slave_tx slv_tx_add;
-        ahb_slave_tx slv_tx;
-        ahb_transfer_struct slv_struct_add;
-        ahb_transfer_struct slv_struct;
-        ahb_slave_seq_item_port.get_next_item(slv_tx);
-        ahb_slave_seq_item_converter::from_class(slv_tx,slv_struct);
-        @(posedge ahb_if_h.clk)
-        slv_struct_add.haddr     = ahb_if_h.haddr;
-        slv_struct_add.hburst    = ahb_if_h.hburst;
-        slv_struct_add.hmastlock = ahb_if_h.hmastlock;
-        slv_struct_add.hprot     = ahb_if_h.hprot;
-        slv_struct_add.hsize     = ahb_if_h.hsize;
-        slv_struct_add.hnonsec   = ahb_if_h.hnonsec;
-        slv_struct_add.hexcl     = ahb_if_h.hexcl;
-        slv_struct_add.hmaster   = ahb_if_h.hmaster;
-        slv_struct_add.htrans    = ahb_if_h.htrans;
-        slv_struct_add.hwrite    = ahb_if_h.hwrite;
-        ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
-        if(slv_tx_add.hwrite == HWRITE_WRITE) begin
-            repeat(slv_tx_add.wait_state) begin
-                `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
-                @(posedge ahb_if_h.clk);
-                ahb_if_h.hreadyout <= 0;
-            end
-            if(slv_tx_add.hexcl == HEXCL_NORMAL) begin
-                if(slv_tx_add.hresp == HRESP_ERROR) begin
-                    ahb_if_h.hreadyout <= 0;
-                    ahb_if_h.hresp     <= 1;
-                    ahb_if_h.hexokay   <= 0;
-                    @(posedge ahb_if_h.clk);
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hresp     <= 1;
-                    ahb_if_h.hexokay   <= 0;
-                end else begin
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hresp     <= 0;
-                    slv_tx_add.hwdata   = ahb_if_h.hwdata;
-                end
-            end else if(slv_tx_add.hexcl == HEXCL_EXCLUSIVE) begin
-               if(slv_tx_add.hexokay == HEXOKAY_PASS) begin
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hexokay     <= 1;
-                    ahb_if_h.hresp     <= 0;
-                    slv_tx_add.hwdata   = ahb_if_h.hwdata;
-               end else begin
-                    ahb_if_h.hreadyout <= 0;
-                    ahb_if_h.hresp     <= 0;
-                    ahb_if_h.hexokay   <= 0;
-                    @(posedge ahb_if_h.clk);
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hresp     <= 0;
-                    ahb_if_h.hexokay   <= 0;
-               end
-            end
-        end else if(slv_tx_add.hwrite == HWRITE_READ) begin
-            repeat(slv_tx_add.wait_state) begin
-                `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
-                @(posedge ahb_if_h.clk);
-                ahb_if_h.hreadyout <= 0;
-            end
-            if(slv_tx_add.hexcl == HEXCL_NORMAL) begin
-                if(slv_tx_add.hresp == HRESP_ERROR) begin
-                    ahb_if_h.hreadyout <= 0;
-                    ahb_if_h.hresp     <= 1;
-                    ahb_if_h.hexokay   <= 0;
-                    @(posedge ahb_if_h.clk);
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hresp     <= 1;
-                    ahb_if_h.hexokay   <= 0;
-                    ahb_if_h.hrdata    <= slv_struct.hrdata;
-                end else begin
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hresp     <= 0;
-                    ahb_if_h.hrdata    <= slv_struct.hrdata;
-                end
-            end else if(slv_tx_add.hexcl == HEXCL_EXCLUSIVE) begin
-               if(slv_tx_add.hexokay == HEXOKAY_PASS) begin
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hexokay   <= 1;
-                    ahb_if_h.hresp     <= 0;
-                    ahb_if_h.hrdata    <= slv_struct.hrdata;
-               end else begin
-                    ahb_if_h.hreadyout <= 0;
-                    ahb_if_h.hresp     <= 0;
-                    ahb_if_h.hexokay   <= 0;
-                    @(posedge ahb_if_h.clk);
-                    ahb_if_h.hreadyout <= 1;
-                    ahb_if_h.hresp     <= 0;
-                    ahb_if_h.hexokay   <= 0;
-                    ahb_if_h.hrdata    <= slv_struct.hrdata;
-               end
-            end
+        @(posedge ahb_if_h.clk); 
+        if (ahb_if_h.hsel == 1'b1 && ahb_if_h.hreadyout == 1'b1) begin
+            slv_struct_add.haddr     = ahb_if_h.haddr;
+            slv_struct_add.hburst    = ahb_if_h.hburst;
+            slv_struct_add.hmastlock = ahb_if_h.hmastlock;
+            slv_struct_add.hprot     = ahb_if_h.hprot;
+            slv_struct_add.hsize     = ahb_if_h.hsize;
+            slv_struct_add.hnonsec   = ahb_if_h.hnonsec;
+            slv_struct_add.hexcl     = ahb_if_h.hexcl;
+            slv_struct_add.hmaster   = ahb_if_h.hmaster;
+            slv_struct_add.htrans    = ahb_if_h.htrans;
+            slv_struct_add.hwrite    = ahb_if_h.hwrite;
         end
-        ahb_slave_seq_item_port.item_done();
+        ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
+        `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::wait_state = %d \n",slv_tx_add.wait_state),UVM_NONE);
+         pipeline_q.push_back(slv_tx_add);
     end
 endtask : wr_addr_phase
+
+task ahb_slave_driver::wr_data_phase();
+    ahb_slave_tx slv_addr_phase;
+    ahb_slave_tx slv_tx;
+    ahb_transfer_struct slv_data_struct;
+    forever begin
+        wait(pipeline_q.size() > 0);
+        slv_addr_phase = pipeline_q.pop_front();
+        if(slv_addr_phase.htrans == HTRANS_IDLE || slv_addr_phase.htrans == HTRANS_BUSY) begin
+            ahb_if_h.hreadyout <= 1'b1;
+            ahb_if_h.hresp     <= 1'b0;
+            ahb_if_h.hexokay   <= 1'b0;
+        end else begin
+            ahb_slave_seq_item_port.get_next_item(slv_tx);
+            ahb_slave_seq_item_converter::from_class(slv_tx,slv_data_struct);
+            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_tx.sprint()),UVM_NONE);
+
+            if(slv_tx_add.hwrite == HWRITE_WRITE) begin
+                repeat(slv_tx_add.wait_state) begin
+                    `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
+                    @(posedge ahb_if_h.clk);
+                    ahb_if_h.hreadyout <= 0;
+                end
+                if(slv_tx_add.hexcl == HEXCL_NORMAL) begin
+                    if(slv_tx_add.hresp == HRESP_ERROR) begin
+                        ahb_if_h.hreadyout <= 0;
+                        ahb_if_h.hresp     <= 1;
+                        ahb_if_h.hexokay   <= 0;
+                        @(posedge ahb_if_h.clk);
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 1;
+                        ahb_if_h.hexokay   <= 0;
+                    end else begin
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        slv_tx_add.hwdata   = ahb_if_h.hwdata;
+                    end
+                end else if(slv_tx_add.hexcl == HEXCL_EXCLUSIVE) begin
+                if(slv_tx_add.hexokay == HEXOKAY_PASS) begin
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hexokay     <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        slv_tx_add.hwdata   = ahb_if_h.hwdata;
+                end else begin
+                        ahb_if_h.hreadyout <= 0;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
+                        @(posedge ahb_if_h.clk);
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
+                end
+                end
+            end else if(slv_tx_add.hwrite == HWRITE_READ) begin
+                repeat(slv_tx_add.wait_state) begin
+                    `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
+                    @(posedge ahb_if_h.clk);
+                    ahb_if_h.hreadyout <= 0;
+                end
+                if(slv_tx_add.hexcl == HEXCL_NORMAL) begin
+                    if(slv_tx_add.hresp == HRESP_ERROR) begin
+                        ahb_if_h.hreadyout <= 0;
+                        ahb_if_h.hresp     <= 1;
+                        ahb_if_h.hexokay   <= 0;
+                        @(posedge ahb_if_h.clk);
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 1;
+                        ahb_if_h.hexokay   <= 0;
+                        ahb_if_h.hrdata    <= slv_struct.hrdata;
+                    end else begin
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hrdata    <= slv_struct.hrdata;
+                    end
+                end else if(slv_tx_add.hexcl == HEXCL_EXCLUSIVE) begin
+                if(slv_tx_add.hexokay == HEXOKAY_PASS) begin
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hexokay   <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hrdata    <= slv_struct.hrdata;
+                end else begin
+                        ahb_if_h.hreadyout <= 0;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
+                        @(posedge ahb_if_h.clk);
+                        ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
+                        ahb_if_h.hrdata    <= slv_struct.hrdata;
+                end
+                end
+            end
+            ahb_slave_seq_item_port.item_done();
+        end
+    end
+endtask : wr_data_phase
+
 `endif
 
 

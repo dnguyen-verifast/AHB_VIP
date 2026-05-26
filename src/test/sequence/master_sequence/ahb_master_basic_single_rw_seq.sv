@@ -12,11 +12,6 @@ function ahb_master_basic_single_rw_seq::new(string name = "ahb_master_basic_sin
 endfunction : new
 
 task ahb_master_basic_single_rw_seq::body();
-    super.body();
-    start_item(req_m);
-    if(!req_m.randomize()) begin
-        `uvm_fatal("ahb_master","Rand failed");
-    end
-    finish_item(req_m);
+   do_burst_transfer(32'h1000_0000, 1'b1, 3'b011, 3'b010); 
 endtask : body
 `endif
