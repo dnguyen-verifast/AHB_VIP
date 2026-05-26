@@ -14,8 +14,8 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
   extern task do_burst_transfer(
     input bit [31:0] start_addr, 
     input bit  is_write, 
-    input bit  burst_type, 
-    input bit  size,
+    input bit [2:0] burst_type, 
+    input bit [2:0] size,
     input int        busy_chance_pct = 0
   );
 
@@ -60,8 +60,8 @@ endfunction
 task ahb_master_base_seq::do_burst_transfer(
     input bit [31:0] start_addr, 
     input bit  is_write, 
-    input bit  burst_type, 
-    input bit  size,
+    input bit [2:0] burst_type, 
+    input bit [2:0] size,
     input int      busy_chance_pct = 0
 );
   ahb_master_tx req_m;
