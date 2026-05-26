@@ -102,7 +102,7 @@ task ahb_slave_driver::wr_data_phase();
         end else begin
             ahb_slave_seq_item_port.get_next_item(slv_data_tx);
             ahb_slave_seq_item_converter::from_class(slv_data_tx,slv_data_struct);
-            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_tx.sprint()),UVM_NONE);
+            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_data_tx.sprint()),UVM_NONE);
 
             if(slv_addr_phase.hwrite == HWRITE_WRITE) begin
                 repeat(slv_data_tx.wait_state) begin
