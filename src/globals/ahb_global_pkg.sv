@@ -101,6 +101,7 @@ typedef enum bit [2:0] {
         bit                       hresp;
         bit                       hexokay;
         bit                       hready;
+        bit                       hsel;
     } ahb_transfer_struct ;
 
 endpackage
