@@ -81,6 +81,7 @@ task ahb_master_driver::wr_addr_phase();
         ahb_master_tx m_tx;
         ahb_transfer_struct m_tx_addr;
         ahb_master_seq_item_port.get_next_item(m_tx);
+        `uvm_info("MASTER_DRIVER",$sformatf("ADDRESS_PHASE information address m_tx =%s \n",m_tx.sprint()),UVM_LOW)
         ahb_master_seq_item_converter::from_class(m_tx,m_tx_addr);
         if(m_tx == null) begin
             ahb_if_h.htrans    <= '0;
@@ -100,6 +101,7 @@ task ahb_master_driver::wr_addr_phase();
             @(posedge ahb_if_h.clk);
         end
         ahb_master_fifo.put(m_tx);
+        `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
         while(ahb_if_h.hreadyout == 0) begin
             @(posedge ahb_if_h.clk);
         end
@@ -111,11 +113,13 @@ task ahb_master_driver::wr_data_phase();
     forever begin
         ahb_master_tx m_tx;
         ahb_transfer_struct m_tx_data;
+        `uvm_info("MASTER_DRIVER",$sformatf("Waiting for fifo information address"),UVM_LOW)
         ahb_master_fifo.get(m_tx);
         ahb_master_seq_item_converter::from_class(m_tx,m_tx_data);
         if(m_tx.hwrite == HWRITE_WRITE) begin
             ahb_if_h.hwdata    <= m_tx_data.hwdata;
             ahb_if_h.hwstrb    <= m_tx_data.hwstrb;
+            `uvm_info("MASTER_DRIVER",$sformatf("Send data to slave hwdata = %h    hwstrb = %h \n",m_tx_data.hwdata,m_tx_data.hwstrb),UVM_LOW)
             @(posedge ahb_if_h.clk);
         end else begin
             while(ahb_if_h.hreadyout == 0) begin

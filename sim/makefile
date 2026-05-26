@@ -127,7 +127,6 @@ simulate:
 	work.ahb_top \
 	-voptargs=+acc=npr \
 	-assertdebug \
-	+UVM_PHASE_TRACE \
 	+UVM_OBJECTION_TRACE \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
