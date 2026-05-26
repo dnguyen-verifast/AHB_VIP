@@ -67,7 +67,7 @@ task ahb_master_base_seq::do_burst_transfer(
   ahb_master_tx req_m;
   bit [31:0] current_addr = start_addr;
   int burst_len = get_burst_len(bit'(burst_type));
-  
+  `uvm_info("SEQ master", $sformatf("burst_len = %d \n",burst_len), UVM_LOW)
   for (int i = 0; i < burst_len; i++) begin
     `uvm_info("SEQ master", "Inside do_burst_transfer of AHB SEQ master", UVM_LOW)
     if (i > 0 && busy_chance_pct > 0) begin
@@ -95,6 +95,7 @@ task ahb_master_base_seq::do_burst_transfer(
       htrans == (i == 0) ? HTRANS_NONSEQ : HTRANS_SEQ; 
     });
     req_m.haddr = current_addr;
+    `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
     finish_item(req_m);
     
     if (burst_type == 3'b011 || burst_type == 3'b101 || burst_type == 3'b111) begin // INCR
