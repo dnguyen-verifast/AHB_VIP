@@ -34,6 +34,7 @@ task ahb_master_base_seq::body();
 endtask : body
 
 function int ahb_master_base_seq::get_burst_len(bit [2:0] burst_type);
+  `uvm_info("SEQ master", "Inside get_burst_len of AHB SEQ master", UVM_LOW)
   case (burst_type)
     3'b000, 3'b001: return 1;  // SINGLE / INCR(undefine length)
     3'b010, 3'b011: return 4;  // WRAP4, INCR4
@@ -49,7 +50,7 @@ function bit [31:0] ahb_master_base_seq::calculate_wrap_address(bit [31:0] curre
   int total_wrap_bytes = bytes_per_beat * burst_length; 
   bit [31:0] wrap_boundary = current_addr & ~(total_wrap_bytes - 1);
   bit [31:0] next_addr = current_addr + bytes_per_beat;
-
+  `uvm_info("SEQ master", "Inside calculate_wrap_address of AHB SEQ master", UVM_LOW)
   if (next_addr == (wrap_boundary + total_wrap_bytes)) begin
     next_addr = wrap_boundary;
   end
@@ -61,14 +62,14 @@ task ahb_master_base_seq::do_burst_transfer(
     input hwrite_e  is_write, 
     input hburst_e  burst_type, 
     input hsize_e  size,
-    input int        busy_chance_pct = 0
+    input int      busy_chance_pct = 0
 );
   ahb_master_tx req_m;
   bit [31:0] current_addr = start_addr;
   int burst_len = get_burst_len(bit'(burst_type));
   
   for (int i = 0; i < burst_len; i++) begin
-    
+    `uvm_info("SEQ master", "Inside do_burst_transfer of AHB SEQ master", UVM_LOW)
     if (i > 0 && busy_chance_pct > 0) begin
       // randomize insert BUSY
       while ($urandom_range(0, 100) < busy_chance_pct) begin
@@ -96,7 +97,6 @@ task ahb_master_base_seq::do_burst_transfer(
     req_m.haddr = current_addr;
     finish_item(req_m);
     
-
     if (burst_type == 3'b011 || burst_type == 3'b101 || burst_type == 3'b111) begin // INCR
        current_addr = current_addr + (1 << size);
     end
