@@ -102,7 +102,6 @@ task ahb_slave_driver::wr_data_phase();
             ahb_if_h.hexokay   <= 1'b0;
             @(posedge ahb_if_h.clk);
         end else begin
-
             ahb_slave_seq_item_port.get_next_item(slv_data_tx);
             `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_data_tx.sprint()),UVM_NONE);
             ahb_slave_seq_item_converter::from_class(slv_data_tx,slv_data_struct);
