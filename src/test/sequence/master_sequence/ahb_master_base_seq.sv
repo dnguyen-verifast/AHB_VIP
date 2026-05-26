@@ -13,10 +13,10 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
   
   extern task do_burst_transfer(
     input bit [31:0] start_addr, 
-    input bit  is_write, 
-    input bit [2:0] burst_type, 
-    input bit [2:0] size,
-    input int        busy_chance_pct = 0
+    input hwrite_e  is_write, 
+    input hburst_e burst_type, 
+    input hsize_e size,
+    input int      busy_chance_pct = 0
   );
 
 endclass : ahb_master_base_seq
@@ -33,18 +33,18 @@ task ahb_master_base_seq::body();
     req_m = ahb_master_tx::type_id::create("req_m");
 endtask : body
 
-function int ahb_master_base_seq::get_burst_len(bit [2:0] burst_type);
+function int ahb_master_base_seq::get_burst_len( hburst_e burst_type);
   `uvm_info("SEQ master", "Inside get_burst_len of AHB SEQ master", UVM_LOW)
   case (burst_type)
-    3'b000, 3'b001: return 1;  // SINGLE / INCR(undefine length)
-    3'b010, 3'b011: return 4;  // WRAP4, INCR4
-    3'b100, 3'b101: return 8;  // WRAP8, INCR8
-    3'b110, 3'b111: return 16; // WRAP16, INCR16
+    SINGLE , INCR: return 1;  // SINGLE / INCR(undefine length)
+    WRAP4, INCR4: return 4;  // WRAP4, INCR4
+    WRAP8, INCR8: return 8;  // WRAP8, INCR8
+    WRAP16, INCR16: return 16; // WRAP16, INCR16
     default: return 1;
   endcase
 endfunction
 
-function bit [31:0] ahb_master_base_seq::calculate_wrap_address(bit [31:0] current_addr, bit [2:0] hsize, bit [2:0] hburst);
+function bit [31:0] ahb_master_base_seq::calculate_wrap_address(bit [31:0] current_addr, hsize_e hsize, hburst_e hburst);
   int bytes_per_beat = 1 << hsize; 
   int burst_length = get_burst_len(hburst);
   int total_wrap_bytes = bytes_per_beat * burst_length; 
@@ -59,9 +59,9 @@ endfunction
 
 task ahb_master_base_seq::do_burst_transfer(
     input bit [31:0] start_addr, 
-    input bit  is_write, 
-    input bit [2:0] burst_type, 
-    input bit [2:0] size,
+    input hwrite_e  is_write, 
+    input hburst_e burst_type, 
+    input hsize_e size,
     input int      busy_chance_pct = 0
 );
   ahb_master_tx req_m;
@@ -80,8 +80,8 @@ task ahb_master_base_seq::do_burst_transfer(
           hsize  == local::size; // Chữ local:: sinh ra để chỉ định tường minh: "Ê trình biên dịch, biến này chắc chắn là của cái scope bên ngoài, đừng có tìm bên trong object nhé!".
           hburst == local::burst_type;
           hwrite == local::is_write;
+          req_m.haddr = current_addr;
         });
-        req_m.haddr = current_addr; 
         finish_item(req_m);
       end
     end
@@ -92,16 +92,16 @@ task ahb_master_base_seq::do_burst_transfer(
       hsize  == local::size;
       hburst == local::burst_type;
       hwrite == local::is_write;
-      htrans == (i == 0) ? 2'b10 : 2'b11; 
+      htrans == (i == 0) ? HTRANS_NONSEQ : HTRANS_SEQ; 
     });
     req_m.haddr = current_addr;
     `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
     finish_item(req_m);
     
-    if (burst_type == 3'b011 || burst_type == 3'b101 || burst_type == 3'b111) begin // INCR
+    if (burst_type == INCR4 || burst_type == INCR8 || burst_type == INCR16) begin // INCR
        current_addr = current_addr + (1 << size);
     end
-    else if (burst_type == 3'b010 || burst_type == 3'b100 || burst_type == 3'b110) begin // WRAP
+    else if (burst_type == WRAP4 || burst_type == WRAP8 || burst_type == WRAP16) begin // WRAP
        current_addr = calculate_wrap_address(current_addr, size, burst_type);
     end
     

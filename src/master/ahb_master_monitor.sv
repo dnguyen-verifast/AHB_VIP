@@ -5,6 +5,7 @@ class ahb_master_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_master_monitor)
 
     virtual ahb_if ahb_if_h;
+    ahb_transfer_struct pipeline_monitor[$];
 
     uvm_analysis_port#(ahb_master_tx)  ahb_master_data_analysis_port;
     uvm_analysis_port#(ahb_master_tx)  ahb_master_addr_analysis_port;
@@ -52,24 +53,6 @@ task ahb_master_monitor::run_phase(uvm_phase phase);
     join
 endtask : run_phase
 
-task ahb_master_monitor::ahb_master_data_phase();
-    forever begin
-        ahb_master_tx mon_tx_data;
-        ahb_transfer_struct m_tx_data;
-        @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hreadyout == 1) begin
-             m_tx_data.hwdata  = ahb_if_h.hwdata;
-             m_tx_data.hwstrb  = ahb_if_h.hwstrb ;
-             m_tx_data.hresp   = ahb_if_h.hresp;
-             m_tx_data.hrdata   = ahb_if_h.hrdata;
-             m_tx_data.hexokay   = ahb_if_h.hexokay;  
-        end
-        ahb_master_seq_item_converter::to_class(m_tx_data,mon_tx_data);
-        ahb_master_data_analysis_port.write(mon_tx_data);
-    end
-endtask : ahb_master_data_phase
-
-
 task ahb_master_monitor::ahb_master_addr_phase();
     forever begin
         ahb_master_tx mon_tx_add;
@@ -85,10 +68,35 @@ task ahb_master_monitor::ahb_master_addr_phase();
             m_tx_add.hexcl     = ahb_if_h.hexcl;
             m_tx_add.hmaster   = ahb_if_h.hmaster;
             m_tx_add.htrans    = ahb_if_h.htrans;
-            m_tx_add.hwrite    = ahb_if_h.hwrite;
+            m_tx_add.hwrite    = ahb_if_h.hwrite; 
+            ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
+            if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
+                pipeline_monitor.push_back(m_tx_add);
+                ahb_master_addr_analysis_port.write(mon_tx_add);
+            end
         end
-        ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
-        ahb_master_addr_analysis_port.write(mon_tx_add);
+        
     end
 endtask : ahb_master_addr_phase
+
+task ahb_master_monitor::ahb_master_data_phase();
+    forever begin
+        ahb_master_tx mon_tx_data;
+        ahb_transfer_struct m_tx_data;
+        @(posedge ahb_if_h.clk);
+        if(ahb_if_h.hreadyout == 1  && pipeline_monitor.size() > 0) begin
+             pipeline_monitor.pop_front(m_tx_data);
+             m_tx_data.hwdata  = ahb_if_h.hwdata;
+             m_tx_data.hwstrb  = ahb_if_h.hwstrb ;
+             m_tx_data.hresp   = ahb_if_h.hresp;
+             m_tx_data.hrdata   = ahb_if_h.hrdata;
+             m_tx_data.hexokay   = ahb_if_h.hexokay;
+            ahb_master_seq_item_converter::to_class(m_tx_data,mon_tx_data);
+            ahb_master_data_analysis_port.write(mon_tx_data);
+             
+        end
+
+    end
+endtask : ahb_master_data_phase
+
 `endif

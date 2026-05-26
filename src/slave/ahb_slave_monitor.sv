@@ -5,6 +5,7 @@ class ahb_slave_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_slave_monitor)
 
     virtual ahb_if ahb_if_h;
+    ahb_transfer_struct pipeline_monitor_l[$];
 
     uvm_analysis_port#(ahb_slave_tx)  ahb_slave_data_analysis_port;
     uvm_analysis_port#(ahb_slave_tx)  ahb_slave_addr_analysis_port;
@@ -53,23 +54,6 @@ task ahb_slave_monitor::run_phase(uvm_phase phase);
     join
 endtask : run_phase
 
-task ahb_slave_monitor::ahb_slave_data_phase();
-    forever begin
-        ahb_slave_tx mon_tx_data;
-        ahb_transfer_struct slv_tx_data;
-        @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hreadyout == 1) begin
-             slv_tx_data.hwdata  = ahb_if_h.hwdata;
-             slv_tx_data.hwstrb  = ahb_if_h.hwstrb ;
-             slv_tx_data.hresp   = ahb_if_h.hresp;
-             slv_tx_data.hrdata   = ahb_if_h.hrdata;
-             slv_tx_data.hexokay   = ahb_if_h.hexokay;
-        end
-        ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
-        ahb_slave_data_analysis_port.write(mon_tx_data);
-    end
-endtask : ahb_slave_data_phase
-
 task ahb_slave_monitor::ahb_slave_addr_phase();
     forever begin
         ahb_slave_tx mon_tx_add;
@@ -85,9 +69,31 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             slv_tx_add.hexcl     = ahb_if_h.hexcl;
             slv_tx_add.htrans    = ahb_if_h.htrans;
             slv_tx_add.hwrite    = ahb_if_h.hwrite;
+            ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
+            if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
+                pipeline_monitor_l.push_back(slv_tx_add);
+                ahb_slave_addr_analysis_port.write(mon_tx_add);
+            end
         end
-        ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
-        ahb_slave_addr_analysis_port.write(mon_tx_add);
     end
 endtask : ahb_slave_addr_phase
+
+task ahb_slave_monitor::ahb_slave_data_phase();
+    forever begin
+        ahb_slave_tx mon_tx_data;
+        ahb_transfer_struct slv_tx_data;
+        @(posedge ahb_if_h.clk);
+        if(ahb_if_h.hreadyout == 1 && pipeline_monitor_l.size() > 0) begin
+            pipeline_monitor_l.pop_front(slv_tx_data);
+            slv_tx_data.hwdata  = ahb_if_h.hwdata;
+            slv_tx_data.hwstrb  = ahb_if_h.hwstrb ;
+            slv_tx_data.hresp   = ahb_if_h.hresp;
+            slv_tx_data.hrdata   = ahb_if_h.hrdata;
+            slv_tx_data.hexokay   = ahb_if_h.hexokay;
+            ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
+            ahb_slave_data_analysis_port.write(mon_tx_data);
+        end
+    end
+endtask : ahb_slave_data_phase
+
 `endif
