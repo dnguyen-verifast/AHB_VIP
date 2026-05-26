@@ -85,7 +85,7 @@ task ahb_master_monitor::ahb_master_data_phase();
         ahb_transfer_struct m_tx_data;
         @(posedge ahb_if_h.clk);
         if(ahb_if_h.hreadyout == 1  && pipeline_monitor.size() > 0) begin
-             pipeline_monitor.pop_front(m_tx_data);
+             m_tx_data = pipeline_monitor.pop_front();
              m_tx_data.hwdata  = ahb_if_h.hwdata;
              m_tx_data.hwstrb  = ahb_if_h.hwstrb ;
              m_tx_data.hresp   = ahb_if_h.hresp;
