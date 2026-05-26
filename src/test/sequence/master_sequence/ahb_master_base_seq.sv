@@ -13,9 +13,9 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
   
   extern task do_burst_transfer(
     input bit [31:0] start_addr, 
-    input hwrite_e  is_write, 
-    input hburst_e  burst_type, 
-    input hsize_e  size,
+    input bit  is_write, 
+    input bit  burst_type, 
+    input bit  size,
     input int        busy_chance_pct = 0
   );
 
@@ -59,14 +59,14 @@ endfunction
 
 task ahb_master_base_seq::do_burst_transfer(
     input bit [31:0] start_addr, 
-    input hwrite_e  is_write, 
-    input hburst_e  burst_type, 
-    input hsize_e  size,
+    input bit  is_write, 
+    input bit  burst_type, 
+    input bit  size,
     input int      busy_chance_pct = 0
 );
   ahb_master_tx req_m;
   bit [31:0] current_addr = start_addr;
-  int burst_len = get_burst_len(bit'(burst_type));
+  int burst_len = get_burst_len(burst_type);
   `uvm_info("SEQ master", $sformatf("burst_len = %d \n",burst_len), UVM_LOW)
   for (int i = 0; i < burst_len; i++) begin
     `uvm_info("SEQ master", "Inside do_burst_transfer of AHB SEQ master", UVM_LOW)
@@ -102,7 +102,7 @@ task ahb_master_base_seq::do_burst_transfer(
        current_addr = current_addr + (1 << size);
     end
     else if (burst_type == 3'b010 || burst_type == 3'b100 || burst_type == 3'b110) begin // WRAP
-       current_addr = calculate_wrap_address(bit'(current_addr), bit'(size), bit'(burst_type));
+       current_addr = calculate_wrap_address(current_addr, size, burst_type);
     end
     
   end
