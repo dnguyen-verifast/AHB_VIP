@@ -3,6 +3,7 @@
 
 class ahb_virtual_seqr extends uvm_sequencer;
     `uvm_component_utils(ahb_virtual_seqr)
+    
     ahb_master_sequencer ahb_master_sequencer_h;
     ahb_slave_sequencer ahb_slave_sequencer_h;
 
