@@ -30,7 +30,8 @@ function ahb_master_base_seq::new(string name = "ahb_master_base_seq");
 endfunction : new
 
 task ahb_master_base_seq::body();
-
+    ahb_master_tx req_m;
+    req_m = ahb_master_tx::type_id::create("req_m");
 endtask : body
 
 function int ahb_master_base_seq::get_burst_len(bit [2:0] burst_type);
