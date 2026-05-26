@@ -14,8 +14,8 @@ function ahb_virtual_basic_single_rw_seq::new(string name = "ahb_virtual_basic_s
 super.new(name);
 endfunction : new
 task ahb_virtual_basic_single_rw_seq::body();
-    ahb_master_basic_single_rw_seq_h = ahb_master_basic_single_rw_seq::type_id::create("ahb_master_basic_single_rw_seq_h");
 
+    ahb_master_basic_single_rw_seq_h = ahb_master_basic_single_rw_seq::type_id::create("ahb_master_basic_single_rw_seq_h");
     ahb_slave_basic_single_rw_seq_h = ahb_slave_basic_single_rw_seq::type_id::create("ahb_slave_basic_single_rw_seq_h");
 
     `uvm_info(get_type_name(), $sformatf("DEBUG_MSHA :: Insdie ahb_virtual_basic_single_rw_seq"), UVM_NONE); 
@@ -23,17 +23,15 @@ task ahb_virtual_basic_single_rw_seq::body();
     fork 
         begin : T1_SL_WR
         forever begin
-            ahb_slave_basic_single_rw_seq_h.start(p_sequencer.ahb_master_sequencer_h);
+            ahb_slave_basic_single_rw_seq_h.start(p_sequencer.ahb_slave_sequencer_h);
         end
         end
     join_none
 
     fork 
-        begin: T1_WRITE
         repeat(2) begin
             ahb_master_basic_single_rw_seq_h.start(p_sequencer.ahb_master_sequencer_h);
         end
-        end
-        join
+    join
 endtask : body
 `endif    
