@@ -76,7 +76,7 @@ task ahb_master_base_seq::do_burst_transfer(
         req_m = ahb_master_tx::type_id::create("req_m_busy");
         start_item(req_m);
         assert(req_m.randomize() with {
-          htrans == 2'b01; // BUSY
+          htrans == HTRANS_BUSY; // BUSY
           hsize  == local::size; // Chữ local:: sinh ra để chỉ định tường minh: "Ê trình biên dịch, biến này chắc chắn là của cái scope bên ngoài, đừng có tìm bên trong object nhé!".
           hburst == local::burst_type;
           hwrite == local::is_write;
