@@ -86,7 +86,7 @@ task ahb_scoreboard::ahb_data_phase_compare();
       ahb_data_phase_comparer_count_failed ++; 
       `uvm_error("COMPARE_AW","Write Address comparision FAILED") 
     end
-    data_phase_key.get(1);
+    data_phase_key.put(1);
     ahb_data_phase_comparer_count ++;
   end
 
@@ -107,7 +107,7 @@ task ahb_scoreboard::ahb_addr_phase_compare();
     end else begin
       ahb_addr_phase_comparer_count_failed ++; 
       `uvm_error("COMPARE_AW","Write Address comparision FAILED") end
-    addr_phase_key.get(1);
+    addr_phase_key.put(1);
     ahb_addr_phase_comparer_count ++;
   end
 endtask : ahb_addr_phase_compare
