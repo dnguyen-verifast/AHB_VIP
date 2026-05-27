@@ -102,14 +102,14 @@ function bit ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
             (hexcl     == ahb_base_tx_comparer.hexcl)     &&
             (hmaster   == ahb_base_tx_comparer.hmaster)   &&
             (htrans    == ahb_base_tx_comparer.htrans)    &&
-            (hsel      == ahb_base_tx_comparer.hsel);     &&
-            (hwrite    == ahb_base_tx_comparer.hwrite) 
+            (hsel      == ahb_base_tx_comparer.hsel)     &&
+            (hwrite    == ahb_base_tx_comparer.hwrite); 
     end else if(compare_phase == DATA_PHASE) begin
         result &= hwdata == (ahb_base_tx_comparer.hwdata)    &&
             (hwstrb    == ahb_base_tx_comparer.hwstrb)    && 
             (hrdata    == ahb_base_tx_comparer.hrdata)    &&
             (hresp     == ahb_base_tx_comparer.hresp)     &&
-            (hexokay   == ahb_base_tx_comparer.hexokay)
+            (hexokay   == ahb_base_tx_comparer.hexokay);
     end   
 endfunction : do_compare
 `endif 
