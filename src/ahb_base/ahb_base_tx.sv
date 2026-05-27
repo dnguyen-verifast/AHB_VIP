@@ -110,6 +110,7 @@ function bit ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
             (hrdata    == ahb_base_tx_comparer.hrdata)    &&
             (hresp     == ahb_base_tx_comparer.hresp)     &&
             (hexokay   == ahb_base_tx_comparer.hexokay);
-    end   
+    end
+    return  result;  
 endfunction : do_compare
 `endif 
