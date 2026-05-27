@@ -70,6 +70,27 @@ task ahb_scoreboard::run_phase(uvm_phase phase);
   join
 endtask : run_phase
 
+task ahb_scoreboard::ahb_addr_phase_compare();
+  forever begin
+    ahb_slave_tx l_addr_phase_tx;
+    ahb_master_tx m_addr_phase_tx;
+    addr_phase_key.get(1);
+    ahb_master_addr_phase_analysis_fifo.get(m_addr_phase_tx);
+    `uvm_info("AHB_SCOREBOARD",$sformatf("m_addr_phase_tx = %s \n",m_addr_phase_tx.sprint()),UVM_LOW)
+    ahb_slave_addr_phase_analysis_fifo.get(l_addr_phase_tx);
+    `uvm_info("AHB_SCOREBOARD",$sformatf("l_addr_phase_tx = %s \n",l_addr_phase_tx.sprint()),UVM_LOW)
+    m_addr_phase_tx.compare_phase = ADDR_PHASE;
+    if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer)) begin
+      `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
+      ahb_addr_phase_comparer_count_pass ++;
+    end else begin
+      ahb_addr_phase_comparer_count_failed ++; 
+      `uvm_error("COMPARE_AW","Write Address comparision FAILED") end
+    addr_phase_key.put(1);
+    ahb_addr_phase_comparer_count ++;
+  end
+endtask : ahb_addr_phase_compare
+
 task ahb_scoreboard::ahb_data_phase_compare();
   forever begin
     ahb_slave_tx l_data_phase_tx;
@@ -79,6 +100,7 @@ task ahb_scoreboard::ahb_data_phase_compare();
     `uvm_info("AHB_SCOREBOARD",$sformatf("m_data_phase_tx = %s \n",m_data_phase_tx.sprint()),UVM_LOW)
     ahb_slave_data_phase_analysis_fifo.get(l_data_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("l_data_phase_tx = %s \n",l_data_phase_tx.sprint()),UVM_LOW)
+    m_data_phase_tx.compare_phase = DATA_PHASE;
     if(m_data_phase_tx.do_compare(l_data_phase_tx,uvm_default_comparer)) begin
       `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
       ahb_data_phase_comparer_count_pass ++;
@@ -91,26 +113,6 @@ task ahb_scoreboard::ahb_data_phase_compare();
   end
 
 endtask : ahb_data_phase_compare
-
-task ahb_scoreboard::ahb_addr_phase_compare();
-  forever begin
-    ahb_slave_tx l_addr_phase_tx;
-    ahb_master_tx m_addr_phase_tx;
-    addr_phase_key.get(1);
-    ahb_master_addr_phase_analysis_fifo.get(m_addr_phase_tx);
-    `uvm_info("AHB_SCOREBOARD",$sformatf("m_addr_phase_tx = %s \n",m_addr_phase_tx.sprint()),UVM_LOW)
-    ahb_slave_addr_phase_analysis_fifo.get(l_addr_phase_tx);
-    `uvm_info("AHB_SCOREBOARD",$sformatf("l_addr_phase_tx = %s \n",l_addr_phase_tx.sprint()),UVM_LOW)
-    if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer)) begin
-      `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
-      ahb_addr_phase_comparer_count_pass ++;
-    end else begin
-      ahb_addr_phase_comparer_count_failed ++; 
-      `uvm_error("COMPARE_AW","Write Address comparision FAILED") end
-    addr_phase_key.put(1);
-    ahb_addr_phase_comparer_count ++;
-  end
-endtask : ahb_addr_phase_compare
 
 function void ahb_scoreboard::check_phase (uvm_phase phase);
   super.check_phase(phase);

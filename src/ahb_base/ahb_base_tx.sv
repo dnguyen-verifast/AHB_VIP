@@ -24,6 +24,7 @@ class ahb_base_tx extends uvm_sequence_item;
     rand bit                        hsel;
 
     rand bit [2:0]                  wait_state;
+    compare_phase_e                 compare_phase;
     extern function new(string name = "ahb_base_tx");
     extern function void do_copy(uvm_object rhs);
     extern function void do_print(uvm_printer printer);
@@ -91,22 +92,24 @@ function bit ahb_base_tx::do_compare(uvm_object rhs,uvm_comparer comparer);
     end
     result = 1;
     // result = super.do_compare(axi4_base_tx_compare_obj, comparer);
-    result &= (haddr  == ahb_base_tx_comparer.haddr)     &&
-           (hburst    == ahb_base_tx_comparer.hburst)    &&
-           (hmastlock == ahb_base_tx_comparer.hmastlock) &&
-           (hprot     == ahb_base_tx_comparer.hprot)     &&
-           (hsize     == ahb_base_tx_comparer.hsize)     &&
-           (hnonsec   == ahb_base_tx_comparer.hnonsec)   &&
-           (hexcl     == ahb_base_tx_comparer.hexcl)     &&
-           (hmaster   == ahb_base_tx_comparer.hmaster)   &&
-           (htrans    == ahb_base_tx_comparer.htrans)    &&
-           (hwdata    == ahb_base_tx_comparer.hwdata)    &&
-           (hwstrb    == ahb_base_tx_comparer.hwstrb)    &&
-           (hwrite    == ahb_base_tx_comparer.hwrite)    &&
-           (hrdata    == ahb_base_tx_comparer.hrdata)    &&
-           (hreadyout == ahb_base_tx_comparer.hreadyout) &&
-           (hresp     == ahb_base_tx_comparer.hresp)     &&
-           (hexokay   == ahb_base_tx_comparer.hexokay)   &&
-           (hsel      == ahb_base_tx_comparer.hsel);
+    if(compare_phase == ADDR_PHASE) begin
+        result &= (haddr  == ahb_base_tx_comparer.haddr)     &&
+            (hburst    == ahb_base_tx_comparer.hburst)    &&
+            (hmastlock == ahb_base_tx_comparer.hmastlock) &&
+            (hprot     == ahb_base_tx_comparer.hprot)     &&
+            (hsize     == ahb_base_tx_comparer.hsize)     &&
+            (hnonsec   == ahb_base_tx_comparer.hnonsec)   &&
+            (hexcl     == ahb_base_tx_comparer.hexcl)     &&
+            (hmaster   == ahb_base_tx_comparer.hmaster)   &&
+            (htrans    == ahb_base_tx_comparer.htrans)    &&
+            (hsel      == ahb_base_tx_comparer.hsel);     &&
+            (hwrite    == ahb_base_tx_comparer.hwrite) 
+    end else if(compare_phase == DATA_PHASE) begin
+        result &= hwdata == (ahb_base_tx_comparer.hwdata)    &&
+            (hwstrb    == ahb_base_tx_comparer.hwstrb)    && 
+            (hrdata    == ahb_base_tx_comparer.hrdata)    &&
+            (hresp     == ahb_base_tx_comparer.hresp)     &&
+            (hexokay   == ahb_base_tx_comparer.hexokay)
+    end   
 endfunction : do_compare
 `endif 

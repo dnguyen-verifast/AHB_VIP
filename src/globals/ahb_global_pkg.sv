@@ -81,6 +81,11 @@ typedef enum bit [2:0] {
         HEXOKAY_PASS = 1'b1
     } hexokay_e;
 
+    typedef enum bit {
+        ADDR_PHASE = 1'b0,
+        DATA_PHASE = 1'b1
+    } compare_phase_e;
+
     typedef struct {
         bit [ADDR_WIDTH-1 : 0]    haddr;
         bit [2:0]                 hburst;
