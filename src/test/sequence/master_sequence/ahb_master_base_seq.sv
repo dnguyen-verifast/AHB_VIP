@@ -60,7 +60,7 @@ endfunction
 
 task ahb_master_base_seq::do_idle(input int num_clk, input bit [31:0] addr_idle);
   ahb_master_tx req_m;
-  for(int i = 0; i < num_clk, i++) begin
+  for(int i = 0; i < num_clk; i++) begin
     req_m = ahb_master_tx::type_id::create("req_m");
     start_item(req_m);
     assert(req_m.randomize() with {
@@ -89,7 +89,7 @@ task ahb_master_base_seq::do_burst_transfer(
   end else burst_len = get_burst_len(burst_type);
 
   `uvm_info("SEQ master", $sformatf("burst_len = %d \n",burst_len), UVM_LOW)
-  
+
   for (int i = 0; i < burst_len; i++) begin
     `uvm_info("SEQ master", "Inside do_burst_transfer of AHB SEQ master", UVM_LOW)
     if (i > 0 && busy_chance_pct > 0) begin
