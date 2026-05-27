@@ -80,7 +80,7 @@ task ahb_master_base_seq::do_burst_transfer(
           hsize  == local::size; // Chữ local:: sinh ra để chỉ định tường minh: "Ê trình biên dịch, biến này chắc chắn là của cái scope bên ngoài, đừng có tìm bên trong object nhé!".
           hburst == local::burst_type;
           hwrite == local::is_write;
-          req_m.haddr == current_addr;
+          req_m.haddr == local::current_addr;
         });
         finish_item(req_m);
       end
@@ -92,9 +92,13 @@ task ahb_master_base_seq::do_burst_transfer(
       hsize  == local::size;
       hburst == local::burst_type;
       hwrite == local::is_write;
-      htrans == (i == 0) ? HTRANS_NONSEQ : HTRANS_SEQ; 
+      if (local::i == 0) {
+        htrans == HTRANS_NONSEQ;
+      } else {
+        htrans == HTRANS_SEQ;}
+      req_m.haddr = local::current_addr; 
     });
-    req_m.haddr = current_addr;
+    
     `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
     finish_item(req_m);
     
