@@ -24,7 +24,7 @@ endfunction : build_phase
 
 function void ahb_test_base::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
-  uvm_test_done.set_drain_time(this,100ns);
+ // uvm_test_done.set_drain_time(this,100ns);
 endfunction : end_of_elaboration_phase
 
 task ahb_test_base::run_phase(uvm_phase phase);

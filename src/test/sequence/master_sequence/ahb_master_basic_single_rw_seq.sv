@@ -12,6 +12,7 @@ function ahb_master_basic_single_rw_seq::new(string name = "ahb_master_basic_sin
 endfunction : new
 
 task ahb_master_basic_single_rw_seq::body();
-   do_burst_transfer(32'h1000_0000, HWRITE_WRITE, INCR4, HSIZE_WORD, 10); 
+   do_burst_transfer(32'h1000_0000, HWRITE_WRITE, INCR4, HSIZE_WORD, 10);
+   do_idle(2,32'h1000_0000);
 endtask : body
 `endif

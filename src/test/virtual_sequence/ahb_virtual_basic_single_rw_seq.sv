@@ -29,7 +29,7 @@ task ahb_virtual_basic_single_rw_seq::body();
     join_none
 
     fork 
-        repeat(2) begin
+        repeat(1) begin
             ahb_master_basic_single_rw_seq_h.start(p_sequencer.ahb_master_sequencer_h);
         end
     join

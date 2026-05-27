@@ -10,13 +10,14 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
   // --- define API functions ---
   extern function int get_burst_len(hburst_e burst_type);
   extern function bit [31:0] calculate_wrap_address(bit [31:0] current_addr, hsize_e hsize, hburst_e hburst);
-  
+  extern task do_idle(input int num_clk, input bit [31:0] addr_idle);
   extern task do_burst_transfer(
     input bit [31:0] start_addr, 
     input hwrite_e  is_write, 
     input hburst_e burst_type, 
     input hsize_e size,
-    input int      busy_chance_pct = 0
+    input int      busy_chance_pct = 0,
+    input int      undef_incr_len = 1
   );
 
 endclass : ahb_master_base_seq
@@ -36,7 +37,7 @@ endtask : body
 function int ahb_master_base_seq::get_burst_len( hburst_e burst_type);
   `uvm_info("SEQ master", "Inside get_burst_len of AHB SEQ master", UVM_LOW)
   case (burst_type)
-    SINGLE , INCR: return 1;  // SINGLE / INCR(undefine length)
+    SINGLE      : return 1;  // SINGLE / INCR(undefine length)
     WRAP4, INCR4: return 4;  // WRAP4, INCR4
     WRAP8, INCR8: return 8;  // WRAP8, INCR8
     WRAP16, INCR16: return 16; // WRAP16, INCR16
@@ -57,17 +58,38 @@ function bit [31:0] ahb_master_base_seq::calculate_wrap_address(bit [31:0] curre
   return next_addr;
 endfunction
 
+task ahb_master_base_seq::do_idle(input int num_clk, input bit [31:0] addr_idle);
+  ahb_master_tx req_m;
+  for(int i = 0; i < num_clk, i++) begin
+    req_m = ahb_master_tx::type_id::create("req_m");
+    start_item(req_m);
+    assert(req_m.randomize() with {
+      req_m.htrans == HTRANS_IDLE;
+      req_m.haddr == local::addr_idle;
+    });
+    `uvm_info("SEQ master", $sformatf("Driving IDLE phase %0d/%0d", i+1, num_clk), UVM_LOW)
+    finish_item(req_m);
+  end    
+endtask : do_idle
+
 task ahb_master_base_seq::do_burst_transfer(
     input bit [31:0] start_addr, 
     input hwrite_e  is_write, 
     input hburst_e burst_type, 
     input hsize_e size,
-    input int      busy_chance_pct = 0
+    input int      busy_chance_pct = 0,
+    input int      undef_incr_len = 1
 );
   ahb_master_tx req_m;
   bit [31:0] current_addr = start_addr;
-  int burst_len = get_burst_len(burst_type);
+  int burst_len;
+
+  if(burst_type == INCR) begin
+    burst_len = undef_incr_len;
+  end else burst_len = get_burst_len(burst_type);
+
   `uvm_info("SEQ master", $sformatf("burst_len = %d \n",burst_len), UVM_LOW)
+  
   for (int i = 0; i < burst_len; i++) begin
     `uvm_info("SEQ master", "Inside do_burst_transfer of AHB SEQ master", UVM_LOW)
     if (i > 0 && busy_chance_pct > 0) begin
@@ -102,7 +124,7 @@ task ahb_master_base_seq::do_burst_transfer(
     `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
     finish_item(req_m);
     
-    if (burst_type == INCR4 || burst_type == INCR8 || burst_type == INCR16) begin // INCR
+    if (burst_type == INCR || burst_type == INCR4 || burst_type == INCR8 || burst_type == INCR16) begin // INCR
        current_addr = current_addr + (1 << size);
     end
     else if (burst_type == WRAP4 || burst_type == WRAP8 || burst_type == WRAP16) begin // WRAP
