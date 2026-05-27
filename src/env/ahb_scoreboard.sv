@@ -97,9 +97,9 @@ task ahb_scoreboard::ahb_addr_phase_compare();
     ahb_slave_tx l_addr_phase_tx;
     ahb_master_tx m_addr_phase_tx;
     addr_phase_key.get(1);
-    ahb_master_data_phase_analysis_fifo.get(m_addr_phase_tx);
+    ahb_master_addr_phase_analysis_fifo.get(m_addr_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("m_addr_phase_tx = %s \n",m_addr_phase_tx.sprint()),UVM_LOW)
-    ahb_slave_data_phase_analysis_fifo.get(l_addr_phase_tx);
+    ahb_slave_addr_phase_analysis_fifo.get(l_addr_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("l_addr_phase_tx = %s \n",l_addr_phase_tx.sprint()),UVM_LOW)
     if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer)) begin
       `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
