@@ -96,7 +96,7 @@ task ahb_master_base_seq::do_burst_transfer(
         htrans == HTRANS_NONSEQ;
       } else {
         htrans == HTRANS_SEQ;}
-      req_m.haddr = local::current_addr; 
+      req_m.haddr == local::current_addr; 
     });
     
     `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
