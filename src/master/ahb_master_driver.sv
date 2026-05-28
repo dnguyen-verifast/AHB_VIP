@@ -125,6 +125,8 @@ task ahb_master_driver::wr_data_phase();
             while(ahb_if_h.hreadyout == 0) begin
                 @(posedge ahb_if_h.clk);
             end
+            @(posedge ahb_if_h.clk);
+            `uvm_info("MASTER_DRIVER",$sformatf("Get response from slave for write transaction"),UVM_LOW)
             m_tx_data.hresp  = ahb_if_h.hresp;
             m_tx_data.hexokay  = ahb_if_h.hexokay;
         end else if(m_tx.hwrite == HWRITE_READ)begin
@@ -132,6 +134,8 @@ task ahb_master_driver::wr_data_phase();
             while(ahb_if_h.hreadyout == 0) begin
                 @(posedge ahb_if_h.clk);
             end
+            @(posedge ahb_if_h.clk);
+            `uvm_info("MASTER_DRIVER",$sformatf("Get response from slave for read transaction"),UVM_LOW)
             m_tx_data.hresp    = ahb_if_h.hresp;
             m_tx_data.hexokay    = ahb_if_h.hexokay;
             m_tx_data.hrdata = ahb_if_h.hrdata;
