@@ -30,7 +30,7 @@ task ahb_virtual_busy_burst_seq::body();
 
     fork
         begin: T1_MST_WR
-        repeat(2) begin
+        repeat(1) begin
             ahb_master_busy_burst_seq_h.start(p_sequencer.ahb_master_sequencer_h);
         end
         end

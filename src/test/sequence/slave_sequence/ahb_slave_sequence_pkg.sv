@@ -11,9 +11,9 @@ package ahb_slave_sequence_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_slave_base_seq.sv"
-    `include "ahb_slave_basic_single_rw_seq.sv"
+    `include "ahb_slave_basic_single_w_seq.sv"
     `include "ahb_slave_idle_transfer_seq.sv"
-    `include "ahb_slave_fixed_incr_burst_seq.sv"
+    `include "ahb_slave_incr_burst_seq.sv"
     `include "ahb_slave_wrap_burst_seq.sv"
     `include "ahb_slave_busy_burst_seq.sv"
     `include "ahb_slave_1kb_boundary_violation_seq.sv"

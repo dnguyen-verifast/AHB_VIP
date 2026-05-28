@@ -13,9 +13,9 @@ package ahb_virtual_sequence_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_virtual_base_seq.sv"
-    `include "ahb_virtual_basic_single_rw_seq.sv"
+    `include "ahb_virtual_basic_single_w_seq.sv"
     `include "ahb_virtual_idle_transfer_seq.sv"
-    `include "ahb_virtual_fixed_incr_burst_seq.sv"
+    `include "ahb_virtual_incr_burst_seq.sv"
     `include "ahb_virtual_wrap_burst_seq.sv"
     `include "ahb_virtual_busy_burst_seq.sv"
     `include "ahb_virtual_1kb_boundary_violation_seq.sv"

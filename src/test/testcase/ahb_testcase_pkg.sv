@@ -16,9 +16,9 @@ package ahb_testcase_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_test_base.sv"
-    `include "ahb_basic_single_rw_test.sv"
+    `include "ahb_basic_single_w_test.sv"
     `include "ahb_idle_transfer_test.sv"
-    `include "ahb_fixed_incr_burst_test.sv"
+    `include "ahb_incr_burst_test.sv"
     `include "ahb_wrap_burst_test.sv"
     `include "ahb_busy_burst_test.sv"
     `include "ahb_1kb_boundary_violation_test.sv"

@@ -99,11 +99,12 @@ task ahb_master_driver::wr_addr_phase();
             ahb_if_h.hwrite    <= m_tx_addr.hwrite;
             ahb_if_h.hsel       <= m_tx_addr.hsel;
             @(posedge ahb_if_h.clk);
-        end
-        ahb_master_fifo.put(m_tx);
-        `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
-        while(ahb_if_h.hreadyout == 0) begin
-            @(posedge ahb_if_h.clk);
+
+            ahb_master_fifo.put(m_tx);
+            `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
+            while(ahb_if_h.hreadyout == 0) begin
+                @(posedge ahb_if_h.clk);
+            end
         end
         ahb_master_seq_item_port.item_done(); 
     end   
@@ -121,10 +122,15 @@ task ahb_master_driver::wr_data_phase();
             ahb_if_h.hwstrb    <= m_tx_data.hwstrb;
             `uvm_info("MASTER_DRIVER",$sformatf("Send data to slave hwdata = %h    hwstrb = %h \n",m_tx_data.hwdata,m_tx_data.hwstrb),UVM_LOW)
             @(posedge ahb_if_h.clk);
-        end else begin
+            ahb_if_h.hresp    <= m_tx_data.hresp;
+            ahb_if_h.hexokay    <= m_tx_data.hexokay;
+        end else if(m_tx.hwrite == HWRITE_READ)begin
+            @(posedge ahb_if_h.clk);
             while(ahb_if_h.hreadyout == 0) begin
                 @(posedge ahb_if_h.clk);
             end
+            ahb_if_h.hresp    <= m_tx_data.hresp;
+            ahb_if_h.hexokay    <= m_tx_data.hexokay;
             m_tx_data.hrdata = ahb_if_h.hrdata;
         end
         

@@ -12,11 +12,11 @@ function ahb_master_wrap_burst_seq::new(string name = "ahb_master_wrap_burst_seq
 endfunction : new
 
 task ahb_master_wrap_burst_seq::body();
-    super.body();
-    start_item(req_m);
-    if(!req_m.randomize()) begin
-        `uvm_fatal("ahb_master","Rand failed");
-    end
-    finish_item(req_m);
+   do_burst_transfer(32'h1000_0000, HWRITE_WRITE, WRAP4, HSIZE_WORD, 0);
+   do_idle(2,32'h1000_0000);
+   do_burst_transfer(32'h1000_0000, HWRITE_WRITE, WRAP8, HSIZE_WORD, 0);
+   do_idle(2,32'h1000_0000);
+   do_burst_transfer(32'h1000_0000, HWRITE_WRITE, WRAP16, HSIZE_WORD, 0);
+   do_idle(2,32'h1000_0000);
 endtask : body
 `endif

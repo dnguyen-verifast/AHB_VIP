@@ -11,9 +11,9 @@ package ahb_master_sequence_pkg;
     `include "uvm_macros.svh"
 
     `include "ahb_master_base_seq.sv"
-    `include "ahb_master_basic_single_rw_seq.sv"
+    `include "ahb_master_basic_single_w_seq.sv"
     `include "ahb_master_idle_transfer_seq.sv"
-    `include "ahb_master_fixed_incr_burst_seq.sv"
+    `include "ahb_master_incr_burst_seq.sv"
     `include "ahb_master_wrap_burst_seq.sv"
     `include "ahb_master_busy_burst_seq.sv"
     `include "ahb_master_1kb_boundary_violation_seq.sv"
