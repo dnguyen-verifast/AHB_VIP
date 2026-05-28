@@ -88,8 +88,8 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
                 end
             end
         end 
-        pre_haddr = ahb_if_h.haddr;
-        pre_htrans = ahb_if_h.htrans;
+        pre_haddr = mon_tx_add.haddr;
+        pre_htrans = mon_tx_add.htrans;
     end
 endtask : ahb_slave_addr_phase
 
