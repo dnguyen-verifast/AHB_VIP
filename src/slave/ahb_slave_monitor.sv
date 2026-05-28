@@ -6,7 +6,7 @@ class ahb_slave_monitor extends uvm_monitor;
 
     virtual ahb_if ahb_if_h;
     ahb_transfer_struct pipeline_monitor_l[$];
-    logic [31:0]             pre_haddr;
+    bit [31:0]             pre_haddr;
     htrans_e                pre_htrans;
 
     uvm_analysis_port#(ahb_slave_tx)  ahb_slave_data_analysis_port;
