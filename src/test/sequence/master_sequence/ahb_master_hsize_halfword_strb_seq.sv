@@ -14,13 +14,13 @@ endfunction : new
 
 task ahb_master_hsize_halfword_strb_seq::body();
    // Halfword transfers (HSIZE=1) with sparse write strobes
-   do_burst_transfer(32'h5000_0000, HWRITE_WRITE, INCR4, HSIZE_HALFWORD, 0);
+   do_burst_transfer(32'h5000_0000, HWRITE_WRITE, INCR4, HSIZE_HWORD, 0);
    do_idle(2, 32'h5000_0008);
    
-   do_burst_transfer(32'h5000_0008, HWRITE_WRITE, INCR8, HSIZE_HALFWORD, 0);
+   do_burst_transfer(32'h5000_0008, HWRITE_WRITE, INCR8, HSIZE_HWORD, 0);
    do_idle(2, 32'h5000_0018);
    
-   do_burst_transfer(32'h5000_0018, HWRITE_READ, INCR4, HSIZE_HALFWORD, 0);
+   do_burst_transfer(32'h5000_0018, HWRITE_READ, INCR4, HSIZE_HWORD, 0);
    do_idle(2, 32'h5000_001F);
 
 endtask : body
