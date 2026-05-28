@@ -12,8 +12,8 @@ function ahb_master_locked_sequence_seq::new(string name = "ahb_master_locked_se
 endfunction : new
 
 task ahb_master_locked_sequence_seq::body();
-    super.body();
-    int locked_addr = 32'h01000000; 
+    int locked_addr = 32'h01000000;
+    super.body(); 
     start_item(req_m);
     if(!req_m.randomize() with {
         hmastlock == 1'b1;
