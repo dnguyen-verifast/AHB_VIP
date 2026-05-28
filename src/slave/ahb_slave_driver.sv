@@ -15,6 +15,9 @@ class ahb_slave_driver extends uvm_driver#(ahb_slave_tx);
 
     uvm_tlm_analysis_fifo #(ahb_slave_tx) pipeline_q;
 
+    semaphore add_phase_key;
+    semaphore data_phase_key;
+
     
 extern function new(string name = "ahb_slave_driver", uvm_component parent=null);
 extern virtual function void build_phase(uvm_phase phase);
@@ -29,6 +32,8 @@ function ahb_slave_driver::new(string name="ahb_slave_driver",uvm_component pare
     super.new(name,parent);
     ahb_slave_seq_item_port = new("ahb_slave_seq_item_port",this);
     pipeline_q = new("pipeline_q",this);
+    add_phase_key = new(1);
+    data_phase_key = new(1);
 endfunction : new
 
 function void ahb_slave_driver::build_phase(uvm_phase phase);
@@ -67,11 +72,12 @@ endtask : wait_ahb_for_resetn
 
 
 task ahb_slave_driver::wr_addr_phase();
+
     ahb_transfer_struct slv_struct_add;
     ahb_slave_tx slv_tx_add;
     forever begin
-        @(posedge ahb_if_h.clk); 
         if (ahb_if_h.hsel == 1'b1 && ahb_if_h.hreadyout == 1'b1) begin
+            @(posedge ahb_if_h.clk);
             slv_struct_add.haddr     = ahb_if_h.haddr;
             slv_struct_add.hburst    = ahb_if_h.hburst;
             slv_struct_add.hmastlock = ahb_if_h.hmastlock;
