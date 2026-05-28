@@ -51,7 +51,7 @@ task ahb_slave_driver::run_phase(uvm_phase phase);
     `uvm_info("DRIVER_SLAVE", "Inside run_phase of AHB Driver master", UVM_LOW)
 
     wait_ahb_for_resetn();
-    @(posedge ahb_if_h.resetn);
+    @(posedge ahb_if_h.clk);
     fork
         wr_addr_phase();
         wr_data_phase();
@@ -148,13 +148,10 @@ task ahb_slave_driver::wr_data_phase();
                             ahb_if_h.hresp     <= 0;
                             slv_data_tx.hwdata   = ahb_if_h.hwdata;
                             @(posedge ahb_if_h.clk);
+                            ahb_if_h.hexokay     <= 0;
                     end else begin
                             `uvm_info("DRIVER_SLAVE"," resolve a HEXOKAY_FAIL data phase for exclusive access WRITE",UVM_LOW)
                             ahb_if_h.hreadyout <= 0;
-                            ahb_if_h.hresp     <= 0;
-                            ahb_if_h.hexokay   <= 0;
-                            @(posedge ahb_if_h.clk);
-                            ahb_if_h.hreadyout <= 1;
                             ahb_if_h.hresp     <= 0;
                             ahb_if_h.hexokay   <= 0;
                             @(posedge ahb_if_h.clk);
@@ -173,15 +170,12 @@ task ahb_slave_driver::wr_data_phase();
                         `uvm_info("DRIVER_SLAVE"," resolve a HRESP_ERROR data phase HWRITE_READ",UVM_LOW)
                         ahb_if_h.hreadyout <= 0;
                         ahb_if_h.hresp     <= 1;
-                        ahb_if_h.hexokay   <= 0;
                         @(posedge ahb_if_h.clk);
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 1;
-                        ahb_if_h.hexokay   <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
                         @(posedge ahb_if_h.clk);
                         ahb_if_h.hresp     <= 0;
-                        ahb_if_h.hexokay   <= 0;
                     end else begin
                         `uvm_info("DRIVER_SLAVE"," resolve a HRESP_PASS data phase HWRITE_READ",UVM_LOW)
                         ahb_if_h.hreadyout <= 1;
@@ -197,12 +191,9 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
                         @(posedge ahb_if_h.clk);
+                        ahb_if_h.hexokay   <= 0;
                 end else begin
                         `uvm_info("DRIVER_SLAVE"," resolve HEXCL_EXCLUSIVE a HEXOKAY_FAIL data phase HWRITE_READ",UVM_LOW)
-                        ahb_if_h.hreadyout <= 0;
-                        ahb_if_h.hresp     <= 0;
-                        ahb_if_h.hexokay   <= 0;
-                        @(posedge ahb_if_h.clk);
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
