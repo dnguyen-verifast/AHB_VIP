@@ -99,7 +99,6 @@ task ahb_master_driver::wr_addr_phase();
             ahb_if_h.hwrite    <= m_tx_addr.hwrite;
             ahb_if_h.hsel       <= m_tx_addr.hsel;
             @(posedge ahb_if_h.clk);
-
             ahb_master_fifo.put(m_tx);
             `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
             while(ahb_if_h.hreadyout == 0) begin
@@ -125,7 +124,6 @@ task ahb_master_driver::wr_data_phase();
             while(ahb_if_h.hreadyout == 0) begin
                 @(posedge ahb_if_h.clk);
             end
-            @(posedge ahb_if_h.clk);
             `uvm_info("MASTER_DRIVER",$sformatf("Get response from slave for write transaction"),UVM_LOW)
             m_tx_data.hresp  = ahb_if_h.hresp;
             m_tx_data.hexokay  = ahb_if_h.hexokay;
@@ -134,7 +132,6 @@ task ahb_master_driver::wr_data_phase();
             while(ahb_if_h.hreadyout == 0) begin
                 @(posedge ahb_if_h.clk);
             end
-            @(posedge ahb_if_h.clk);
             `uvm_info("MASTER_DRIVER",$sformatf("Get response from slave for read transaction"),UVM_LOW)
             m_tx_data.hresp    = ahb_if_h.hresp;
             m_tx_data.hexokay    = ahb_if_h.hexokay;
