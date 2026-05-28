@@ -74,6 +74,8 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             
             `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
             ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
+            pre_haddr = mon_tx_add.haddr;
+            pre_htrans = mon_tx_add.htrans;
             if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
                 pipeline_monitor_l.push_back(slv_tx_add);
                 `uvm_info("SLAVE MON",$sformatf("addr phase write object to scoreboard mon_tx_add = %s \n",mon_tx_add.sprint()),UVM_LOW)
@@ -88,8 +90,6 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
                 end
             end
         end 
-        pre_haddr = mon_tx_add.haddr;
-        pre_htrans = mon_tx_add.htrans;
     end
 endtask : ahb_slave_addr_phase
 
