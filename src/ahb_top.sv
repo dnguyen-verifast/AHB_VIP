@@ -40,7 +40,7 @@ module ahb_top;
   //-------------------------------------------------------
   initial begin
     resetn = 1'b1;
-    #10 resetn = 1'b0;
+    #20 resetn = 1'b0;
 
     repeat (1) begin
       @(posedge clk);

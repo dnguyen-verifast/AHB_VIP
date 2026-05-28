@@ -106,6 +106,7 @@ task ahb_slave_driver::wr_data_phase();
             ahb_if_h.hreadyout <= 1'b1;
             ahb_if_h.hresp     <= 1'b0;
             ahb_if_h.hexokay   <= 1'b0;
+            `uvm_info(get_type_name(),$sformatf("Trans ilde or busy ignore"),UVM_NONE);
             @(posedge ahb_if_h.clk);
         end else begin
             ahb_slave_seq_item_port.get_next_item(slv_data_tx);
