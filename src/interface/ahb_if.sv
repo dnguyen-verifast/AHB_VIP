@@ -65,8 +65,8 @@ interface ahb_if(input clk, input resetn);
     a_hexokay_with_ready : assert property (p_hexokay_with_ready);
 
      property p_hexokay_no_hresp_error;
-        @(posedge HCLK) disable iff (!HRESETn)
-        HEXOKAY |-> (HRESP == 1'b0); 
+        @(posedge clk) disable iff (!resetn)
+        hexokay == 1 |-> (hresp == 1'b0); 
     endproperty : p_hexokay_no_hresp_error
     a_hexokay_no_hresp_error : assert property(p_hexokay_no_hresp_error);
     property p_htrans_stable_during_wait;
