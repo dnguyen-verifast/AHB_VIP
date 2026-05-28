@@ -12,6 +12,10 @@ package ahb_slave_sequence_pkg;
 
     `include "ahb_slave_base_seq.sv"
     `include "ahb_slave_basic_single_w_seq.sv"
+    `include "ahb_slave_basic_single_r_seq.sv"
+    `include "ahb_slave_basic_single_burst_seq.sv"
+    `include "ahb_slave_hsize_byte_strb_seq.sv"
+    `include "ahb_slave_hsize_halfword_strb_seq.sv"
     `include "ahb_slave_idle_transfer_seq.sv"
     `include "ahb_slave_incr_burst_seq.sv"
     `include "ahb_slave_wrap_burst_seq.sv"

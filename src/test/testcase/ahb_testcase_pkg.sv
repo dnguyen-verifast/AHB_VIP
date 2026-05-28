@@ -17,6 +17,10 @@ package ahb_testcase_pkg;
 
     `include "ahb_test_base.sv"
     `include "ahb_basic_single_w_test.sv"
+    `include "ahb_basic_single_r_test.sv"
+    `include "ahb_basic_single_burst_test.sv"
+    `include "ahb_hsize_byte_strb_test.sv"
+    `include "ahb_hsize_halfword_strb_test.sv"
     `include "ahb_idle_transfer_test.sv"
     `include "ahb_incr_burst_test.sv"
     `include "ahb_wrap_burst_test.sv"

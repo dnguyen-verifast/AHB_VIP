@@ -13,10 +13,30 @@ endfunction : new
 
 task ahb_master_locked_sequence_seq::body();
     super.body();
+    int locked_addr = 32'h01000000; 
     start_item(req_m);
-    if(!req_m.randomize()) begin
-        `uvm_fatal("ahb_master","Rand failed");
+    if(!req_m.randomize() with {
+        hmastlock == 1'b1;
+        hwrite == HWRITE_READ;
+        htrans == HTRANS_NONSEQ;
+        haddr == locked_addr;
+    }) 
+    begin
+        `uvm_fatal("ahb_slave","Rand failed");
     end
     finish_item(req_m);
+
+    start_item(req_m);
+    if(!req_m.randomize() with {
+        hmastlock == 1'b1;
+        hwrite == HWRITE_WRITE;
+        htrans == HTRANS_NONSEQ;
+        haddr == locked_addr;
+    }) 
+    begin
+        `uvm_fatal("ahb_slave","Rand failed");
+    end
+    finish_item(req_m);
+    do_idle(2,32'h1000_0000);
 endtask : body
 `endif

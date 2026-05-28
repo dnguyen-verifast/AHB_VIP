@@ -12,11 +12,12 @@ function ahb_master_1kb_boundary_violation_seq::new(string name = "ahb_master_1k
 endfunction : new
 
 task ahb_master_1kb_boundary_violation_seq::body();
-    super.body();
-    start_item(req_m);
-    if(!req_m.randomize()) begin
-        `uvm_fatal("ahb_master","Rand failed");
-    end
-    finish_item(req_m);
+
+   do_burst_transfer(32'h3fff_fff0, HWRITE_WRITE, INCR4, HSIZE_WORD, 0);
+   do_idle(1, 32'h3000_0010);
+
+   do_burst_transfer(32'h3fff_fff8, HWRITE_WRITE, WRAP4, HSIZE_WORD, 0);
+   do_idle(1, 32'h3000_0020);
+   
 endtask : body
 `endif

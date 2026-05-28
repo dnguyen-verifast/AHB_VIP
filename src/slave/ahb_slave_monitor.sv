@@ -6,6 +6,8 @@ class ahb_slave_monitor extends uvm_monitor;
 
     virtual ahb_if ahb_if_h;
     ahb_transfer_struct pipeline_monitor_l[$];
+    logic [31:0]             pre_haddr;
+    htrans_e                pre_htrans;
 
     uvm_analysis_port#(ahb_slave_tx)  ahb_slave_data_analysis_port;
     uvm_analysis_port#(ahb_slave_tx)  ahb_slave_addr_analysis_port;
@@ -69,6 +71,7 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             slv_tx_add.hexcl     = ahb_if_h.hexcl;
             slv_tx_add.htrans    = ahb_if_h.htrans;
             slv_tx_add.hwrite    = ahb_if_h.hwrite;
+            
             `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
             ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
             if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
@@ -76,7 +79,17 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
                 `uvm_info("SLAVE MON",$sformatf("addr phase write object to scoreboard mon_tx_add = %s \n",mon_tx_add.sprint()),UVM_LOW)
                 ahb_slave_addr_analysis_port.write(mon_tx_add);
             end
-        end
+
+            if(ahb_if_h.htrans == HTRANS_NONSEQ || ahb_if_h.htrans == HTRANS_IDLE) begin
+                `uvm_info("SLAVE MON", $sformatf("Start new sequence"), UVM_LOW)
+            end else begin
+                if(ahb_if_h.haddr[31:10] != pre_haddr[31:10]) begin
+                    `uvm_error("MON_CHK_1KB", $sformatf("FATAL! Burst crossed 1KB boundary. Prev: %0h, Curr: %0h", pre_haddr, ahb_if_h.haddr))
+                end
+            end
+        end 
+        pre_haddr = ahb_if_h.haddr;
+        pre_htrans = ahb_if_h.htrans;
     end
 endtask : ahb_slave_addr_phase
 

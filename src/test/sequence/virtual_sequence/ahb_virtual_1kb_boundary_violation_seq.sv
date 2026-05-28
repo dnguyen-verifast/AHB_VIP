@@ -30,7 +30,7 @@ task ahb_virtual_1kb_boundary_violation_seq::body();
 
     fork
         begin: T1_MST_WR
-        repeat(2) begin
+        repeat(1) begin
             ahb_master_1kb_boundary_violation_seq_h.start(p_sequencer.ahb_master_sequencer_h);
         end
         end

@@ -14,7 +14,10 @@ endfunction : new
 task ahb_slave_locked_sequence_seq::body();
     super.body();
     start_item(req_slv);
-    if(!req_slv.randomize()) begin
+    if(!req_slv.randomize() with {
+        hresp == HRESP_OKAY;
+        wait_state == 0;
+    }) begin
         `uvm_fatal("ahb_slave","Rand failed");
     end
     finish_item(req_slv);

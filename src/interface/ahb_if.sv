@@ -66,6 +66,7 @@ interface ahb_if(input clk, input resetn);
                 ($past(htrans) == 2'b00 && (htrans == 2'b00 || htrans == 2'b10)) ||
                 ($past(htrans) == 2'b01 && $past(hburst) == 3'b001) ||
                 ($past(htrans) == 2'b01 && $past(hburst) != 3'b001 && (htrans == 2'b01 || htrans == 2'b11)) ||
+                  
                 ($past(htrans) == 2'b10 && htrans == 2'b10) ||
                 ($past(htrans) == 2'b11 && htrans == 2'b11)
             );
@@ -95,6 +96,11 @@ interface ahb_if(input clk, input resetn);
         (hburst == 3'b000 && hready) |=> (htrans != 2'b01);
     endproperty
     a_last_burst_single_not_be_BUSY : assert property(p_last_burst_single_not_be_BUSY);
-
+    
+    property p_locked_transfer_same_addr;
+        @(posedge clk) disable iff(!resetn)
+        ($past(hmastlock) == 1'b1 && hmastlock == 1'b1) |-> (haddr[31:10] == $past(haddr[31:10]));  
+    endproperty
+    a_locked_transfer_same_addr : assert property(p_locked_transfer_same_addr);
 endinterface : ahb_if
 `endif

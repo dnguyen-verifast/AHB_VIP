@@ -12,6 +12,10 @@ package ahb_master_sequence_pkg;
 
     `include "ahb_master_base_seq.sv"
     `include "ahb_master_basic_single_w_seq.sv"
+    `include "ahb_master_basic_single_r_seq.sv"
+    `include "ahb_master_basic_single_burst_seq.sv"
+    `include "ahb_master_hsize_byte_strb_seq.sv"
+    `include "ahb_master_hsize_halfword_strb_seq.sv"
     `include "ahb_master_idle_transfer_seq.sv"
     `include "ahb_master_incr_burst_seq.sv"
     `include "ahb_master_wrap_burst_seq.sv"
