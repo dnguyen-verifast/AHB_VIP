@@ -51,7 +51,6 @@ task ahb_slave_driver::run_phase(uvm_phase phase);
     `uvm_info("DRIVER_SLAVE", "Inside run_phase of AHB Driver master", UVM_LOW)
 
     wait_ahb_for_resetn();
-    @(posedge ahb_if_h.clk);
     fork
         wr_addr_phase();
         wr_data_phase();
@@ -75,10 +74,9 @@ task ahb_slave_driver::wr_addr_phase();
 
     ahb_transfer_struct slv_struct_add;
     ahb_slave_tx slv_tx_add;
-    //@(posedge ahb_if_h.clk);
     forever begin
+        @(posedge ahb_if_h.clk);
         if (ahb_if_h.hsel == 1'b1 && ahb_if_h.hreadyout == 1'b1) begin
-            @(posedge ahb_if_h.clk);
             slv_struct_add.haddr     = ahb_if_h.haddr;
             slv_struct_add.hburst    = ahb_if_h.hburst;
             slv_struct_add.hmastlock = ahb_if_h.hmastlock;
@@ -92,7 +90,7 @@ task ahb_slave_driver::wr_addr_phase();
             ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
             `uvm_info(get_type_name(),$sformatf("Recieved transaction address information slv_tx_add = %s \n",slv_tx_add.sprint()),UVM_NONE);
             pipeline_q.put(slv_tx_add);
-        end else begin @(posedge ahb_if_h.clk); end
+        end
     end
 endtask : wr_addr_phase
 
