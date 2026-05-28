@@ -75,6 +75,7 @@ task ahb_slave_driver::wr_addr_phase();
 
     ahb_transfer_struct slv_struct_add;
     ahb_slave_tx slv_tx_add;
+    @(posedge ahb_if_h.clk);
     forever begin
         if (ahb_if_h.hsel == 1'b1 && ahb_if_h.hreadyout == 1'b1) begin
             @(posedge ahb_if_h.clk);
@@ -99,6 +100,7 @@ task ahb_slave_driver::wr_data_phase();
     ahb_slave_tx slv_addr_phase;
     ahb_slave_tx slv_data_tx;
     ahb_transfer_struct slv_data_struct;
+    @(posedge ahb_if_h.clk);
     forever begin
         `uvm_info(get_type_name(),$sformatf("Waiting for queue address phase valid"),UVM_NONE);
         pipeline_q.get(slv_addr_phase);
