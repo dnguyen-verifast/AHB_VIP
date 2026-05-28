@@ -116,13 +116,13 @@ task ahb_slave_driver::wr_data_phase();
             if(slv_addr_phase.hwrite == HWRITE_WRITE) begin
                 repeat(slv_data_tx.wait_state) begin
                     ahb_if_h.hreadyout <= 0;
-                    `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
+                    `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase WRITE",UVM_LOW)
                     @(posedge ahb_if_h.clk);
                 end
                 if(slv_addr_phase.hexcl == HEXCL_NORMAL) begin
-                    `uvm_info("DRIVER_SLAVE"," resolve a HEXCL_NORMAL data phase",UVM_LOW)
+                    `uvm_info("DRIVER_SLAVE"," resolve a HEXCL_NORMAL data phase WRITE",UVM_LOW)
                     if(slv_data_tx.hresp == HRESP_ERROR) begin
-                         `uvm_info("DRIVER_SLAVE"," resolve a HRESP_ERROR data phase",UVM_LOW)
+                         `uvm_info("DRIVER_SLAVE"," resolve a HRESP_ERROR data phase WRITE",UVM_LOW)
                         ahb_if_h.hreadyout <= 0;
                         ahb_if_h.hresp     <= 1;
                         ahb_if_h.hexokay   <= 0;
@@ -134,40 +134,43 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
                     end else begin
-                        `uvm_info("DRIVER_SLAVE"," resolve a HRESP_OKAY data phase",UVM_LOW)
+                        `uvm_info("DRIVER_SLAVE"," resolve a HRESP_OKAY data phase WRITE",UVM_LOW)
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 0;
                         slv_data_tx.hwdata   = ahb_if_h.hwdata;
                         @(posedge ahb_if_h.clk);
                     end
-                end else if(slv_addr_phase.hexcl == HEXCL_EXCLUSIVE) begin
-                if(slv_data_tx.hexokay == HEXOKAY_PASS) begin
-                        ahb_if_h.hreadyout <= 1;
-                        ahb_if_h.hexokay     <= 1;
-                        ahb_if_h.hresp     <= 0;
-                        slv_data_tx.hwdata   = ahb_if_h.hwdata;
-                        @(posedge ahb_if_h.clk);
                 end else begin
-                        ahb_if_h.hreadyout <= 0;
-                        ahb_if_h.hresp     <= 0;
-                        ahb_if_h.hexokay   <= 0;
-                        @(posedge ahb_if_h.clk);
-                        ahb_if_h.hreadyout <= 1;
-                        ahb_if_h.hresp     <= 0;
-                        ahb_if_h.hexokay   <= 0;
-                        @(posedge ahb_if_h.clk);
-                        ahb_if_h.hresp     <= 0;
-                        ahb_if_h.hexokay   <= 0;
-                end
+                    if(slv_data_tx.hexokay == HEXOKAY_PASS) begin
+                            `uvm_info("DRIVER_SLAVE"," resolve a HEXOKAY_PASS data phase for exclusive access WRITE",UVM_LOW)
+                            ahb_if_h.hreadyout <= 1;
+                            ahb_if_h.hexokay     <= 1;
+                            ahb_if_h.hresp     <= 0;
+                            slv_data_tx.hwdata   = ahb_if_h.hwdata;
+                            @(posedge ahb_if_h.clk);
+                    end else begin
+                            `uvm_info("DRIVER_SLAVE"," resolve a HEXOKAY_FAIL data phase for exclusive access WRITE",UVM_LOW)
+                            ahb_if_h.hreadyout <= 0;
+                            ahb_if_h.hresp     <= 0;
+                            ahb_if_h.hexokay   <= 0;
+                            @(posedge ahb_if_h.clk);
+                            ahb_if_h.hreadyout <= 1;
+                            ahb_if_h.hresp     <= 0;
+                            ahb_if_h.hexokay   <= 0;
+                            @(posedge ahb_if_h.clk);
+                            ahb_if_h.hresp     <= 0;
+                            ahb_if_h.hexokay   <= 0;
+                    end
                 end
             end else if(slv_addr_phase.hwrite == HWRITE_READ) begin
                 repeat(slv_data_tx.wait_state) begin
-                    `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase",UVM_LOW)
+                    `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase HWRITE_READ",UVM_LOW)
                     @(posedge ahb_if_h.clk);
                     ahb_if_h.hreadyout <= 0;
                 end
                 if(slv_addr_phase.hexcl == HEXCL_NORMAL) begin
                     if(slv_data_tx.hresp == HRESP_ERROR) begin
+                        `uvm_info("DRIVER_SLAVE"," resolve a HRESP_ERROR data phase HWRITE_READ",UVM_LOW)
                         ahb_if_h.hreadyout <= 0;
                         ahb_if_h.hresp     <= 1;
                         ahb_if_h.hexokay   <= 0;
@@ -180,19 +183,22 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
                     end else begin
+                        `uvm_info("DRIVER_SLAVE"," resolve a HRESP_PASS data phase HWRITE_READ",UVM_LOW)
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
                         @(posedge ahb_if_h.clk);
                     end
-                end else if(slv_addr_phase.hexcl == HEXCL_EXCLUSIVE) begin
+                end else begin
                 if(slv_data_tx.hexokay == HEXOKAY_PASS) begin
+                        `uvm_info("DRIVER_SLAVE"," resolve HEXCL_EXCLUSIVE a HEXOKAY_PASS data phase HWRITE_READ",UVM_LOW)
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hexokay   <= 1;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
                         @(posedge ahb_if_h.clk);
                 end else begin
+                        `uvm_info("DRIVER_SLAVE"," resolve HEXCL_EXCLUSIVE a HEXOKAY_FAIL data phase HWRITE_READ",UVM_LOW)
                         ahb_if_h.hreadyout <= 0;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
