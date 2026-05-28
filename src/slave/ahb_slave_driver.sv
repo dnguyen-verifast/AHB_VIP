@@ -51,7 +51,7 @@ task ahb_slave_driver::run_phase(uvm_phase phase);
     `uvm_info("DRIVER_SLAVE", "Inside run_phase of AHB Driver master", UVM_LOW)
 
     wait_ahb_for_resetn();
-
+    @(posedge ahb_if_h.resetn);
     fork
         wr_addr_phase();
         wr_data_phase();
