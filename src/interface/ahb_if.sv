@@ -58,6 +58,17 @@ interface ahb_if(input clk, input resetn);
     endproperty : valid_in_read_data_phase
     SIGNAL_VALID_READ_DATA_PHASE : assert property (valid_in_read_data_phase);
 
+    property p_hexokay_with_ready;
+        @(posedge clk) disable iff(!resetn)
+        hexokay == HEXOKAY_PASS |-> hreadyout == 1;
+    endproperty : p_hexokay_with_ready
+    a_hexokay_with_ready : assert property (p_hexokay_with_ready);
+
+     property p_hexokay_no_hresp_error;
+        @(posedge HCLK) disable iff (!HRESETn)
+        HEXOKAY |-> (HRESP == 1'b0); 
+    endproperty : p_hexokay_no_hresp_error
+    a_hexokay_no_hresp_error : assert property(p_hexokay_no_hresp_error);
     property p_htrans_stable_during_wait;
         @(posedge clk) disable iff (!resetn)
         // 4. SỬA LỖI TYPO: heady -> hready

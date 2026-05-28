@@ -122,11 +122,15 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 1;
                         ahb_if_h.hexokay   <= 0;
+                        @(posedge ahb_if_h.clk);
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
                     end else begin
                         `uvm_info("DRIVER_SLAVE"," resolve a HRESP_OKAY data phase",UVM_LOW)
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 0;
                         slv_data_tx.hwdata   = ahb_if_h.hwdata;
+                        @(posedge ahb_if_h.clk);
                     end
                 end else if(slv_addr_phase.hexcl == HEXCL_EXCLUSIVE) begin
                 if(slv_data_tx.hexokay == HEXOKAY_PASS) begin
@@ -134,12 +138,16 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hexokay     <= 1;
                         ahb_if_h.hresp     <= 0;
                         slv_data_tx.hwdata   = ahb_if_h.hwdata;
+                        @(posedge ahb_if_h.clk);
                 end else begin
                         ahb_if_h.hreadyout <= 0;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
                         @(posedge ahb_if_h.clk);
                         ahb_if_h.hreadyout <= 1;
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
+                        @(posedge ahb_if_h.clk);
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
                 end
@@ -160,10 +168,14 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hresp     <= 1;
                         ahb_if_h.hexokay   <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
+                        @(posedge ahb_if_h.clk);
+                        ahb_if_h.hresp     <= 0;
+                        ahb_if_h.hexokay   <= 0;
                     end else begin
                         ahb_if_h.hreadyout <= 1;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
+                        @(posedge ahb_if_h.clk);
                     end
                 end else if(slv_addr_phase.hexcl == HEXCL_EXCLUSIVE) begin
                 if(slv_data_tx.hexokay == HEXOKAY_PASS) begin
@@ -171,6 +183,7 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hexokay   <= 1;
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
+                        @(posedge ahb_if_h.clk);
                 end else begin
                         ahb_if_h.hreadyout <= 0;
                         ahb_if_h.hresp     <= 0;
@@ -180,6 +193,7 @@ task ahb_slave_driver::wr_data_phase();
                         ahb_if_h.hresp     <= 0;
                         ahb_if_h.hexokay   <= 0;
                         ahb_if_h.hrdata    <= slv_data_struct.hrdata;
+                        @(posedge ahb_if_h.clk);
                 end
                 end
             end
