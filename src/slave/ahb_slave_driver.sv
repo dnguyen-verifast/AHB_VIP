@@ -92,7 +92,7 @@ task ahb_slave_driver::wr_addr_phase();
             ahb_slave_seq_item_converter::to_class(slv_struct_add,slv_tx_add);
             `uvm_info(get_type_name(),$sformatf("Recieved transaction address information slv_tx_add = %s \n",slv_tx_add.sprint()),UVM_NONE);
             pipeline_q.put(slv_tx_add);
-        end
+        end else begin @(posedge ahb_if_h.clk); end
     end
 endtask : wr_addr_phase
 
