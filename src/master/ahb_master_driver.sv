@@ -49,7 +49,8 @@ endfunction : end_of_elaboration_phase
 task ahb_master_driver::run_phase(uvm_phase phase);
     `uvm_info("DRIVER_MASTER", "Inside run_phase of AHB Driver master", UVM_LOW)
 
-    wait_ahb_for_resetn();  
+    wait_ahb_for_resetn();
+    @(posedge ahb_if_h.resetn);  
     fork
         wr_addr_phase();
         wr_data_phase();
@@ -122,6 +123,9 @@ task ahb_master_driver::wr_data_phase();
             ahb_if_h.hwstrb    <= m_tx_data.hwstrb;
             `uvm_info("MASTER_DRIVER",$sformatf("Send data to slave hwdata = %h    hwstrb = %h \n",m_tx_data.hwdata,m_tx_data.hwstrb),UVM_LOW)
             @(posedge ahb_if_h.clk);
+            while(ahb_if_h.hreadyout == 0) begin
+                @(posedge ahb_if_h.clk);
+            end
             m_tx_data.hresp  = ahb_if_h.hresp;
             m_tx_data.hexokay  = ahb_if_h.hexokay;
         end else if(m_tx.hwrite == HWRITE_READ)begin
@@ -133,7 +137,6 @@ task ahb_master_driver::wr_data_phase();
             m_tx_data.hexokay    = ahb_if_h.hexokay;
             m_tx_data.hrdata = ahb_if_h.hrdata;
         end
-        
     end
 endtask : wr_data_phase
 

@@ -75,7 +75,7 @@ task ahb_slave_driver::wr_addr_phase();
 
     ahb_transfer_struct slv_struct_add;
     ahb_slave_tx slv_tx_add;
-    @(posedge ahb_if_h.clk);
+    //@(posedge ahb_if_h.clk);
     forever begin
         if (ahb_if_h.hsel == 1'b1 && ahb_if_h.hreadyout == 1'b1) begin
             @(posedge ahb_if_h.clk);
