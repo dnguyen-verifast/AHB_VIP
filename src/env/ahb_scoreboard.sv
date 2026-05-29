@@ -121,8 +121,8 @@ task ahb_scoreboard::ahb_data_phase_compare();
     `uvm_info("AHB_SCOREBOARD",$sformatf("exp_data_phase_tx = %s \n",exp_data_phase_tx.sprint()),UVM_LOW)
     if(m_data_phase_tx.hwrite == HWRITE_WRITE) begin
       ahb_data_phase_for_write_analysis_fifo_expect.get(m_data_write_tx);
-      exp_data_phase_tx.hwdata = m_data_write_tx.hwdata
-      exp_data_phase_tx.hwstrb = m_data_write_tx.hwstrb
+      exp_data_phase_tx.hwdata = m_data_write_tx.hwdata;
+      exp_data_phase_tx.hwstrb = m_data_write_tx.hwstrb;
     end
     m_data_phase_tx.compare_phase = DATA_PHASE;
     if(m_data_phase_tx.do_compare(l_data_phase_tx,uvm_default_comparer) && m_data_phase_tx.do_compare(exp_data_phase_tx,uvm_default_comparer)) begin
