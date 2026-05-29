@@ -98,19 +98,21 @@ task ahb_slave_monitor::ahb_slave_data_phase();
     forever begin
         ahb_slave_tx mon_tx_data;
         ahb_transfer_struct slv_tx_data;
-        @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hreadyout == 1 && pipeline_monitor_l.size() > 0) begin
-            slv_tx_data = pipeline_monitor_l.pop_front();
-            slv_tx_data.hwdata  = ahb_if_h.hwdata;
-            slv_tx_data.hwstrb  = ahb_if_h.hwstrb;
-            slv_tx_data.hresp   = ahb_if_h.hresp;
-            slv_tx_data.hrdata   = ahb_if_h.hrdata;
-            slv_tx_data.hexokay   = ahb_if_h.hexokay;
-             `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in data_phase"),UVM_LOW)
-            ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
-            ahb_slave_data_analysis_port.write(mon_tx_data);
-            `uvm_info("SLAVE MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_LOW)
-        end 
+        if(pipeline_monitor_l.size() > 0) begin
+            @(posedge ahb_if_h.clk);
+            if(ahb_if_h.hreadyout == 1) begin
+                slv_tx_data = pipeline_monitor_l.pop_front();
+                slv_tx_data.hwdata  = ahb_if_h.hwdata;
+                slv_tx_data.hwstrb  = ahb_if_h.hwstrb;
+                slv_tx_data.hresp   = ahb_if_h.hresp;
+                slv_tx_data.hrdata   = ahb_if_h.hrdata;
+                slv_tx_data.hexokay   = ahb_if_h.hexokay;
+                `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in data_phase"),UVM_LOW)
+                ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
+                ahb_slave_data_analysis_port.write(mon_tx_data);
+                `uvm_info("SLAVE MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_LOW)
+            end
+        end else begin @(posedge ahb_if_h.clk); end
     end
 endtask : ahb_slave_data_phase
 

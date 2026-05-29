@@ -85,8 +85,9 @@ task ahb_master_monitor::ahb_master_data_phase();
     forever begin
         ahb_master_tx mon_tx_data;
         ahb_transfer_struct m_tx_data;
-        @(posedge ahb_if_h.clk);
-        if(ahb_if_h.hreadyout == 1  && pipeline_monitor.size() > 0) begin
+        if(pipeline_monitor_l.size() > 0) begin
+            @(posedge ahb_if_h.clk);
+            if(ahb_if_h.hreadyout == 1) begin
              m_tx_data = pipeline_monitor.pop_front();
              m_tx_data.hwdata  = ahb_if_h.hwdata;
              m_tx_data.hwstrb  = ahb_if_h.hwstrb ;
@@ -98,6 +99,7 @@ task ahb_master_monitor::ahb_master_data_phase();
             `uvm_info("MASTER MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_LOW)
             ahb_master_data_analysis_port.write(mon_tx_data); 
         end
+        end else begin @(posedge ahb_if_h.clk); end
     end
 endtask : ahb_master_data_phase
 
