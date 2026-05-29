@@ -69,6 +69,7 @@ task ahb_master_monitor::ahb_master_addr_phase();
             m_tx_add.hmaster   = ahb_if_h.hmaster;
             m_tx_add.htrans    = ahb_if_h.htrans;
             m_tx_add.hwrite    = ahb_if_h.hwrite;
+            m_tx_add.hsel       = ahb_if_h.hsel;
             `uvm_info("MASTER MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
             ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
             ahb_master_addr_analysis_port.write(mon_tx_add);

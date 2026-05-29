@@ -69,9 +69,10 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             slv_tx_add.hsize     = ahb_if_h.hsize;
             slv_tx_add.hnonsec   = ahb_if_h.hnonsec;
             slv_tx_add.hexcl     = ahb_if_h.hexcl;
+            slv_tx_add.hmaster     = ahb_if_h.hmaster;
             slv_tx_add.htrans    = ahb_if_h.htrans;
             slv_tx_add.hwrite    = ahb_if_h.hwrite;
-            
+            slv_tx_add.hsel      = ahb_if_h.hsel;
             `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
             ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
             pre_haddr = mon_tx_add.haddr;
