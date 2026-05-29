@@ -4,8 +4,8 @@
 class ahb_master_sequencer extends uvm_sequencer#(ahb_master_tx);
     `uvm_component_utils(ahb_master_sequencer)
 
-    `uvm_analysis_port#(ahb_master_tx) seq_expect_item_port;
-    `uvm_analysis_port#(ahb_master_tx) seq_expect_write_item_port;
+    uvm_analysis_port#(ahb_master_tx) seq_expect_item_port;
+    uvm_analysis_port#(ahb_master_tx) seq_expect_write_item_port;
 
 extern function new(string name = "ahb_master_sequencer", uvm_component parent =null);
 extern virtual function void build_phase(uvm_phase phase);

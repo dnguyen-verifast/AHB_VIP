@@ -3,7 +3,7 @@
 
 class ahb_slave_sequencer extends uvm_sequencer#(ahb_slave_tx);
     `uvm_component_utils(ahb_slave_sequencer)
-    `uvm_analysis_port#(ahb_slave_tx) seq_expect_item_port;
+    uvm_analysis_port#(ahb_slave_tx) seq_expect_item_port;
 extern function new(string name = "ahb_slave_sequencer", uvm_component parent =null);
 extern virtual function void build_phase(uvm_phase phase);
 extern virtual function void connect_phase(uvm_phase phase);
