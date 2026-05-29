@@ -86,12 +86,10 @@ task ahb_scoreboard::ahb_addr_phase_compare();
     ahb_master_tx exp_addr_phase_tx;
     addr_phase_key.get(1);
     ahb_addr_phase_analysis_fifo_expect.get(exp_addr_phase_tx);
-    `uvm_info("AHB_SCOREBOARD",$sformatf("exp_addr_phase_tx = %s \n",exp_addr_phase_tx.sprint()),UVM_LOW)
-
     ahb_master_addr_phase_analysis_fifo.get(m_addr_phase_tx);
-    `uvm_info("AHB_SCOREBOARD",$sformatf("m_addr_phase_tx = %s \n",m_addr_phase_tx.sprint()),UVM_LOW)
-
     ahb_slave_addr_phase_analysis_fifo.get(l_addr_phase_tx);
+    `uvm_info("AHB_SCOREBOARD",$sformatf("exp_addr_phase_tx = %s \n",exp_addr_phase_tx.sprint()),UVM_LOW)
+    `uvm_info("AHB_SCOREBOARD",$sformatf("m_addr_phase_tx = %s \n",m_addr_phase_tx.sprint()),UVM_LOW)
     `uvm_info("AHB_SCOREBOARD",$sformatf("l_addr_phase_tx = %s \n",l_addr_phase_tx.sprint()),UVM_LOW)
 
     m_addr_phase_tx.compare_phase = ADDR_PHASE;
@@ -114,15 +112,16 @@ task ahb_scoreboard::ahb_data_phase_compare();
     ahb_slave_tx exp_data_phase_tx;
     data_phase_key.get(1);
     ahb_master_data_phase_analysis_fifo.get(m_data_phase_tx);
-    `uvm_info("AHB_SCOREBOARD",$sformatf("m_data_phase_tx = %s \n",m_data_phase_tx.sprint()),UVM_LOW)
     ahb_slave_data_phase_analysis_fifo.get(l_data_phase_tx);
-    `uvm_info("AHB_SCOREBOARD",$sformatf("l_data_phase_tx = %s \n",l_data_phase_tx.sprint()),UVM_LOW)
     ahb_data_phase_analysis_fifo_expect.get(exp_data_phase_tx);
+
     if(m_data_phase_tx.hwrite == HWRITE_WRITE) begin
       ahb_data_phase_for_write_analysis_fifo_expect.get(m_data_write_tx);
       exp_data_phase_tx.hwdata = m_data_write_tx.hwdata;
       exp_data_phase_tx.hwstrb = m_data_write_tx.hwstrb;
     end
+    `uvm_info("AHB_SCOREBOARD",$sformatf("m_data_phase_tx = %s \n",m_data_phase_tx.sprint()),UVM_LOW)
+    `uvm_info("AHB_SCOREBOARD",$sformatf("l_data_phase_tx = %s \n",l_data_phase_tx.sprint()),UVM_LOW)
     `uvm_info("AHB_SCOREBOARD",$sformatf("exp_data_phase_tx = %s \n",exp_data_phase_tx.sprint()),UVM_LOW)
     m_data_phase_tx.compare_phase = DATA_PHASE;
     if(m_data_phase_tx.do_compare(l_data_phase_tx,uvm_default_comparer) && m_data_phase_tx.do_compare(exp_data_phase_tx,uvm_default_comparer)) begin
