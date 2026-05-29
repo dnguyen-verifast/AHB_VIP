@@ -10,6 +10,7 @@ class ahb_slave_monitor extends uvm_monitor;
     htrans_e                pre_htrans;
 
     uvm_analysis_port#(ahb_slave_tx)  ahb_slave_addr_analysis_port;
+    uvm_analysis_port#(ahb_slave_tx)  ahb_slave_data_analysis_port;
 
 
     extern function new(string name = "ahb_slave_monitor", uvm_component parent=null);
@@ -25,6 +26,7 @@ endclass : ahb_slave_monitor
 function ahb_slave_monitor::new(string name = "ahb_slave_monitor", uvm_component parent =null);
     super.new(name, parent);
     ahb_slave_addr_analysis_port = new("ahb_slave_addr_analysis_port",this);
+    ahb_slave_data_analysis_port = new("ahb_slave_data_analysis_port",this);
 endfunction : new
 
 function void ahb_slave_monitor::build_phase(uvm_phase phase);
@@ -105,6 +107,7 @@ task ahb_slave_monitor::ahb_slave_data_phase();
             slv_tx_data.hexokay   = ahb_if_h.hexokay;
              `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in data_phase"),UVM_LOW)
             ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
+            ahb_slave_data_analysis_port.write(mon_tx_data);
             `uvm_info("SLAVE MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_LOW)
         end else begin @(posedge ahb_if_h.clk); end
     end

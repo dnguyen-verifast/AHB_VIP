@@ -14,7 +14,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_slave_tx);
     virtual ahb_if ahb_if_h;
 
     uvm_tlm_analysis_fifo #(ahb_slave_tx) pipeline_q;
-    uvm_analysis_port#(ahb_slave_tx)  ahb_slave_data_analysis_port;
+    
 
     semaphore add_phase_key;
     semaphore data_phase_key;
@@ -33,7 +33,6 @@ function ahb_slave_driver::new(string name="ahb_slave_driver",uvm_component pare
     super.new(name,parent);
     ahb_slave_seq_item_port = new("ahb_slave_seq_item_port",this);
     pipeline_q = new("pipeline_q",this);
-    ahb_slave_data_analysis_port = new("ahb_slave_data_analysis_port",this);
     add_phase_key = new(1);
     data_phase_key = new(1);
 endfunction : new
@@ -203,7 +202,6 @@ task ahb_slave_driver::wr_data_phase();
                 end
                 end
             end
-            ahb_slave_data_analysis_port.write(slv_data_tx);
             ahb_slave_seq_item_port.item_done();
         end
     end

@@ -12,11 +12,14 @@ function ahb_slave_exclusive_access_seq::new(string name = "ahb_slave_exclusive_
 endfunction : new
 
 task ahb_slave_exclusive_access_seq::body();
+    ahb_slave_tx cloned_req;
     super.body();
     start_item(req_slv);
     if(!req_slv.randomize()) begin
         `uvm_fatal("ahb_slave","Rand failed");
     end
+    $cast(cloned_req,req_slv.clone());
+    p_sequencer.seq_expect_item_port.write(cloned_req);
     finish_item(req_slv);
 endtask : body
 `endif

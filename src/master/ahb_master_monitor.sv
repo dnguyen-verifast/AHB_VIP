@@ -8,6 +8,7 @@ class ahb_master_monitor extends uvm_monitor;
     ahb_transfer_struct pipeline_monitor[$];
 
     uvm_analysis_port#(ahb_master_tx)  ahb_master_data_analysis_port;
+    uvm_analysis_port#(ahb_master_tx)  ahb_master_addr_analysis_port;
 
     extern function new(string name = "ahb_master_monitor", uvm_component parent=null);
     extern virtual function void build_phase(uvm_phase phase);
@@ -22,6 +23,7 @@ endclass : ahb_master_monitor
 function ahb_master_monitor::new(string name ="ahb_master_monitor", uvm_component parent =null);
     super.new(name, parent);
     ahb_master_data_analysis_port = new("ahb_master_data_analysis_port",this);
+    ahb_master_addr_analysis_port = new("ahb_master_addr_analysis_port",this);
 endfunction : new
 
 function void ahb_master_monitor::build_phase(uvm_phase phase);
@@ -69,6 +71,7 @@ task ahb_master_monitor::ahb_master_addr_phase();
             m_tx_add.hwrite    = ahb_if_h.hwrite;
             `uvm_info("MASTER MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
             ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
+            ahb_master_addr_analysis_port.write(mon_tx_add);
 //            if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
             pipeline_monitor.push_back(m_tx_add);
             `uvm_info("MASTER MON",$sformatf("addr phase write object to scoreboard mon_tx_add = %s \n",mon_tx_add.sprint()),UVM_LOW)

@@ -21,6 +21,11 @@ class ahb_scoreboard extends uvm_scoreboard;
     
     uvm_tlm_analysis_fifo #(ahb_master_tx) ahb_master_data_phase_analysis_fifo;
     uvm_tlm_analysis_fifo #(ahb_master_tx) ahb_master_addr_phase_analysis_fifo;
+
+    uvm_tlm_analysis_fifo #(ahb_master_tx) ahb_addr_phase_analysis_fifo_expect;
+
+    uvm_tlm_analysis_fifo #(ahb_slave_tx) ahb_data_phase_analysis_fifo_expect;
+    uvm_tlm_analysis_fifo #(ahb_master_tx) ahb_data_phase_for_write_analysis_fifo_expect;
     
     extern function new(string name="ahb_scoreboard", uvm_component parent=null);
     extern virtual function void build_phase(uvm_phase phase);
@@ -42,6 +47,10 @@ function ahb_scoreboard::new(string name="ahb_scoreboard", uvm_component parent=
     ahb_master_data_phase_analysis_fifo = new("ahb_master_data_phase_analysis_fifo",this);
     ahb_slave_addr_phase_analysis_fifo = new("ahb_slave_addr_phase_analysis_fifo",this);
     ahb_master_addr_phase_analysis_fifo = new("ahb_master_addr_phase_analysis_fifo",this);
+
+    ahb_addr_phase_analysis_fifo_expect = new("ahb_addr_phase_analysis_fifo_expect",this);
+    ahb_data_phase_analysis_fifo_expect = new("ahb_data_phase_analysis_fifo_expect",this);
+    ahb_data_phase_for_write_analysis_fifo_expect = new("ahb_data_phase_for_write_analysis_fifo_expect",this);
     data_phase_key = new(1);
     addr_phase_key = new(1);
 endfunction : new
@@ -74,13 +83,19 @@ task ahb_scoreboard::ahb_addr_phase_compare();
   forever begin
     ahb_slave_tx l_addr_phase_tx;
     ahb_master_tx m_addr_phase_tx;
+    ahb_master_tx exp_addr_phase_tx;
     addr_phase_key.get(1);
+    ahb_addr_phase_analysis_fifo_expect.get(exp_addr_phase_tx);
+    `uvm_info("AHB_SCOREBOARD",$sformatf("exp_addr_phase_tx = %s \n",exp_addr_phase_tx.sprint()),UVM_LOW)
+
     ahb_master_addr_phase_analysis_fifo.get(m_addr_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("m_addr_phase_tx = %s \n",m_addr_phase_tx.sprint()),UVM_LOW)
+
     ahb_slave_addr_phase_analysis_fifo.get(l_addr_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("l_addr_phase_tx = %s \n",l_addr_phase_tx.sprint()),UVM_LOW)
+
     m_addr_phase_tx.compare_phase = ADDR_PHASE;
-    if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer)) begin
+    if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer) && m_addr_phase_tx.do_compare(exp_addr_phase_tx,uvm_default_comparer)) begin
       `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
       ahb_addr_phase_comparer_count_pass ++;
     end else begin
@@ -95,13 +110,22 @@ task ahb_scoreboard::ahb_data_phase_compare();
   forever begin
     ahb_slave_tx l_data_phase_tx;
     ahb_master_tx m_data_phase_tx;
+    ahb_master_tx m_data_write_tx;
+    ahb_slave_tx exp_data_phase_tx;
     data_phase_key.get(1);
     ahb_master_data_phase_analysis_fifo.get(m_data_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("m_data_phase_tx = %s \n",m_data_phase_tx.sprint()),UVM_LOW)
     ahb_slave_data_phase_analysis_fifo.get(l_data_phase_tx);
     `uvm_info("AHB_SCOREBOARD",$sformatf("l_data_phase_tx = %s \n",l_data_phase_tx.sprint()),UVM_LOW)
+    ahb_data_phase_analysis_fifo_expect.get(exp_data_phase_tx);
+    `uvm_info("AHB_SCOREBOARD",$sformatf("exp_data_phase_tx = %s \n",exp_data_phase_tx.sprint()),UVM_LOW)
+    if(m_data_phase_tx.hwrite == HWRITE_WRITE) begin
+      ahb_data_phase_for_write_analysis_fifo_expect.get(m_data_write_tx);
+      exp_data_phase_tx.hwdata = m_data_write_tx.hwdata
+      exp_data_phase_tx.hwstrb = m_data_write_tx.hwstrb
+    end
     m_data_phase_tx.compare_phase = DATA_PHASE;
-    if(m_data_phase_tx.do_compare(l_data_phase_tx,uvm_default_comparer)) begin
+    if(m_data_phase_tx.do_compare(l_data_phase_tx,uvm_default_comparer) && m_data_phase_tx.do_compare(exp_data_phase_tx,uvm_default_comparer)) begin
       `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
       ahb_data_phase_comparer_count_pass ++;
     end else begin
@@ -111,7 +135,6 @@ task ahb_scoreboard::ahb_data_phase_compare();
     data_phase_key.put(1);
     ahb_data_phase_comparer_count ++;
   end
-
 endtask : ahb_data_phase_compare
 
 function void ahb_scoreboard::check_phase (uvm_phase phase);
