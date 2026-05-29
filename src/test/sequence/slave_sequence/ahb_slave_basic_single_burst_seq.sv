@@ -23,6 +23,7 @@ task ahb_slave_basic_single_burst_seq::body();
         `uvm_fatal("ahb_slave","Rand failed");
     end
     $cast(cloned_req,req_slv.clone());
+    `uvm_info("AHB_SLAVE_BASIC_SINGLE_BURST_SEQ",$sformatf("cloned_req = %s \n",cloned_req.sprint()),UVM_LOW)
     p_sequencer.seq_expect_item_port.write(cloned_req);
     finish_item(req_slv);
 endtask : body

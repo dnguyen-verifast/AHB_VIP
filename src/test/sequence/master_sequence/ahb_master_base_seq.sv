@@ -120,7 +120,9 @@ task ahb_master_base_seq::do_burst_transfer(
         if(req_m.hwrite == HWRITE_WRITE) begin
           $cast(cloned_req1, req_m.clone());
           p_sequencer.seq_expect_write_item_port.write(cloned_req1);
+          
         end
+
         finish_item(req_m);
       end
     end
