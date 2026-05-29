@@ -96,11 +96,11 @@ task ahb_scoreboard::ahb_addr_phase_compare();
 
     m_addr_phase_tx.compare_phase = ADDR_PHASE;
     if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer) && m_addr_phase_tx.do_compare(exp_addr_phase_tx,uvm_default_comparer)) begin
-      `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
+      `uvm_info("AHB_SCOREBOARD","ADDRESS phase comparision PASSED",UVM_HIGH)
       ahb_addr_phase_comparer_count_pass ++;
     end else begin
       ahb_addr_phase_comparer_count_failed ++; 
-      `uvm_error("COMPARE_AW","Write Address comparision FAILED") end
+      `uvm_error("COMPARE_AW","Address comparision FAILED") end
     addr_phase_key.put(1);
     ahb_addr_phase_comparer_count ++;
   end
@@ -130,7 +130,7 @@ task ahb_scoreboard::ahb_data_phase_compare();
       ahb_data_phase_comparer_count_pass ++;
     end else begin
       ahb_data_phase_comparer_count_failed ++; 
-      `uvm_error("COMPARE_AW","Write Address comparision FAILED") 
+      `uvm_error("COMPARE_AW","DATA PHASE comparision FAILED") 
     end
     data_phase_key.put(1);
     ahb_data_phase_comparer_count ++;
