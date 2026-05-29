@@ -7,6 +7,7 @@ class ahb_master_driver extends uvm_driver#(ahb_master_tx);
     uvm_seq_item_pull_port #(REQ,RSP) ahb_master_seq_item_port;
 
     uvm_analysis_port #(RSP) ahb_write_rsp_port;
+    uvm_analysis_port#(ahb_master_tx)  ahb_master_addr_analysis_port;
 
     uvm_tlm_analysis_fifo #(ahb_master_tx) ahb_master_fifo;
     
@@ -33,6 +34,7 @@ function ahb_master_driver::new(string name="ahb_master_driver",uvm_component pa
     super.new(name,parent);
     ahb_master_seq_item_port = new("ahb_master_seq_item_port",this);
     ahb_master_fifo = new("ahb_master_fifo",this);
+    ahb_master_addr_analysis_port = new("ahb_master_addr_analysis_port",this);
 endfunction : new
 
 function void ahb_master_driver::build_phase(uvm_phase phase);
@@ -81,6 +83,7 @@ task ahb_master_driver::wr_addr_phase();
         ahb_master_tx m_tx;
         ahb_transfer_struct m_tx_addr;
         ahb_master_seq_item_port.get_next_item(m_tx);
+        ahb_master_addr_analysis_port.write(m_tx);
         `uvm_info("MASTER_DRIVER",$sformatf("ADDRESS_PHASE information address m_tx =%s \n",m_tx.sprint()),UVM_LOW)
         ahb_master_seq_item_converter::from_class(m_tx,m_tx_addr);
         if(m_tx == null) begin
