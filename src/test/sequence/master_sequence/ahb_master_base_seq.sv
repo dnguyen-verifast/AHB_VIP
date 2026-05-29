@@ -61,8 +61,6 @@ endfunction
 
 task ahb_master_base_seq::do_idle(input int num_clk, input bit [31:0] addr_idle);
   ahb_master_tx req_m;
-  ahb_master_tx cloned_req;
-  ahb_master_tx cloned_req1;
   for(int i = 0; i < num_clk; i++) begin
     req_m = ahb_master_tx::type_id::create("req_m");
     start_item(req_m);
@@ -71,12 +69,6 @@ task ahb_master_base_seq::do_idle(input int num_clk, input bit [31:0] addr_idle)
       req_m.haddr == local::addr_idle;
     });
     `uvm_info("SEQ master", $sformatf("Driving IDLE phase %0d/%0d", i+1, num_clk), UVM_LOW)
-    $cast(cloned_req, req_m.clone());
-    p_sequencer.seq_expect_item_port.write(cloned_req);
-    if(req_m.hwrite == HWRITE_WRITE) begin
-      $cast(cloned_req1, req_m.clone());
-      p_sequencer.seq_expect_write_item_port.write(cloned_req1);
-    end
     finish_item(req_m);
   end    
 endtask : do_idle
@@ -115,14 +107,6 @@ task ahb_master_base_seq::do_burst_transfer(
           hwrite == local::is_write;
           req_m.haddr == local::current_addr;
         });
-        $cast(cloned_req, req_m.clone());
-        p_sequencer.seq_expect_item_port.write(cloned_req);
-        if(req_m.hwrite == HWRITE_WRITE) begin
-          $cast(cloned_req1, req_m.clone());
-          p_sequencer.seq_expect_write_item_port.write(cloned_req1);
-          
-        end
-
         finish_item(req_m);
       end
     end
