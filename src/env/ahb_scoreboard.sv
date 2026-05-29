@@ -94,7 +94,7 @@ task ahb_scoreboard::ahb_addr_phase_compare();
 
     m_addr_phase_tx.compare_phase = ADDR_PHASE;
     if(m_addr_phase_tx.do_compare(l_addr_phase_tx,uvm_default_comparer) && m_addr_phase_tx.do_compare(exp_addr_phase_tx,uvm_default_comparer)) begin
-      `uvm_info("AHB_SCOREBOARD","ADDRESS phase comparision PASSED",UVM_HIGH)
+      `uvm_info("AHB_SCOREBOARD","ADDRESS phase comparision PASSED",UVM_LOW)
       ahb_addr_phase_comparer_count_pass ++;
     end else begin
       ahb_addr_phase_comparer_count_failed ++; 
@@ -125,7 +125,7 @@ task ahb_scoreboard::ahb_data_phase_compare();
     `uvm_info("AHB_SCOREBOARD",$sformatf("exp_data_phase_tx = %s \n",exp_data_phase_tx.sprint()),UVM_LOW)
     m_data_phase_tx.compare_phase = DATA_PHASE;
     if(m_data_phase_tx.do_compare(l_data_phase_tx,uvm_default_comparer) && m_data_phase_tx.do_compare(exp_data_phase_tx,uvm_default_comparer)) begin
-      `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_HIGH)
+      `uvm_info("AHB_SCOREBOARD","Data phase comparision PASSED",UVM_LOW)
       ahb_data_phase_comparer_count_pass ++;
     end else begin
       ahb_data_phase_comparer_count_failed ++; 

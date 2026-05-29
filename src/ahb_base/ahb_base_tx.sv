@@ -61,6 +61,7 @@ function void ahb_base_tx::do_copy(uvm_object rhs);
 
     hsel = ahb_base_tx_copy.hsel;
 endfunction : do_copy
+
 function void ahb_base_tx::do_print(uvm_printer printer);
    printer.print_field("haddr",haddr,$bits(haddr),UVM_HEX);
    printer.print_string("hburst",hburst.name());
