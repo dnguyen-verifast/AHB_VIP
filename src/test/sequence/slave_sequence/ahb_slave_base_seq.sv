@@ -10,14 +10,13 @@ class ahb_slave_base_seq extends uvm_sequence #(ahb_slave_tx);
   //factory registration
   `uvm_object_utils(ahb_slave_base_seq)
   `uvm_declare_p_sequencer(ahb_slave_sequencer)
-    ahb_slave_tx req_slv;
+  ahb_slave_tx req_slv;
   //-------------------------------------------------------
   // Externally defined Function
   //-------------------------------------------------------
   extern function new(string name = "ahb_slave_base_seq");
-   extern task body();
+  extern task body();
 endclass : ahb_slave_base_seq
-`
 //-----------------------------------------------------------------------------
 // Constructor: new
 // Initializes the axi4_master_sequence class object
