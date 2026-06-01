@@ -112,5 +112,14 @@ interface ahb_if(input clk, input resetn);
         ($past(hmastlock) == 1'b1 && hmastlock == 1'b1) |-> (haddr[31:10] == $past(haddr[31:10]));  
     endproperty
     a_locked_transfer_same_addr : assert property(p_locked_transfer_same_addr);
+    initial begin
+       $assertoff(0,SIGNAL_ALWAYS_VALID);
+       $assertoff(0,SIGNAL_VALID_HTRANS_NOT_IDLE);
+        wait(resetn == 0);
+        wait(resetn == 1);
+       $asserton(0,SIGNAL_ALWAYS_VALID);
+       $asserton(0,SIGNAL_VALID_HTRANS_NOT_IDLE);        
+        
+    end
 endinterface : ahb_if
 `endif
