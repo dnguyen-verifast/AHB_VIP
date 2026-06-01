@@ -81,7 +81,7 @@ task ahb_master_driver::wr_addr_phase();
         ahb_master_tx m_tx;
         ahb_transfer_struct m_tx_addr;
         ahb_master_seq_item_port.get_next_item(m_tx);
-        `uvm_info("MASTER_DRIVER",$sformatf("ADDRESS_PHASE information address m_tx =%s \n",m_tx.sprint()),UVM_LOW)
+        `uvm_info("MASTER_DRIVER",$sformatf("ADDRESS_PHASE information address m_tx =%s \n",m_tx.sprint()),UVM_HIGH)
         ahb_master_seq_item_converter::from_class(m_tx,m_tx_addr);
         if(m_tx == null) begin
             ahb_if_h.htrans    <= '0;
@@ -128,6 +128,7 @@ task ahb_master_driver::wr_data_phase();
             m_tx_data.hresp  = ahb_if_h.hresp;
             m_tx_data.hexokay  = ahb_if_h.hexokay;
         end else if(m_tx.hwrite == HWRITE_READ)begin
+            ahb_if_h.hwstrb    <= m_tx_data.hwstrb;
             @(posedge ahb_if_h.clk);
             while(ahb_if_h.hreadyout == 0) begin
                 @(posedge ahb_if_h.clk);

@@ -101,7 +101,7 @@ task ahb_slave_driver::wr_data_phase();
     ahb_transfer_struct slv_data_struct;
     @(posedge ahb_if_h.clk);
     forever begin
-        `uvm_info(get_type_name(),$sformatf("Waiting for queue address phase valid"),UVM_NONE);
+        `uvm_info(get_type_name(),$sformatf("Waiting for queue address phase valid"),UVM_HIGH);
         pipeline_q.get(slv_addr_phase);
         if(slv_addr_phase.htrans == HTRANS_IDLE || slv_addr_phase.htrans == HTRANS_BUSY) begin
             ahb_if_h.hreadyout <= 1'b1;
@@ -111,7 +111,7 @@ task ahb_slave_driver::wr_data_phase();
             @(posedge ahb_if_h.clk);
         end else begin
             ahb_slave_seq_item_port.get_next_item(slv_data_tx);
-            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_data_tx.sprint()),UVM_NONE);
+            `uvm_info(get_type_name(),$sformatf("ADDRESS PHASE::Before Sending_req_write_packet = \n %s",slv_data_tx.sprint()),UVM_HIGH);
             ahb_slave_seq_item_converter::from_class(slv_data_tx,slv_data_struct);
             if(slv_addr_phase.hwrite == HWRITE_WRITE) begin
                 repeat(slv_data_tx.wait_state) begin

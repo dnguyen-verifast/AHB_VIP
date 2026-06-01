@@ -6,7 +6,6 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
     covergroup ahb_master_covergroup with function sample(ahb_master_tx packet);
         option.per_instance =1;
 
-
         HBURST_CP : coverpoint   packet.hburst {
             bins b_SINGLE = {SINGLE};
             bins b_INCR   = {INCR};
@@ -22,39 +21,12 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
             bins b_HSIZE_BYTE   = {HSIZE_BYTE};
             bins b_HSIZE_HWORD  = {HSIZE_HWORD};
             bins b_HSIZE_WORD   = {HSIZE_WORD};
-            bins b_HSIZE_DWORD  = {HSIZE_DWORD};
-            bins b_HSIZE_LINE4  = {HSIZE_LINE4};
-            bins b_HSIZE_LINE8  = {HSIZE_LINE8};
-            bins b_HSIZE_LINE16 = {HSIZE_LINE16};
-            bins b_HSIZE_LINE32 = {HSIZE_LINE32};
+            // bins b_HSIZE_DWORD  = {HSIZE_DWORD};
+            // bins b_HSIZE_LINE4  = {HSIZE_LINE4};
+            // bins b_HSIZE_LINE8  = {HSIZE_LINE8};
+            // bins b_HSIZE_LINE16 = {HSIZE_LINE16};
+            // bins b_HSIZE_LINE32 = {HSIZE_LINE32};
         }
-        HADDR_CP : coverpoint packet.haddr {
-            bins all_zeros = {0};
-            // bins low_range = {[1 : 32'h0000_FFFF]};
-            // bins mid_range = {[32'h0001_0000 : 32'hFFFF_FFFE]};
-            bins all_ones  = {'1};
-            bins others    = default;
-        }
-
-        HWDTA_CP : coverpoint packet.hwdata {
-            bins all_zeros = {0};
-            bins all_ones  = {'1};
-            bins others    = default;
-        }
-
-        HRDATA_CP : coverpoint packet.hrdata {
-            bins all_zeros = {0};
-            bins all_ones  = {'1};
-            bins others    = default;
-        }
-
-        HWSTRB_CP : coverpoint packet.hwstrb {
-            bins all_zeros = {0};
-            bins all_ones  = {'1};
-            bins mixed     = default;
-        }
-        //coverpoint hprot;
-        //coverpoint hmaster;
 
         HTRANS_CP : coverpoint packet.htrans {
             bins IDLE   = {2'b00};
@@ -63,26 +35,9 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
             bins SEQ    = {2'b11};
         }
 
-        // coverpoint packet.wait_state {
-        //     bins zero_wait  = {0};
-        //     bins short_wait = {[1:3]};
-        //     bins long_wait  = {[4:6]};
-        //     bins max_wait   = {7};
-        // }
-
         HMASTLOCK_CP : coverpoint packet.hmastlock {
             bins unlocked = {0};
             bins locked   = {1};
-        }
-
-        HNONSEC_CP : coverpoint packet.hnonsec {
-            bins secure     = {0};
-            bins non_secure = {1};
-        }
-
-        HEXCL_CP : coverpoint packet.hexcl {
-            bins normal    = {0};
-            bins exclusive = {1};
         }
 
         HWRITE_CP : coverpoint packet.hwrite {
@@ -100,16 +55,59 @@ class ahb_master_coverage extends uvm_subscriber #(ahb_master_tx);
             bins ERROR = {1};
         }
 
-        HEXOKAY_CP : coverpoint packet.hexokay {
-            bins FAIL    = {0};
-            bins SUCCESS = {1};
-        }
+        HBURST_CP_x_HSIZE_CP : cross HBURST_CP, HSIZE_CP;
+        HTRANS_CP_x_HWRITE_CP : cross HTRANS_CP, HWRITE_CP;
+        HBURST_CP_x_HWRITE_CP : cross HBURST_CP, HWRITE_CP;
+        HRESP_CP_x_HWRITE_CP : cross HWRITE_CP, HRESP_CP;
+        HTRANS_CP_x_HREADYOUT_CP : cross  HTRANS_CP, HREADYOUT_CP;
+
+        // HADDR_CP : coverpoint packet.haddr {
+        //     bins all_zeros = {0};
+        //     // bins low_range = {[1 : 32'h0000_FFFF]};
+        //     // bins mid_range = {[32'h0001_0000 : 32'hFFFF_FFFE]};
+        //     bins all_ones  = {'1};
+        //     bins others    = default;
+        // }
+
+        // HRDATA_CP : coverpoint packet.hrdata {
+        //     bins all_zeros = {0};
+        //     bins all_ones  = {'1};
+        //     bins others    = default;
+        // }
+
+        // HWDTA_CP : coverpoint packet.hwdata {
+        //     bins all_zeros = {0};
+        //     bins all_ones  = {'1};
+        //     bins others    = default;
+        // }
+
+        // HEXOKAY_CP : coverpoint packet.hexokay {
+        //     bins FAIL    = {0};
+        //     bins SUCCESS = {1};
+        // }
 
         // HSEL_CP : coverpoint packet.hsel {
         //     bins not_selected = {0};
         //     bins selected     = {1};
         // }
+
+        // HEXCL_CP : coverpoint packet.hexcl {
+        //     bins normal    = {0};
+        //     bins exclusive = {1};
+        // }
+
+        // HWSTRB_CP : coverpoint packet.hwstrb {
+        //     bins all_zeros = {0};
+        //     bins all_ones  = {'1};
+        //     bins mixed     = default;
+        // }
+        //coverpoint hprot;
+        //coverpoint hmaster;
         
+        // HNONSEC_CP : coverpoint packet.hnonsec {
+        //     bins secure     = {0};
+        //     bins non_secure = {1};
+        // }
     endgroup : ahb_master_covergroup
 extern function new(string name = "ahb_master_coverage", uvm_component parent=null);
 extern virtual function void write(ahb_master_tx t);

@@ -23,6 +23,8 @@ package ahb_testcase_pkg;
     `include "ahb_hsize_halfword_strb_test.sv"
     `include "ahb_idle_transfer_test.sv"
     `include "ahb_incr_burst_test.sv"
+    `include "ahb_undefine_length_incr_test.sv"
+    `include "ahb_rand_burst_size_wr_test.sv"
     `include "ahb_wrap_burst_test.sv"
     `include "ahb_busy_burst_test.sv"
     `include "ahb_1kb_boundary_violation_test.sv"

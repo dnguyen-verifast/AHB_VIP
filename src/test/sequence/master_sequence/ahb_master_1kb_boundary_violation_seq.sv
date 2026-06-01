@@ -13,7 +13,7 @@ endfunction : new
 
 task ahb_master_1kb_boundary_violation_seq::body();
 
-   do_burst_transfer(32'h3fff_fff0, HWRITE_WRITE, INCR4, HSIZE_WORD, 0);
+   do_burst_transfer(32'h3fff_fff8, HWRITE_WRITE, INCR4, HSIZE_WORD, 0);
    do_idle(1, 32'h3000_0010);
 
    do_burst_transfer(32'h3fff_fff8, HWRITE_WRITE, WRAP4, HSIZE_WORD, 0);

@@ -18,6 +18,8 @@ package ahb_slave_sequence_pkg;
     `include "ahb_slave_hsize_halfword_strb_seq.sv"
     `include "ahb_slave_idle_transfer_seq.sv"
     `include "ahb_slave_incr_burst_seq.sv"
+    `include "ahb_slave_undefine_length_incr_seq.sv"
+    `include "ahb_slave_rand_burst_size_wr_seq.sv"
     `include "ahb_slave_wrap_burst_seq.sv"
     `include "ahb_slave_busy_burst_seq.sv"
     `include "ahb_slave_1kb_boundary_violation_seq.sv"

@@ -13,22 +13,18 @@ function ahb_master_basic_single_burst_seq::new(string name = "ahb_master_basic_
 endfunction : new
 
 task ahb_master_basic_single_burst_seq::body();
-   // INCR4 burst - Write
-   do_burst_transfer(32'h3000_0000, HWRITE_WRITE, INCR4, HSIZE_WORD, 0);
-   do_idle(2, 32'h3000_0010);
-   
-   // INCR4 burst - Read
-   do_burst_transfer(32'h3000_0010, HWRITE_READ, INCR4, HSIZE_WORD, 0);
-   do_idle(2, 32'h3000_0020);
-   
-   // WRAP4 burst - Write
-   do_burst_transfer(32'h3000_0020, HWRITE_WRITE, WRAP4, HSIZE_WORD, 0);
-   do_idle(2, 32'h3000_0020);
-   
-   // INCR8 burst - Read
-   do_burst_transfer(32'h3000_0030, HWRITE_READ, INCR8, HSIZE_WORD, 0);
-   do_idle(2, 32'h3000_0050);
+   repeat(100) begin
+    start_item(req_m);
+    assert(req_m.randomize() with {
+            htrans == SINGLE;
+            hexcl == HEXCL_NORMAL;
+            hnonsec == HNONSEC_NONSECURE;
+            htrans  == HTRANS_NONSEQ;
+    });
+    finish_item(req_m);
 
+    do_idle(2, 32'h3000_0010);
+   end
 endtask : body
 
 `endif

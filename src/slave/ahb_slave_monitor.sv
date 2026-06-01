@@ -79,7 +79,7 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
             pre_htrans = mon_tx_add.htrans;
             if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
                 pipeline_monitor_l.push_back(slv_tx_add);
-                `uvm_info("SLAVE MON",$sformatf("addr phase write object to scoreboard mon_tx_add = %s \n",mon_tx_add.sprint()),UVM_LOW)
+                `uvm_info("SLAVE MON",$sformatf("addr phase write object to scoreboard mon_tx_add = %s \n",mon_tx_add.sprint()),UVM_HIGH)
                 ahb_slave_addr_analysis_port.write(mon_tx_add);
             end
 
@@ -111,7 +111,7 @@ task ahb_slave_monitor::ahb_slave_data_phase();
                 `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in data_phase"),UVM_LOW)
                 ahb_slave_seq_item_converter::to_class(slv_tx_data,mon_tx_data);
                 ahb_slave_data_analysis_port.write(mon_tx_data);
-                `uvm_info("SLAVE MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_LOW)
+                `uvm_info("SLAVE MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_HIGH)
             end
 //        end else begin @(posedge ahb_if_h.clk); end
     end

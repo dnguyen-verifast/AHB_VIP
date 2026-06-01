@@ -20,6 +20,8 @@ package ahb_virtual_sequence_pkg;
     `include "ahb_virtual_hsize_halfword_strb_seq.sv"
     `include "ahb_virtual_idle_transfer_seq.sv"
     `include "ahb_virtual_incr_burst_seq.sv"
+    `include "ahb_virtual_undefine_length_incr_seq.sv"
+    `include "ahb_virtual_rand_burst_size_wr_seq.sv"
     `include "ahb_virtual_wrap_burst_seq.sv"
     `include "ahb_virtual_busy_burst_seq.sv"
     `include "ahb_virtual_1kb_boundary_violation_seq.sv"

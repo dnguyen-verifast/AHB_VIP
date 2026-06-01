@@ -18,6 +18,8 @@ package ahb_master_sequence_pkg;
     `include "ahb_master_hsize_halfword_strb_seq.sv"
     `include "ahb_master_idle_transfer_seq.sv"
     `include "ahb_master_incr_burst_seq.sv"
+    `include "ahb_master_undefine_length_incr_seq.sv"
+    `include "ahb_master_rand_burst_size_wr_seq.sv"
     `include "ahb_master_wrap_burst_seq.sv"
     `include "ahb_master_busy_burst_seq.sv"
     `include "ahb_master_1kb_boundary_violation_seq.sv"
