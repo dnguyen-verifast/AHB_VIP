@@ -24,6 +24,7 @@ task ahb_slave_undefine_length_incr_seq::body();
     end
     $cast(cloned_req,req_slv.clone());
     p_sequencer.seq_expect_item_port.write(cloned_req);
+    `uvm_info("slave_seq",$sformatf("req_slv = %s", req_slv.sprint()))
     finish_item(req_slv);
 endtask : body
 
