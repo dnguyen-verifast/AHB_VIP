@@ -139,6 +139,5 @@ task ahb_master_driver::wr_data_phase();
         end
     end
 endtask : wr_data_phase
-
 `endif
 

@@ -98,7 +98,8 @@ task ahb_slave_monitor::ahb_slave_data_phase();
     forever begin
         ahb_slave_tx mon_tx_data;
         ahb_transfer_struct slv_tx_data;
-        if(pipeline_monitor_l.size() > 0) begin
+        wait(pipeline_monitor_l.size() > 0);
+//        if(pipeline_monitor_l.size() > 0) begin
             @(posedge ahb_if_h.clk);
             if(ahb_if_h.hreadyout == 1) begin
                 slv_tx_data = pipeline_monitor_l.pop_front();
@@ -112,7 +113,7 @@ task ahb_slave_monitor::ahb_slave_data_phase();
                 ahb_slave_data_analysis_port.write(mon_tx_data);
                 `uvm_info("SLAVE MON",$sformatf("data_phase write object to scoreboard mon_tx_data = %s \n",mon_tx_data.sprint()),UVM_LOW)
             end
-        end else begin @(posedge ahb_if_h.clk); end
+//        end else begin @(posedge ahb_if_h.clk); end
     end
 endtask : ahb_slave_data_phase
 
