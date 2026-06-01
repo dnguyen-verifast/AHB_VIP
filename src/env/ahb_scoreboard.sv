@@ -120,7 +120,7 @@ task ahb_scoreboard::ahb_data_phase_compare();
       exp_data_phase_tx.hwdata = m_data_write_tx.hwdata;
       exp_data_phase_tx.hwstrb = m_data_write_tx.hwstrb;
     end
-    `uvm_info("AHB_SCOREBOARD",$sformatf("m_data_phase_tx = %s \n",m_data_phase_tx.sprint()),UVM_HIGH)
+    `uvm_info("AHB_SCOREBOARD",$sformatf("m_data_phase_tx = %s \n",m_data_phase_tx.sprint()),UVM_LOW)
     `uvm_info("AHB_SCOREBOARD",$sformatf("l_data_phase_tx = %s \n",l_data_phase_tx.sprint()),UVM_HIGH)
     `uvm_info("AHB_SCOREBOARD",$sformatf("exp_data_phase_tx = %s \n",exp_data_phase_tx.sprint()),UVM_LOW)
     m_data_phase_tx.compare_phase = DATA_PHASE;
