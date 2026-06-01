@@ -118,6 +118,7 @@ override test_folder = $(test)
 endif
 
 simulate:
+	# rm -r $(test_folder)
 	mkdir $(test_folder)
 
 	# Use -novopt for no optimization - Makes the simulation slower
@@ -177,7 +178,8 @@ regression:
 	# Run compilation
 	#make compile
 	#make clean_simulate
-	# Run simualtion - regression 
+	# Run simualtion - regression
+	make clean_simulate 
 	python regression_handling.py $(testlist_name)
 	#	# Get the tests from regression list
 	#	grep "_test" ../../src/hvl_top/testlists/axi4_simple_fd_regression.list | grep -v "\#" > reg_list
