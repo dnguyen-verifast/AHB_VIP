@@ -24,7 +24,7 @@ task ahb_master_convert_trans_waitstate_seq::body();
    do_idle(2, 32'h2000_0100);
    
    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,50,3,has_convert_waitstate);
-   do_idle(2, 32'h2000_0100);
+   do_idle(2,32'h2000_0100);
    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2,has_convert_waitstate);
     start_item(req_m);
     assert(req_m.randomize() with {

@@ -110,6 +110,7 @@ task ahb_master_base_seq::do_burst_transfer(
           req_m.haddr == local::current_addr;
           has_convert_waitstate == local::has_convert_waitstate;
         });
+        `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
         finish_item(req_m);
       end
     end
