@@ -18,7 +18,8 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
     input hburst_e burst_type, 
     input hsize_e size,
     input int      busy_chance_pct = 0,
-    input int      undef_incr_len = 1
+    input int      undef_incr_len = 1,
+    input int      has_convert_waitstate = 0
   );
 
 endclass : ahb_master_base_seq
