@@ -46,9 +46,13 @@ class ahb_slave_coverage extends uvm_subscriber #(ahb_slave_tx);
             bins WRITE = {1};
         }
 
+        // HREADYOUT_CP : coverpoint packet.hreadyout {
+        //     bins not_ready = {0};
+        //     bins ready     = {1};
+        // }
         HREADYOUT_CP : coverpoint packet.hreadyout {
-            bins not_ready = {0};
-            bins ready     = {1};
+            bins not_ready = {1};
+            bins ready     = {0};
         }
 
         HRESP_CP : coverpoint packet.hresp {
