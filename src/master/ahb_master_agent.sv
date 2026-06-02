@@ -31,6 +31,6 @@ function void ahb_master_agent::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     ahb_master_driver_h.ahb_master_seq_item_port.connect(ahb_master_sequencer_h.seq_item_export);
     ahb_master_monitor_h.ahb_master_data_analysis_port.connect(ahb_master_coverage_h.analysis_export);
-    ahb_master_monitor_h.ahb_master_addr_analysis_port.connect(ahb_master_coverage_h.analysis_export);
+    ahb_master_monitor_h.ahb_master_coverage_analysis_port.connect(ahb_master_coverage_h.analysis_export);
 endfunction : connect_phase
 `endif
