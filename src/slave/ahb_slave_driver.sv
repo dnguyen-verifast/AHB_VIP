@@ -162,9 +162,9 @@ task ahb_slave_driver::wr_data_phase();
                 end
             end else if(slv_addr_phase.hwrite == HWRITE_READ) begin
                 repeat(slv_data_tx.wait_state) begin
+                    ahb_if_h.hreadyout <= 0;
                     `uvm_info("DRIVER_SLAVE","waiting for resolve a previous data phase HWRITE_READ",UVM_LOW)
                     @(posedge ahb_if_h.clk);
-                    ahb_if_h.hreadyout <= 0;
                 end
                 if(slv_addr_phase.hexcl == HEXCL_NORMAL) begin
                     if(slv_data_tx.hresp == HRESP_ERROR) begin
