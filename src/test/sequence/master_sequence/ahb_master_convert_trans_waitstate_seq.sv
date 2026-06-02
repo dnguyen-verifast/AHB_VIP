@@ -23,27 +23,32 @@ task ahb_master_convert_trans_waitstate_seq::body();
    do_burst_transfer(32'h2000_0100, HWRITE_READ, INCR4, HSIZE_WORD,50,0,has_convert_waitstate);
    do_idle(2, 32'h2000_0100);
    
+
+
    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,50,3,has_convert_waitstate);
    do_idle(2,32'h2000_0100);
    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2,has_convert_waitstate);
-    start_item(req_m);
-    assert(req_m.randomize() with {
-      req_m.htrans == HTRANS_BUSY;
-      req_m.haddr == 32'h2000_0108;
-      req_m.hburst == INCR;
-      req_m.has_convert_waitstate == has_convert_waitstate;
-    });
-    finish_item(req_m);
 
-    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2);
     start_item(req_m);
     assert(req_m.randomize() with {
       htrans == HTRANS_BUSY;
-      req_m.haddr == 32'h2000_0108;
+      haddr == 32'h2000_0108;
       hburst == INCR;
-      req_m.has_convert_waitstate == has_convert_waitstate;
+      has_convert_waitstate == local::has_convert_waitstate;
     });
     finish_item(req_m);
+
+    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2,has_convert_waitstate);
+
+    start_item(req_m);
+    assert(req_m.randomize() with {
+      htrans == HTRANS_BUSY;
+      haddr == 32'h2000_0108;
+      hburst == INCR;
+      has_convert_waitstate == local::has_convert_waitstate;
+    });
+    finish_item(req_m);
+
     do_idle(1, 32'h2000_0000);
 endtask : body
 `endif

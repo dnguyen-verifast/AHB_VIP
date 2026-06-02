@@ -83,7 +83,7 @@ task ahb_master_base_seq::do_burst_transfer(
     input int      undef_incr_len = 1,
     input int      has_convert_waitstate = 0
 );
-  ahb_master_tx req_m;
+  //ahb_master_tx req_m;
   ahb_master_tx cloned_req;
   ahb_master_tx cloned_req1;
   bit [31:0] current_addr = start_addr;
