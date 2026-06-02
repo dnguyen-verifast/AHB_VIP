@@ -32,6 +32,7 @@ package ahb_virtual_sequence_pkg;
     `include "ahb_virtual_write_strobe_sparse_seq.sv"
     `include "ahb_virtual_exclusive_access_seq.sv"
     `include "ahb_virtual_parity_error_injection_seq.sv"
+    `include "ahb_virtual_convert_trans_waitstate_seq.sv"
 
 endpackage : ahb_virtual_sequence_pkg
 

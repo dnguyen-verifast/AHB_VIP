@@ -30,6 +30,7 @@ package ahb_master_sequence_pkg;
     `include "ahb_master_write_strobe_sparse_seq.sv"
     `include "ahb_master_exclusive_access_seq.sv"
     `include "ahb_master_parity_error_injection_seq.sv"
+    `include "ahb_master_convert_trans_waitstate_seq.sv"
 
 endpackage : ahb_master_sequence_pkg
 

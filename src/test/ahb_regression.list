@@ -13,3 +13,4 @@ ahb_1kb_boundary_violation_test
 ahb_random_wait_state_test
 ahb_error_response_test
 ahb_locked_sequence_test
+ahb_convert_trans_waitstate_test

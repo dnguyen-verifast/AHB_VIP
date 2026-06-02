@@ -60,22 +60,22 @@ task ahb_master_monitor::ahb_master_addr_phase();
         ahb_master_tx mon_tx_add;
         ahb_transfer_struct m_tx_add;
         @(posedge ahb_if_h.clk);
+        m_tx_add.haddr     = ahb_if_h.haddr;
+        m_tx_add.hburst    = ahb_if_h.hburst;
+        m_tx_add.hmastlock = ahb_if_h.hmastlock;
+        m_tx_add.hprot     = ahb_if_h.hprot;
+        m_tx_add.hsize     = ahb_if_h.hsize;
+        m_tx_add.hnonsec   = ahb_if_h.hnonsec;
+        m_tx_add.hexcl     = ahb_if_h.hexcl;
+        m_tx_add.hmaster   = ahb_if_h.hmaster;
+        m_tx_add.htrans    = ahb_if_h.htrans;
+        m_tx_add.hwrite    = ahb_if_h.hwrite;
+        m_tx_add.hsel       = ahb_if_h.hsel;
+        m_tx_add.hreadyout = ahb_if_h.hreadyout;
+        `uvm_info("MASTER MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
+        ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
+        ahb_master_coverage_analysis_port.write(mon_tx_add);
         if(ahb_if_h.hreadyout == 1) begin
-            m_tx_add.haddr     = ahb_if_h.haddr;
-            m_tx_add.hburst    = ahb_if_h.hburst;
-            m_tx_add.hmastlock = ahb_if_h.hmastlock;
-            m_tx_add.hprot     = ahb_if_h.hprot;
-            m_tx_add.hsize     = ahb_if_h.hsize;
-            m_tx_add.hnonsec   = ahb_if_h.hnonsec;
-            m_tx_add.hexcl     = ahb_if_h.hexcl;
-            m_tx_add.hmaster   = ahb_if_h.hmaster;
-            m_tx_add.htrans    = ahb_if_h.htrans;
-            m_tx_add.hwrite    = ahb_if_h.hwrite;
-            m_tx_add.hsel       = ahb_if_h.hsel;
-            m_tx_add.hreadyout = ahb_if_h.hreadyout;
-            `uvm_info("MASTER MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
-            ahb_master_seq_item_converter::to_class(m_tx_add,mon_tx_add);
-            ahb_master_coverage_analysis_port.write(mon_tx_add);
             if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin
                 pipeline_monitor.push_back(m_tx_add);
                 ahb_master_addr_analysis_port.write(mon_tx_add);

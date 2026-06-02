@@ -62,21 +62,21 @@ task ahb_slave_monitor::ahb_slave_addr_phase();
         ahb_slave_tx mon_tx_add;
         ahb_transfer_struct slv_tx_add;
         @(posedge ahb_if_h.clk);
+        slv_tx_add.haddr     = ahb_if_h.haddr;
+        slv_tx_add.hburst    = ahb_if_h.hburst;
+        slv_tx_add.hmastlock = ahb_if_h.hmastlock;
+        slv_tx_add.hprot     = ahb_if_h.hprot;
+        slv_tx_add.hsize     = ahb_if_h.hsize;
+        slv_tx_add.hnonsec   = ahb_if_h.hnonsec;
+        slv_tx_add.hexcl     = ahb_if_h.hexcl;
+        slv_tx_add.hmaster     = ahb_if_h.hmaster;
+        slv_tx_add.htrans    = ahb_if_h.htrans;
+        slv_tx_add.hwrite    = ahb_if_h.hwrite;
+        slv_tx_add.hsel      = ahb_if_h.hsel;
+        `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
+        ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
+        ahb_slave_coverage_analysis_port.write(mon_tx_add);
         if(ahb_if_h.hreadyout == 1) begin
-            slv_tx_add.haddr     = ahb_if_h.haddr;
-            slv_tx_add.hburst    = ahb_if_h.hburst;
-            slv_tx_add.hmastlock = ahb_if_h.hmastlock;
-            slv_tx_add.hprot     = ahb_if_h.hprot;
-            slv_tx_add.hsize     = ahb_if_h.hsize;
-            slv_tx_add.hnonsec   = ahb_if_h.hnonsec;
-            slv_tx_add.hexcl     = ahb_if_h.hexcl;
-            slv_tx_add.hmaster     = ahb_if_h.hmaster;
-            slv_tx_add.htrans    = ahb_if_h.htrans;
-            slv_tx_add.hwrite    = ahb_if_h.hwrite;
-            slv_tx_add.hsel      = ahb_if_h.hsel;
-            `uvm_info("SLAVE MON",$sformatf("Capture signal from interface in addr phase"),UVM_LOW)
-            ahb_slave_seq_item_converter::to_class(slv_tx_add,mon_tx_add);
-            ahb_slave_coverage_analysis_port.write(mon_tx_add);
             pre_haddr = mon_tx_add.haddr;
             pre_htrans = mon_tx_add.htrans;
             if (mon_tx_add.htrans == HTRANS_NONSEQ || mon_tx_add.htrans == HTRANS_SEQ) begin

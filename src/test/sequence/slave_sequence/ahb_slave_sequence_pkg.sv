@@ -30,6 +30,7 @@ package ahb_slave_sequence_pkg;
     `include "ahb_slave_write_strobe_sparse_seq.sv"
     `include "ahb_slave_exclusive_access_seq.sv"
     `include "ahb_slave_parity_error_injection_seq.sv"
+    `include "ahb_slave_convert_trans_waitstate_seq.sv"
 
 endpackage : ahb_slave_sequence_pkg
 

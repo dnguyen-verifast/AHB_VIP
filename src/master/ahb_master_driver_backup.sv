@@ -99,22 +99,10 @@ task ahb_master_driver::wr_addr_phase();
             ahb_if_h.hwrite    <= m_tx_addr.hwrite;
             ahb_if_h.hsel       <= m_tx_addr.hsel;
             @(posedge ahb_if_h.clk);
-            if(m_tx.has_convert_waitstate == 1) begin
-                if(ahb_if_h.hreadyout == 0 && (m_tx.htrans == HTRANS_IDLE || (m_tx.htrans == HTRANS_BUSY && (m_tx.hburst != SINGLE)))) begin
-                    `uvm_info("MASTER_DRIVER",$sformatf("Transfer type changes during wait states"),UVM_LOW)                        
-                end else begin
-                    ahb_master_fifo.put(m_tx);
-                    `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
-                    while(ahb_if_h.hreadyout == 0) begin
-                        @(posedge ahb_if_h.clk);
-                    end
-                end
-            end else begin
-                ahb_master_fifo.put(m_tx);
-                `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
-                while(ahb_if_h.hreadyout == 0) begin
-                    @(posedge ahb_if_h.clk);
-                end
+            ahb_master_fifo.put(m_tx);
+            `uvm_info("MASTER_DRIVER",$sformatf("Finished send information address"),UVM_LOW)
+            while(ahb_if_h.hreadyout == 0) begin
+                @(posedge ahb_if_h.clk);
             end
         end
         ahb_master_seq_item_port.item_done(); 

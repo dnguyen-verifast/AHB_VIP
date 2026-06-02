@@ -35,6 +35,7 @@ package ahb_testcase_pkg;
     `include "ahb_write_strobe_sparse_test.sv"
     `include "ahb_exclusive_access_test.sv"
     `include "ahb_parity_error_injection_test.sv"
+    `include "ahb_convert_trans_waitstate_test.sv"
 
 endpackage : ahb_testcase_pkg
 

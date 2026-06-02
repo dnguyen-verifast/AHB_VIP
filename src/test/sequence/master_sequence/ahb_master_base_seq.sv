@@ -79,7 +79,8 @@ task ahb_master_base_seq::do_burst_transfer(
     input hburst_e burst_type, 
     input hsize_e size,
     input int      busy_chance_pct = 0,
-    input int      undef_incr_len = 1
+    input int      undef_incr_len = 1,
+    input int      has_convert_waitstate = 0
 );
   ahb_master_tx req_m;
   ahb_master_tx cloned_req;
@@ -106,6 +107,7 @@ task ahb_master_base_seq::do_burst_transfer(
           hburst == local::burst_type;
           hwrite == local::is_write;
           req_m.haddr == local::current_addr;
+          has_convert_waitstate == local::has_convert_waitstate;
         });
         finish_item(req_m);
       end
@@ -116,6 +118,7 @@ task ahb_master_base_seq::do_burst_transfer(
       hsize  == local::size;
       hburst == local::burst_type;
       hwrite == local::is_write;
+      has_convert_waitstate == local::has_convert_waitstate;
       if (local::i == 0) {
         htrans == HTRANS_NONSEQ;
       } else {
