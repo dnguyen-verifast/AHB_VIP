@@ -10,7 +10,7 @@ package ahb_env_pkg;
     import ahb_slave_pkg::*;
 
     `include "uvm_macros.svh"
-
+    `include "ahb_env_config"
     `include "ahb_virtual_seqr.sv"
     `include "ahb_scoreboard.sv"
     `include "ahb_env.sv"
