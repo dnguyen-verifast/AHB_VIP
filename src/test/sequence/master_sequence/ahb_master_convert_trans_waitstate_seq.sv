@@ -16,18 +16,18 @@ task ahb_master_convert_trans_waitstate_seq::body();
     bit has_convert_waitstate = 1;
    // Test converting transactions with wait states
    // Single transfer with 1 wait state
-   do_burst_transfer(32'h2000_0000, HWRITE_WRITE, INCR4, HSIZE_WORD, 1,0,has_convert_waitstate);
+   do_burst_transfer(32'h2000_0000, HWRITE_WRITE, INCR4, HSIZE_WORD, 1,0);
    do_idle(1, 32'h2000_0000);
    
    // Burst with 2 wait states
-   do_burst_transfer(32'h2000_0100, HWRITE_READ, INCR4, HSIZE_WORD,50,0,has_convert_waitstate);
+   do_burst_transfer(32'h2000_0100, HWRITE_READ, INCR4, HSIZE_WORD,50,0);
    do_idle(2, 32'h2000_0100);
    
 
 
-   do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,50,3,has_convert_waitstate);
+   do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,50,3);
    do_idle(2,32'h2000_0100);
-   do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2,has_convert_waitstate);
+   do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2);
 
     start_item(req_m);
     assert(req_m.randomize() with {
@@ -37,7 +37,7 @@ task ahb_master_convert_trans_waitstate_seq::body();
     });
     finish_item(req_m);
 
-    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2,has_convert_waitstate);
+    do_burst_transfer(32'h2000_0100, HWRITE_WRITE, INCR, HSIZE_WORD,0,2);
 
     start_item(req_m);
     assert(req_m.randomize() with {
