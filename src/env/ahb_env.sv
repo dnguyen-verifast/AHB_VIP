@@ -28,25 +28,25 @@ function void ahb_env::build_phase(uvm_phase phase);
         `uvm_fatal("FATAL_ENV_AGENT_CONFIG", $sformatf("Couldn't get the env_agent_config from config_db"))
     end
 
-    ahb_master_config_h = new(ahb_env_config_h.no_of_masters);
+    ahb_master_config_h = new[ahb_env_config_h.no_of_masters];
     foreach(ahb_master_config_h[i]) begin
         if(!uvm_config_db#(ahb_master_config)::get(this,"",$sformatf("ahb_master_config[%0d]",i),ahb_master_config_h[i])) begin
             `uvm_fatal("FATAL_MA_AGENT_CONFIG", $sformatf("Couldn't get the ahb_master_config[%0d] from config_db",i))
         end
     end
 
-    ahb_slave_config_h = new(ahb_env_config_h.no_of_slaves);
+    ahb_slave_config_h = new[ahb_env_config_h.no_of_slaves];
     foreach(ahb_slave_config_h[i]) begin
         if(!uvm_config_db#(ahb_slave_config)::get(this,"",$sformatf("ahb_slave_config[%0d]",i),ahb_slave_config_h[i])) begin
             `uvm_fatal("FATAL_SLV_AGENT_CONFIG", $sformatf("Couldn't get the ahb_slave_config[%0d] from config_db",i))
         end
     end
 
-    ahb_master_agent_h = new[axi4_env_cfg_h.no_of_masters];
+    ahb_master_agent_h = new[ahb_env_config_h.no_of_masters];
     foreach(ahb_master_agent_h[i]) begin
         ahb_master_agent_h[i]=ahb_master_agent::type_id::create($sformatf("ahb_master_agent_h[%0d]",i),this);
     end
-    ahb_slave_agent_h = new[axi4_env_cfg_h.no_of_slaves];
+    ahb_slave_agent_h = new[ahb_env_config_h.no_of_slaves];
     foreach(ahb_slave_agent_h[i]) begin
         ahb_slave_agent_h[i]=ahb_slave_agent::type_id::create($sformatf("ahb_slave_agent_h[%0d]",i),this);
     end
