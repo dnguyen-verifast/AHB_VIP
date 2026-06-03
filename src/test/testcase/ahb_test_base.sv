@@ -22,7 +22,7 @@ endfunction : new
 function void ahb_test_base::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
-  ahb_env_config_h = ahb_env_config::type_id::create::("ahb_env_config_h");
+  ahb_env_config_h = ahb_env_config::type_id::create("ahb_env_config_h");
   ahb_env_config_h.has_scoreboard = 1;
   ahb_env_config_h.has_virtual_seqr = 1;
   ahb_env_config_h.no_of_slaves = 1;
