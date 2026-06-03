@@ -34,7 +34,6 @@ task ahb_master_convert_trans_waitstate_seq::body();
       htrans == HTRANS_BUSY;
       haddr == 32'h2000_0108;
       hburst == INCR;
-      has_convert_waitstate == local::has_convert_waitstate;
     });
     finish_item(req_m);
 
@@ -45,7 +44,6 @@ task ahb_master_convert_trans_waitstate_seq::body();
       htrans == HTRANS_BUSY;
       haddr == 32'h2000_0108;
       hburst == INCR;
-      has_convert_waitstate == local::has_convert_waitstate;
     });
     finish_item(req_m);
 

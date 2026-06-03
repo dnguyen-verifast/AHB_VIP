@@ -12,6 +12,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_slave_tx);
     RSP rsp_write, rsp_read;
 
     virtual ahb_if ahb_if_h;
+    ahb_slave_config ahb_slave_config_h;
 
     uvm_tlm_analysis_fifo #(ahb_slave_tx) pipeline_q;
     

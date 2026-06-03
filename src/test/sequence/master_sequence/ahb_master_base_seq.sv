@@ -18,8 +18,7 @@ class ahb_master_base_seq extends uvm_sequence #(ahb_master_tx);
     input hburst_e burst_type, 
     input hsize_e size,
     input int      busy_chance_pct = 0,
-    input int      undef_incr_len = 1,
-    input int      has_convert_waitstate = 0
+    input int      undef_incr_len = 1
   );
 
 endclass : ahb_master_base_seq
@@ -80,8 +79,7 @@ task ahb_master_base_seq::do_burst_transfer(
     input hburst_e burst_type, 
     input hsize_e size,
     input int      busy_chance_pct = 0,
-    input int      undef_incr_len = 1,
-    input int      has_convert_waitstate = 0
+    input int      undef_incr_len = 1
 );
   //ahb_master_tx req_m;
   ahb_master_tx cloned_req;
@@ -108,7 +106,6 @@ task ahb_master_base_seq::do_burst_transfer(
           hburst == local::burst_type;
           hwrite == local::is_write;
           req_m.haddr == local::current_addr;
-          has_convert_waitstate == local::has_convert_waitstate;
         });
         `uvm_info("SEQ master", $sformatf("req_m = %s \n",req_m.sprint()), UVM_LOW)
         finish_item(req_m);
@@ -120,7 +117,6 @@ task ahb_master_base_seq::do_burst_transfer(
       hsize  == local::size;
       hburst == local::burst_type;
       hwrite == local::is_write;
-      has_convert_waitstate == local::has_convert_waitstate;
       if (local::i == 0) {
         htrans == HTRANS_NONSEQ;
       } else {

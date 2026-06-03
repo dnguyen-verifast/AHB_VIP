@@ -9,6 +9,8 @@ class ahb_slave_agent extends uvm_agent;
     ahb_slave_sequencer ahb_slave_sequencer_h;
     ahb_slave_coverage ahb_slave_coverage_h;
 
+    ahb_slave_config ahb_slave_config_h;
+
     extern function new(string name = "ahb_slave_agent", uvm_component parent = null);
     extern virtual function void build_phase(uvm_phase phase);
     extern virtual function void connect_phase(uvm_phase phase);
@@ -29,6 +31,9 @@ endfunction : build_phase
 
 function void ahb_slave_agent::connect_phase(uvm_phase phase);
     super.connect_phase(phase);
+
+    ahb_slave_driver_h.ahb_slave_config_h = ahb_slave_config_h;
+
     ahb_slave_driver_h.ahb_slave_seq_item_port.connect(ahb_slave_sequencer_h.seq_item_export);
     ahb_slave_monitor_h.ahb_slave_data_analysis_port.connect(ahb_slave_coverage_h.analysis_export);
     ahb_slave_monitor_h.ahb_slave_coverage_analysis_port.connect(ahb_slave_coverage_h.analysis_export);

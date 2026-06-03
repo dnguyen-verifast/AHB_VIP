@@ -7,6 +7,15 @@ package ahb_global_pkg;
     parameter int DATA_WIDTH = 32;
     parameter int HWSTRB = 4;
 
+    typedef enum bit {
+        UVM_PASSTIVE = 1'b0,
+        UVM_ACTIVE = 1'b1
+    } uvm_active_passive_enum;
+
+    typedef enum bit {
+        RANDOM_RESP = 1'b0,
+        MEM_RESP = 1'b1
+    } response_mode_e;
 
     typedef enum bit [2:0]{
         SINGLE  = 3'b000,

@@ -14,7 +14,7 @@ class ahb_master_driver extends uvm_driver#(ahb_master_tx);
     RSP rsp_write, rsp_read;
 
     virtual ahb_if ahb_if_h;
-
+    ahb_master_config ahb_master_config_h;
     
 extern function new(string name = "ahb_master_driver", uvm_component parent=null);
 extern virtual function void build_phase(uvm_phase phase);
@@ -99,7 +99,7 @@ task ahb_master_driver::wr_addr_phase();
             ahb_if_h.hwrite    <= m_tx_addr.hwrite;
             ahb_if_h.hsel       <= m_tx_addr.hsel;
             @(posedge ahb_if_h.clk);
-            if(m_tx.has_convert_waitstate == 1) begin
+            if(ahb_master_config_h.has_convert_waitstate == 1) begin
                 if(ahb_if_h.hreadyout == 0 && (m_tx.htrans == HTRANS_IDLE || (m_tx.htrans == HTRANS_BUSY && (m_tx.hburst != SINGLE)))) begin
                     `uvm_info("MASTER_DRIVER",$sformatf("Transfer type changes during wait states"),UVM_LOW)                        
                 end else begin

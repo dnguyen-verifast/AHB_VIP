@@ -5,6 +5,8 @@ class ahb_test_base extends uvm_test;
     `uvm_component_utils(ahb_test_base)
 
     ahb_env ahb_env_h;
+
+    ahb_env_config ahb_env_config_h;
     
 
     extern function new(string name = "ahb_test_base", uvm_component parent = null);
@@ -19,6 +21,28 @@ endfunction : new
 
 function void ahb_test_base::build_phase(uvm_phase phase);
   super.build_phase(phase);
+
+  ahb_env_config_h = ahb_env_config::type_id::create::("ahb_env_config_h");
+  ahb_env_config_h.has_scoreboard = 1;
+  ahb_env_config_h.has_virtual_seqr = 1;
+  ahb_env_config_h.no_of_slaves = 1;
+  ahb_env_config_h.no_of_masters = 1;
+
+  ahb_env_config_h.ahb_master_config_h = new(ahb_env_config_h.no_of_masters);
+  foreach(ahb_env_config_h.ahb_master_config_h[i]) begin
+    ahb_env_config_h.ahb_master_config_h[i] = ahb_master_config::type_id::create($sformatf("ahb_master_config_h[i]",i));
+    uvm_config_db#(ahb_master_config)::set(this,"*ahb_env*",$sformatf("ahb_master_config_h[i]",i),ahb_env_config_h.ahb_master_config_h[i]);
+  end
+  
+  ahb_env_config_h.ahb_slave_config_h = new(ahb_env_config_h.no_of_slaves);
+  foreach(ahb_env_config_h.ahb_slave_config_h[i]) begin
+    ahb_env_config_h.ahb_slave_config_h[i] = ahb_slave_config::type_id::create($sformatf("ahb_slave_config_h[i]",i));
+    uvm_config_db#(ahb_slave_config)::set(this,"*ahb_env*",$sformatf("ahb_slave_config_h[i]",i),ahb_env_config_h.ahb_slave_config_h[i]);
+  end
+
+  uvm_config_db #(ahb_env_config)::set(this,"*","ahb_env_config",ahb_env_config_h);
+  `uvm_info(get_type_name(),$sformatf("\nAHB_ENV_CONFIG\n%s",ahb_env_config_h.sprint()),UVM_LOW);
+
   ahb_env_h = ahb_env::type_id::create("ahb_env_h",this);
 endfunction : build_phase
 
