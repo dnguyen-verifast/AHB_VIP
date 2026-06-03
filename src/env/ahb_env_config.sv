@@ -9,7 +9,7 @@ class ahb_env_config extends uvm_object;
     int no_of_masters = 1;
 
     ahb_slave_config ahb_slave_config_h [];
-    ahb_master_config ahb_slave_config_h  [];
+    ahb_master_config ahb_master_config_h [];
 
     extern function new(string name = "ahb_env_config");
     extern function void do_print(uvm_printer printer);
