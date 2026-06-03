@@ -28,13 +28,13 @@ function void ahb_test_base::build_phase(uvm_phase phase);
   ahb_env_config_h.no_of_slaves = 1;
   ahb_env_config_h.no_of_masters = 1;
 
-  ahb_env_config_h.ahb_master_config_h = new(ahb_env_config_h.no_of_masters);
+  ahb_env_config_h.ahb_master_config_h = new[ahb_env_config_h.no_of_masters];
   foreach(ahb_env_config_h.ahb_master_config_h[i]) begin
     ahb_env_config_h.ahb_master_config_h[i] = ahb_master_config::type_id::create($sformatf("ahb_master_config_h[i]",i));
     uvm_config_db#(ahb_master_config)::set(this,"*ahb_env*",$sformatf("ahb_master_config_h[i]",i),ahb_env_config_h.ahb_master_config_h[i]);
   end
   
-  ahb_env_config_h.ahb_slave_config_h = new(ahb_env_config_h.no_of_slaves);
+  ahb_env_config_h.ahb_slave_config_h = new[ahb_env_config_h.no_of_slaves];
   foreach(ahb_env_config_h.ahb_slave_config_h[i]) begin
     ahb_env_config_h.ahb_slave_config_h[i] = ahb_slave_config::type_id::create($sformatf("ahb_slave_config_h[i]",i));
     uvm_config_db#(ahb_slave_config)::set(this,"*ahb_env*",$sformatf("ahb_slave_config_h[i]",i),ahb_env_config_h.ahb_slave_config_h[i]);
